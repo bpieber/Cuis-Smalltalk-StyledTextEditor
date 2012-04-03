@@ -1,4 +1,14 @@
 'From Cuis 4.0 of 16 November 2011 [latest update: #1144] on 14 March 2012 at 1:26:17 pm'!
+!classDefinition: #FFIConstants category: #'FFI-Pools'!
+SharedPool subclass: #FFIConstants
+	instanceVariableNames: ''
+	classVariableNames: 'FFIAtomicTypeMask FFIAtomicTypeShift FFICallTypeApi FFICallTypeCDecl FFIErrorAddressNotFound FFIErrorAttemptToPassVoid FFIErrorBadAddress FFIErrorBadArg FFIErrorBadArgs FFIErrorBadAtomicType FFIErrorBadExternalFunction FFIErrorBadExternalLibrary FFIErrorBadReturn FFIErrorCallFrameTooBig FFIErrorCallType FFIErrorCoercionFailed FFIErrorGenericError FFIErrorIntAsPointer FFIErrorInvalidPointer FFIErrorModuleNotFound FFIErrorNoModule FFIErrorNotFunction FFIErrorStructSize FFIErrorWrongType FFIFlagAtomic FFIFlagPointer FFIFlagStructure FFINoCalloutAvailable FFIStructSizeMask FFITypeBool FFITypeDoubleFloat FFITypeSignedByte FFITypeSignedChar FFITypeSignedInt FFITypeSignedLongLong FFITypeSignedShort FFITypeSingleFloat FFITypeUnsignedByte FFITypeUnsignedChar FFITypeUnsignedInt FFITypeUnsignedLongLong FFITypeUnsignedShort FFITypeVoid'
+	poolDictionaries: ''
+	category: 'FFI-Pools'!
+!classDefinition: 'FFIConstants class' category: #'FFI-Pools'!
+FFIConstants class
+	instanceVariableNames: ''!
+
 !classDefinition: #ExternalAddress category: #'FFI-Kernel'!
 ByteArray variableByteSubclass: #ExternalAddress
 	instanceVariableNames: ''
@@ -87,16 +97,6 @@ Object subclass: #ExternalType
 	category: 'FFI-Kernel'!
 !classDefinition: 'ExternalType class' category: #'FFI-Kernel'!
 ExternalType class
-	instanceVariableNames: ''!
-
-!classDefinition: #FFIConstants category: #'FFI-Pools'!
-SharedPool subclass: #FFIConstants
-	instanceVariableNames: ''
-	classVariableNames: 'FFIAtomicTypeMask FFIAtomicTypeShift FFICallTypeApi FFICallTypeCDecl FFIErrorAddressNotFound FFIErrorAttemptToPassVoid FFIErrorBadAddress FFIErrorBadArg FFIErrorBadArgs FFIErrorBadAtomicType FFIErrorBadExternalFunction FFIErrorBadExternalLibrary FFIErrorBadReturn FFIErrorCallFrameTooBig FFIErrorCallType FFIErrorCoercionFailed FFIErrorGenericError FFIErrorIntAsPointer FFIErrorInvalidPointer FFIErrorModuleNotFound FFIErrorNoModule FFIErrorNotFunction FFIErrorStructSize FFIErrorWrongType FFIFlagAtomic FFIFlagPointer FFIFlagStructure FFINoCalloutAvailable FFIStructSizeMask FFITypeBool FFITypeDoubleFloat FFITypeSignedByte FFITypeSignedChar FFITypeSignedInt FFITypeSignedLongLong FFITypeSignedShort FFITypeSingleFloat FFITypeUnsignedByte FFITypeUnsignedChar FFITypeUnsignedInt FFITypeUnsignedLongLong FFITypeUnsignedShort FFITypeVoid'
-	poolDictionaries: ''
-	category: 'FFI-Pools'!
-!classDefinition: 'FFIConstants class' category: #'FFI-Pools'!
-FFIConstants class
 	instanceVariableNames: ''!
 
 
