@@ -1,4 +1,5 @@
-'From Cuis 4.0 of 16 November 2011 [latest update: #1144] on 14 March 2012 at 1:26:44 pm'!
+'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1237] on 4 April 2012 at 10:44:41 pm'!
+'Description '!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
 	instanceVariableNames: 'name familyName pointSize emphasis color kern'
@@ -191,7 +192,7 @@ StyledTextTest class
 
 
 !CharacterStyle commentStamp: '<historical>' prior: 0!
-                            A CharacterStyle comprises a font and color, and can be applied to any part of a Text via a CharacterStyleReference.
+          A CharacterStyle comprises a font and color, and can be applied to any part of a Text via a CharacterStyleReference.
 
 Instances are usually shared. They are not modified often, and any change will affect the style's many users.
 They should not be copied, but new instances might be created.!
@@ -1612,7 +1613,11 @@ labelFont _ AbstractFont familyName: 'DejaVu' aroundPointSize: 10.
 	}.
 	Theme current class beCurrent! !
 
-!STECompleter class methodsFor: 'class initialization' stamp: 'jmv 7/14/2011 14:37'!
+!STECompleter methodsFor: 'initialization' stamp: 'jmv 7/14/2011 13:58'!
+                     initialize
+	words _ EnglishDict! !
+
+!STECompleter class methodsFor: 'class initialization' stamp: 'bp 4/4/2012 22:44'!
          initialize
 	"
 	STECompleter initialize
@@ -1621,6 +1626,7 @@ labelFont _ AbstractFont familyName: 'DejaVu' aroundPointSize: 10.
 	| strm |
 	EnglishDict _ Trie new.
 	strm _ FileStream oldFileOrNoneNamed: 'SOWPODS.html'.
+	strm ifNil: [^self].
 	[
 		strm reset.
 		[ strm atEnd ] whileFalse: [
@@ -1629,12 +1635,8 @@ labelFont _ AbstractFont familyName: 'DejaVu' aroundPointSize: 10.
 			]
 		] ensure: strm close! !
 
-!STECompleter methodsFor: 'initialization' stamp: 'jmv 7/14/2011 13:58'!
-       initialize
-	words _ EnglishDict! !
-
 !STEMainMorph methodsFor: 'initialization' stamp: 'jmv 5/24/2011 09:02'!
-                   initialize
+                 initialize
 	super initialize.
 	self step; startStepping! !
 
@@ -2667,21 +2669,21 @@ self changed: #list
                              styleSet
 	^styleSet! !
 
+!StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'bp 12/21/2011 10:19'!
+                 styleSet: aStyleSet
+	^super new
+		styleSet: aStyleSet;
+		yourself! !
+
 !StyledTextModel methodsFor: 'accessing' stamp: 'jmv 8/11/2011 11:31'!
- styleSet: aStyleSet
+                   styleSet: aStyleSet
 	"All assignments to the styleSet ivar should call this method."
 	styleSet ifNotNil: [ styleSet removeActionsWithReceiver: self ].
 	styleSet _ aStyleSet.
 	styleSet ifNotNil: [ styleSet when: #stylesChanged send: #styleSetChanged to: self ]! !
 
-!StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'bp 12/21/2011 10:19'!
- styleSet: aStyleSet
-	^super new
-		styleSet: aStyleSet;
-		yourself! !
-
 !StyledTextModel methodsFor: 'events' stamp: 'jmv 8/11/2011 11:33'!
-                      styleSetChanged
+                    styleSetChanged
 	"Our style set (or some style in it) changed.
 	Update text and any views."
 	actualContents beStyledTextWith: styleSet.
