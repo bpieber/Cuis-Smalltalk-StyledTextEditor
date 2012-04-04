@@ -2,6 +2,8 @@ NOT YET OFFICIALLY RELEASED – WILL PROBABLY NOT WORK YET
 
 This is the StyledTextEditor project for Cuis, brought to you by Bernhard Pieber and Juan Vuletich.
 
+The package RTFImporting.pck is the RTF parser for StyledTextEditor. It is based on the one in Sophie.
+
 Steps to install:
 - Start Cuis 4.0, preferably with a VM that includes support for the ExtendedClipboardPlugin (currently only on the Mac)
 - Install RTFImporting.pck
