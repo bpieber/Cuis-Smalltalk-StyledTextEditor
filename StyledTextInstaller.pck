@@ -1,5 +1,5 @@
-'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1237] on 4 April 2012 at 6:11:02 pm'!
-'Description Description Description Description '!
+'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1237] on 4 April 2012 at 7:52:18 pm'!
+'Description Description Description Description Description '!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
 	instanceVariableNames: ''
@@ -12,7 +12,7 @@ StyledTextInstaller class
 
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 09:14'!
-                              createStyledTextEditorDocumentation
+                  createStyledTextEditorDocumentation
 	"self new createStyledTextEditorDocumentation"
 	| model styleSet |
 	model _ StyledTextModel new.
@@ -124,6 +124,6 @@ fileDirectory
 	window _ SystemWindow allInstances detect: [:each | each label = name].
 	^window model! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 18:10'!
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 19:50'!
           styledTextPackages
-	^#('RTFExporting' 'RTFTests' 'FFI' 'ExtendedClipboard' 'CrappyOSProcess' 'StyledText' 'StyledTextNotebook' 'StyledTextWiki')! !
+	^#('RTFImporting' 'RTFExporting' 'RTFTests' 'FFI' 'ExtendedClipboard' 'CrappyOSProcess' 'StyledText' 'StyledTextNotebook' 'StyledTextWiki')! !
