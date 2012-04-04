@@ -1,4 +1,4 @@
-'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1237] on 4 April 2012 at 7:52:18 pm'!
+'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1237] on 4 April 2012 at 8:11:09 pm'!
 'Description Description Description Description Description '!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
@@ -50,29 +50,30 @@ fileDirectory
 	versionName _ packageName, '.pck'.
 	CodeFileBrowser installPackage: (self fileDirectory readOnlyFileNamed: versionName)! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 08:54'!
-                    open: name
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 20:08'!
+                     open: name
 	| file model |
-	file _ FileStream fileNamed: name , '.object'.
+	file _ FileStream oldFileOrNoneNamed: name , '.object'.
+	file ifNil: [^nil].
 	[model _ (SmartRefStream on: file) next] ensure: [file close].
 	^SystemWindow editFancierStyledText: model label: name! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 10:10'!
-     openExamples
+       openExamples
 	"self new openExamples"
 	self
 		openStyledTextEditorDocumentation;
 		openMacbethExample! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 08:55'!
-  openMacbethExample
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 20:09'!
+   openMacbethExample
 	"self new openMacbethExample"
 	| window |
 	window _ self open: 'Macbeth Example'.
-	window color: Color white! !
+	window ifNotNil: [window color: Color white]! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 09:58'!
-       openStyledTextEditorDocumentation
+                    openStyledTextEditorDocumentation
 	"self new openStyledTextEditorDocumentation"
 	self open: 'Styled Text Editor Documentation'! !
 
