@@ -1,4 +1,4 @@
-'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1237] on 4 April 2012 at 3:22:06 pm'!
+'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1237] on 4 April 2012 at 5:57:23 pm'!
 'Description Description Description Description '!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
@@ -28,12 +28,12 @@ StyledTextInstaller class
                              featuresModelNames
 	^#('STE - New Features' 'STE - Open Features' 'STE - Done Features' 'Cuis Features')! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 15:20'!
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 17:57'!
 fileDirectory
-	^FileDirectory default! !
+	^FileDirectory dirPathFor: (CodePackage named: 'StyledTextInstaller') fullFileName! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'jmv 4/3/2012 10:14'!
-  install
+      install
 	"
 	StyledTextInstaller new install
 	"
