@@ -1,5 +1,5 @@
-'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1225] on 3 April 2012 at 10:14:26 am'!
-'Description Description Description '!
+'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1237] on 4 April 2012 at 3:22:06 pm'!
+'Description Description Description Description '!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
 	instanceVariableNames: ''
@@ -12,7 +12,7 @@ StyledTextInstaller class
 
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 09:14'!
-         createStyledTextEditorDocumentation
+                              createStyledTextEditorDocumentation
 	"self new createStyledTextEditorDocumentation"
 	| model styleSet |
 	model _ StyledTextModel new.
@@ -28,8 +28,12 @@ StyledTextInstaller class
                              featuresModelNames
 	^#('STE - New Features' 'STE - Open Features' 'STE - Done Features' 'Cuis Features')! !
 
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 15:20'!
+fileDirectory
+	^FileDirectory default! !
+
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'jmv 4/3/2012 10:14'!
-                               install
+  install
 	"
 	StyledTextInstaller new install
 	"
@@ -37,15 +41,15 @@ StyledTextInstaller class
 	STETheme beCurrent.
 	self openExamples! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'jmv 3/29/2012 22:30'!
-              installPackage: packageName
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 15:21'!
+                installPackage: packageName
 	| versionName |
-	versionName := FileDirectory default lastNameFor: packageName extension: 'pck'.
+	versionName := self fileDirectory lastNameFor: packageName extension: 'pck'.
 	versionName _ packageName, '.pck'.
-	CodeFileBrowser installPackage: (FileDirectory default readOnlyFileNamed: versionName)! !
+	CodeFileBrowser installPackage: (self fileDirectory readOnlyFileNamed: versionName)! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 08:54'!
-              open: name
+                    open: name
 	| file model |
 	file _ FileStream fileNamed: name , '.object'.
 	[model _ (SmartRefStream on: file) next] ensure: [file close].
