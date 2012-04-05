@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1253] on 5 April 2012 at 11:10:33 pm'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1253] on 5 April 2012 at 11:28:46 pm'!
 'Description Description Description Description Description Description Description '!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
@@ -24,6 +24,10 @@ createStyledTextEditorDocumentation
 		createDocumentationParagraphStyleSet;
 		createDocumentationCharacterStyleSet! !
 
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:13'!
+documentsDirectory
+	^self repositoryDirectory directoryNamed: 'Documents'! !
+
 !StyledTextInstaller methodsFor: 'features' stamp: 'bp 12/21/2011 10:34'!
 featuresModelNames
 	^#('STE - New Features' 'STE - Open Features' 'STE - Done Features' 'Cuis Features')! !
@@ -44,10 +48,10 @@ installPackage: packageName
 	versionName _ packageName, '.pck'.
 	CodeFileBrowser installPackage: (self repositoryDirectory readOnlyFileNamed: versionName)! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 20:08'!
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:22'!
 open: name
 	| file model |
-	file _ FileStream oldFileOrNoneNamed: name , '.object'.
+	file _ self documentsDirectory oldFileNamed: name, '.object'.
 	file ifNil: [^nil].
 	[model _ (SmartRefStream on: file) next] ensure: [file close].
 	^SystemWindow editFancierStyledText: model label: name! !
@@ -59,17 +63,17 @@ openExamples
 		openStyledTextEditorDocumentation;
 		openMacbethExample! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'jmv 4/5/2012 12:42'!
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:24'!
 openMacbethExample
 	"self new openMacbethExample"
 	| window |
-	window _ self open: 'Documents/Macbeth Example'.
+	window _ self open: 'Macbeth Example'.
 	window ifNotNil: [window color: Color white]! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'jmv 4/5/2012 12:42'!
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:24'!
 openStyledTextEditorDocumentation
 	"self new openStyledTextEditorDocumentation"
-	self open: 'Documents/Styled Text Editor Documentation'! !
+	self open: 'Styled Text Editor Documentation'! !
 
 !StyledTextInstaller methodsFor: 'features' stamp: 'bp 12/7/2011 02:06'!
 openStyledTextEditorFeatures
