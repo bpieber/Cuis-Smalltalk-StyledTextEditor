@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1253] on 5 April 2012 at 12:42:50 pm'!
-'Description Description Description Description Description Description '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1253] on 5 April 2012 at 11:10:33 pm'!
+'Description Description Description Description Description Description Description '!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
 	instanceVariableNames: ''
@@ -28,12 +28,6 @@ createStyledTextEditorDocumentation
 featuresModelNames
 	^#('STE - New Features' 'STE - Open Features' 'STE - Done Features' 'Cuis Features')! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 18:06'!
-fileDirectory
-	| repositoryPath |
-	repositoryPath _ FileDirectory dirPathFor: (CodePackage named: 'StyledTextInstaller') fullFileName.
-	^FileDirectory on: repositoryPath! !
-
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'jmv 4/3/2012 10:14'!
 install
 	"
@@ -43,12 +37,12 @@ install
 	STETheme beCurrent.
 	self openExamples! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 15:21'!
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:10'!
 installPackage: packageName
 	| versionName |
-	versionName := self fileDirectory lastNameFor: packageName extension: 'pck'.
+	versionName := self repositoryDirectory lastNameFor: packageName extension: 'pck'.
 	versionName _ packageName, '.pck'.
-	CodeFileBrowser installPackage: (self fileDirectory readOnlyFileNamed: versionName)! !
+	CodeFileBrowser installPackage: (self repositoryDirectory readOnlyFileNamed: versionName)! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 20:08'!
 open: name
@@ -102,6 +96,10 @@ recreateFeaturesStyleSet
 		styleSet
 			createFeaturesParagraphStyleSet;
 			createFeaturesCharacterStyleSet]! !
+
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:10'!
+repositoryDirectory
+	^(FileDirectory on: (CodePackage named: 'StyledTextInstaller') fullFileName) containingDirectory! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'jmv 1/6/2012 14:12'!
 save: name
