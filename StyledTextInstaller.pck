@@ -1,5 +1,5 @@
-'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1237] on 4 April 2012 at 8:11:09 pm'!
-'Description Description Description Description Description '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1253] on 5 April 2012 at 12:42:50 pm'!
+'Description Description Description Description Description Description '!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
 	instanceVariableNames: ''
@@ -12,7 +12,7 @@ StyledTextInstaller class
 
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 09:14'!
-                  createStyledTextEditorDocumentation
+createStyledTextEditorDocumentation
 	"self new createStyledTextEditorDocumentation"
 	| model styleSet |
 	model _ StyledTextModel new.
@@ -25,7 +25,7 @@ StyledTextInstaller class
 		createDocumentationCharacterStyleSet! !
 
 !StyledTextInstaller methodsFor: 'features' stamp: 'bp 12/21/2011 10:34'!
-                             featuresModelNames
+featuresModelNames
 	^#('STE - New Features' 'STE - Open Features' 'STE - Done Features' 'Cuis Features')! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 18:06'!
@@ -35,7 +35,7 @@ fileDirectory
 	^FileDirectory on: repositoryPath! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'jmv 4/3/2012 10:14'!
-                              install
+install
 	"
 	StyledTextInstaller new install
 	"
@@ -44,14 +44,14 @@ fileDirectory
 	self openExamples! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 15:21'!
-                installPackage: packageName
+installPackage: packageName
 	| versionName |
 	versionName := self fileDirectory lastNameFor: packageName extension: 'pck'.
 	versionName _ packageName, '.pck'.
 	CodeFileBrowser installPackage: (self fileDirectory readOnlyFileNamed: versionName)! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 20:08'!
-                     open: name
+open: name
 	| file model |
 	file _ FileStream oldFileOrNoneNamed: name , '.object'.
 	file ifNil: [^nil].
@@ -59,31 +59,31 @@ fileDirectory
 	^SystemWindow editFancierStyledText: model label: name! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 10:10'!
-       openExamples
+openExamples
 	"self new openExamples"
 	self
 		openStyledTextEditorDocumentation;
 		openMacbethExample! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 20:09'!
-   openMacbethExample
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'jmv 4/5/2012 12:42'!
+openMacbethExample
 	"self new openMacbethExample"
 	| window |
-	window _ self open: 'Macbeth Example'.
+	window _ self open: 'Documents/Macbeth Example'.
 	window ifNotNil: [window color: Color white]! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 09:58'!
-                    openStyledTextEditorDocumentation
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'jmv 4/5/2012 12:42'!
+openStyledTextEditorDocumentation
 	"self new openStyledTextEditorDocumentation"
-	self open: 'Styled Text Editor Documentation'! !
+	self open: 'Documents/Styled Text Editor Documentation'! !
 
 !StyledTextInstaller methodsFor: 'features' stamp: 'bp 12/7/2011 02:06'!
-                    openStyledTextEditorFeatures
+openStyledTextEditorFeatures
 	"self new openStyledTextEditorFeatures"
 	self featuresModelNames do: [:each | self open: each]! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 10:06'!
-           recreateDocumentationStyleSet
+recreateDocumentationStyleSet
 	"self new recreateDocumentationStyleSet"
 	| model styleSet |
 	model _ self styledTextModelNamed: 'Styled Text Editor Documentation'.
@@ -93,7 +93,7 @@ fileDirectory
 		createDocumentationCharacterStyleSet! !
 
 !StyledTextInstaller methodsFor: 'features' stamp: 'bp 12/7/2011 02:08'!
-                          recreateFeaturesStyleSet
+recreateFeaturesStyleSet
 	"self new recreateFeaturesStyleSet"
 	self featuresModelNames do: [:each |
 		| model styleSet |
@@ -104,27 +104,27 @@ fileDirectory
 			createFeaturesCharacterStyleSet]! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'jmv 1/6/2012 14:12'!
-                    save: name
+save: name
 	| model |
 	model _ self styledTextModelNamed: name.
 	model saveAs: name! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 09:40'!
-                    saveStyledTextEditorDocumentation
+saveStyledTextEditorDocumentation
 	"self new saveStyledTextEditorDocumentation"
 	self save: 'Styled Text Editor Documentation'! !
 
 !StyledTextInstaller methodsFor: 'features' stamp: 'bp 12/7/2011 02:07'!
-                    saveStyledTextEditorFeatures
+saveStyledTextEditorFeatures
 	"self new saveStyledTextEditorFeatures"
 	self featuresModelNames do: [:each | self save: each]! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 09:59'!
-           styledTextModelNamed: name
+styledTextModelNamed: name
 	| window |
 	window _ SystemWindow allInstances detect: [:each | each label = name].
 	^window model! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 19:50'!
-          styledTextPackages
+styledTextPackages
 	^#('RTFImporting' 'RTFExporting' 'RTFTests' 'FFI' 'ExtendedClipboard' 'CrappyOSProcess' 'StyledText' 'StyledTextNotebook' 'StyledTextWiki')! !
