@@ -4,7 +4,7 @@ This is the StyledTextEditor project for Cuis, brought to you by Bernhard Pieber
 
 Steps to install:
 - Uncompress scowl-7.1.tar.gz
-- Start Cuis 4.0, preferably with a VM that includes support for the ExtendedClipboardPlugin (currently only on the Mac)
+- Start Cuis 4.0, preferably with a VM that includes support for the ExtendedClipboardPlugin (like this: http://www.squeakvm.org/mac/release/Squeak 4.2.5beta1U.zip , currently only on the Mac)
 - Install StyledTextInstaller.pck
 - evaluate: StyledTextInstaller new install
 
