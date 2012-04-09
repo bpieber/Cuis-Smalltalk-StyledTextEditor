@@ -1,38 +1,38 @@
-'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1225] on 3 April 2012 at 10:02:28 am'!
-'Description Please enter a description for this package '!
-!classDefinition: #RTFConversionTest category: #'RTFtests'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:42:37 am'!
+'Description Description Please enter a description for this package '!
+!classDefinition: #RTFConversionTest category: #RTFtests!
 TestCase subclass: #RTFConversionTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFtests'!
-!classDefinition: 'RTFConversionTest class' category: #'RTFtests'!
+!classDefinition: 'RTFConversionTest class' category: #RTFtests!
 RTFConversionTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFTokenTest category: #'RTFtests'!
+!classDefinition: #RTFTokenTest category: #RTFtests!
 TestCase subclass: #RTFTokenTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFtests'!
-!classDefinition: 'RTFTokenTest class' category: #'RTFtests'!
+!classDefinition: 'RTFTokenTest class' category: #RTFtests!
 RTFTokenTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFTokenizerTest category: #'RTFtests'!
+!classDefinition: #RTFTokenizerTest category: #RTFtests!
 TestCase subclass: #RTFTokenizerTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFtests'!
-!classDefinition: 'RTFTokenizerTest class' category: #'RTFtests'!
+!classDefinition: 'RTFTokenizerTest class' category: #RTFtests!
 RTFTokenizerTest class
 	instanceVariableNames: ''!
 
 
 !RTFConversionTest class methodsFor: 'rtf examples' stamp: 'jmv 3/13/2012 11:45'!
-                     rtfABCExample
+rtfABCExample
 	"
 	| rtf |
 	rtf _ RTFConversionTest rtfABCExample.
@@ -59,7 +59,7 @@ Default Paragraph Font;}{\*\ts11\tsrowd\trftsWidthB3\trpaddl108\trpaddr108\trpad
 \par }}'! !
 
 !RTFConversionTest class methodsFor: 'rtf examples' stamp: 'jmv 3/13/2012 11:45'!
-       rtfColoredSample1
+rtfColoredSample1
 	"
 	| rtf |
 	rtf _ RTFConversionTest rtfColoredSample1.
@@ -88,7 +88,7 @@ soft Word 11.0.6568;}{\info{\title Red green blue}{\author triffon}{\operator tr
 \par }}'! !
 
 !RTFConversionTest class methodsFor: 'rtf examples' stamp: 'jmv 3/13/2012 11:45'!
-         rtfColoredSample2
+rtfColoredSample2
 	"
 	| rtf |
 	rtf _ RTFConversionTest rtfColoredSample2.
@@ -107,7 +107,7 @@ soft Word 11.0.6568;}{\info{\title Red green blue}{\author triffon}{\operator tr
 \f0\fs24 \cf2 Red\cf0  \cf3 green\cf0  \cf4 blue}'! !
 
 !RTFConversionTest class methodsFor: 'rtf examples' stamp: 'jmv 3/13/2012 11:45'!
-                      rtfSample1
+rtfSample1
 	"
 	| rtf |
 	rtf _ RTFConversionTest rtfSample1.
@@ -141,7 +141,7 @@ soft Word 11.0.6568;}{\info{\title Red green blue}{\author triffon}{\operator tr
 '! !
 
 !RTFConversionTest class methodsFor: 'rtf examples' stamp: 'jmv 3/13/2012 11:45'!
-         rtfSrcCharFormat
+rtfSrcCharFormat
 	"
 	| rtf |
 	rtf _ RTFConversionTest rtfSrcCharFormat.
@@ -172,7 +172,7 @@ soft Word 11.0.6568;}{\info{\title Red green blue}{\author triffon}{\operator tr
 \par }}'! !
 
 !RTFConversionTest class methodsFor: 'rtf examples' stamp: 'jmv 3/13/2012 11:45'!
-  rtfSrcParagraphFormatting
+rtfSrcParagraphFormatting
 	"
 	| rtf |
 	rtf _ RTFConversionTest rtfSrcParagraphFormatting.
@@ -205,7 +205,7 @@ soft Word 11.0.6568;}{\info{\title Red green blue}{\author triffon}{\operator tr
 }'! !
 
 !RTFConversionTest class methodsFor: 'rtf examples' stamp: 'jmv 3/13/2012 11:45'!
-                       rtfSrcPrefaceHalsOriginal
+rtfSrcPrefaceHalsOriginal
 	"
 	| rtf |
 	rtf _ RTFConversionTest rtfSrcPrefaceHalsOriginal.
@@ -320,7 +320,7 @@ ay mornings after marathon editing sessions are now a thing of the past, and we 
 ! !
 
 !RTFConversionTest class methodsFor: 'rtf examples' stamp: 'jmv 3/13/2012 11:45'!
-                     rtfSrcSpacing
+rtfSrcSpacing
 	"
 	| rtf |
 	rtf _ RTFConversionTest rtfSrcSpacing.
@@ -357,7 +357,7 @@ Sometimes it is also called paragraph leading. This is spaced by a multiple of a
 \par }}'! !
 
 !RTFConversionTest class methodsFor: 'rtf examples' stamp: 'jmv 3/13/2012 11:46'!
-      rtfSrcSpecialSymbols
+rtfSrcSpecialSymbols
 	"
 	| rtf |
 	rtf _ RTFConversionTest rtfSrcSpecialSymbols.
@@ -403,7 +403,7 @@ osoft Word 11.0.6568;}{\info{\title Tabulation}{\author Compay Sedungo}{\operato
 \par }}'! !
 
 !RTFConversionTest class methodsFor: 'rtf examples' stamp: 'jmv 3/13/2012 11:46'!
-                             rtfSrcWin32ClipboardTest
+rtfSrcWin32ClipboardTest
 	"
 	| rtf |
 	rtf _ RTFConversionTest rtfSrcWin32ClipboardTest.
@@ -467,7 +467,7 @@ e.
 \par }} '! !
 
 !RTFTokenTest methodsFor: 'as yet unclassified' stamp: 'MR 5/24/2006 12:10'!
-           testCreateBlockClose
+testCreateBlockClose
 	| token |	
 
 	token _ RTFToken newBlockClose.
@@ -479,7 +479,7 @@ e.
 ! !
 
 !RTFTokenTest methodsFor: 'as yet unclassified' stamp: 'MR 5/24/2006 12:10'!
-    testCreateBlockOpen
+testCreateBlockOpen
 	| token |	
 
 	token _ RTFToken newBlockOpen.
@@ -491,7 +491,7 @@ e.
 ! !
 
 !RTFTokenTest methodsFor: 'as yet unclassified' stamp: 'MR 5/24/2006 12:11'!
-       testCreateKeyword
+testCreateKeyword
 	| token |	
 
 	token _ RTFToken newKeyword: 'abcd'.
@@ -510,7 +510,7 @@ e.
 ! !
 
 !RTFTokenTest methodsFor: 'as yet unclassified' stamp: 'MR 5/24/2006 12:11'!
-           testCreateString
+testCreateString
 	| token |	
 
 	token _ RTFToken newString: 'abcd'.
@@ -598,7 +598,7 @@ testMacGetToken
 ! !
 
 !RTFTokenizerTest methodsFor: 'as yet unclassified' stamp: 'MR 5/25/2006 18:38'!
-           testMacLookAhead
+testMacLookAhead
 	| string tokenizer |
 
 	"string is an empty rtf generated by word 2003"	
@@ -621,7 +621,7 @@ testMacGetToken
 ! !
 
 !RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/11/2011 19:45'!
-                  testSample1ToAndFromRTF
+testSample1ToAndFromRTF
 	"
 	RTFConversionTest new testSample1ToAndFromRTF
 	"
@@ -643,7 +643,7 @@ testMacGetToken
 	self assert: result runs = text runs.! !
 
 !RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/11/2011 19:45'!
-       testSample2ToAndFromRTF
+testSample2ToAndFromRTF
 	"
 	RTFConversionTest new testSample2ToAndFromRTF
 	"
@@ -665,7 +665,7 @@ testMacGetToken
 	self assert:result runs = text runs.! !
 
 !RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/11/2011 20:03'!
-          testSample3ToAndFromRTF
+testSample3ToAndFromRTF
 	"
 	RTFConversionTest new testSample3ToAndFromRTF
 	"
@@ -687,7 +687,7 @@ testMacGetToken
 	self assert: result runs = text runs.! !
 
 !RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/12/2011 10:09'!
-         testSample4ToAndFromRTF
+testSample4ToAndFromRTF
 	"
 	RTFConversionTest new testSample4ToAndFromRTF
 	"
@@ -711,7 +711,7 @@ testMacGetToken
 "	self assert: result runs = text runs."! !
 
 !RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/11/2011 19:45'!
-                       testSample5ToAndFromRTF
+testSample5ToAndFromRTF
 	"
 	RTFConversionTest new testSample5ToAndFromRTF
 	"
@@ -733,7 +733,7 @@ testMacGetToken
 	self assert: result runs = text runs.! !
 
 !RTFConversionTest methodsFor: 'tests' stamp: 'jmv 11/22/2011 15:27'!
-      testSample6ToAndFromRTF
+testSample6ToAndFromRTF
 	"
 	RTFConversionTest new testSample6ToAndFromRTF
 	"
@@ -755,7 +755,7 @@ testMacGetToken
 	self assert: result runs = text runs.! !
 
 !RTFTokenizerTest methodsFor: 'as yet unclassified' stamp: 'MR 5/25/2006 18:45'!
-                           testWinGetToken
+testWinGetToken
 	| string tokenizer token |
 
 	"string is an empty rtf generated by word 2003"	
@@ -814,7 +814,7 @@ soft Word 11.0.6568;}{\info{\author Compay Sedungo}{\operator Compay Sedungo}{\c
 ! !
 
 !RTFTokenizerTest methodsFor: 'as yet unclassified' stamp: 'MR 5/24/2006 14:50'!
-                        testWinLookAhead
+testWinLookAhead
 	| string tokenizer |
 
 	"string is an empty rtf generated by word 2003"	
@@ -847,7 +847,7 @@ soft Word 11.0.6568;}{\info{\author Compay Sedungo}{\operator Compay Sedungo}{\c
 ! !
 
 !RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 4/11/2011 20:06'!
-                          textSample1
+textSample1
 	"
 	| text |
 	text _ RTFConversionTest textSample1.
@@ -865,7 +865,7 @@ soft Word 11.0.6568;}{\info{\author Compay Sedungo}{\operator Compay Sedungo}{\c
 		(Text string: 'normal ' attributes: #())! !
 
 !RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 3/13/2012 16:57'!
-              textSample2
+textSample2
 	"
 	| text |
 	text _ RTFConversionTest textSample2.
@@ -886,7 +886,7 @@ soft Word 11.0.6568;}{\info{\author Compay Sedungo}{\operator Compay Sedungo}{\c
 		(Text string: 'This is right', String newLineString attribute: TextAlignment rightFlush)! !
 
 !RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 4/11/2011 20:06'!
-                   textSample3
+textSample3
 	"
 	| text |
 	text _ RTFConversionTest textSample3.
@@ -904,7 +904,7 @@ soft Word 11.0.6568;}{\info{\author Compay Sedungo}{\operator Compay Sedungo}{\c
 	)! !
 
 !RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 4/12/2011 10:00'!
-                  textSample4
+textSample4
 	"
 	| text |
 	text _ RTFConversionTest textSample4.
@@ -925,7 +925,7 @@ soft Word 11.0.6568;}{\info{\author Compay Sedungo}{\operator Compay Sedungo}{\c
 	)! !
 
 !RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 3/30/2011 11:23'!
-  textSample5
+textSample5
 	"
 	| text |
 	text _ RTFConversionTest textSample5.
@@ -935,7 +935,7 @@ soft Word 11.0.6568;}{\info{\author Compay Sedungo}{\operator Compay Sedungo}{\c
 	^'Hello', (Text withForm: EllipseMorph new imageForm), 'world'! !
 
 !RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 11/22/2011 15:00'!
-                     textSample6
+textSample6
 	"
 	| text |
 	text _ RTFConversionTest textSample6.

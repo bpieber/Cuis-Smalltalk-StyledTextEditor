@@ -1,4 +1,5 @@
-'From Cuis 4.0 of 16 November 2011 [latest update: #1144] on 14 March 2012 at 1:25:54 pm'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:41:39 am'!
+'Description '!
 !classDefinition: #CrappyUnixOSProcess category: #CrappyOSProcess!
 Object subclass: #CrappyUnixOSProcess
 	instanceVariableNames: 'programName arguments pid pwd runState exitStatus'
@@ -11,11 +12,11 @@ CrappyUnixOSProcess class
 
 
 !CrappyUnixOSProcess commentStamp: '<historical>' prior: 0!
-      A simple and crappy replacement for ExternaUnixOSProcess et al.
+A simple and crappy replacement for ExternaUnixOSProcess et al.
 CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 12/4/2009 15:58'!
-            argsAsFlatArrayAndOffsets: anArrayOfNullTerminatedStrings
+argsAsFlatArrayAndOffsets: anArrayOfNullTerminatedStrings
 	"Given anArrayOfNullTerminatedStrings, flatten the array into a string buffer,
 	leaving space at the beginning of the buffer for a list of C pointers. Answer
 	the string buffer and an array of address offsets. The address offsets may later
@@ -49,12 +50,12 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 ! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 12/4/2009 15:34'!
-                              arguments: arrayOfArgumentStrings
+arguments: arrayOfArgumentStrings
 
 	arguments := arrayOfArgumentStrings! !
 
 !CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 11:16'!
-                         command: aCommandString
+command: aCommandString
 
 	"CrappyUnixOSProcess command: 'ls -l /etc'"
 
@@ -63,7 +64,7 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 		arguments: (Array with: '-c' with: aCommandString)! !
 
 !CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 6/24/2010 10:46'!
-                        commandResult: aCommandString
+commandResult: aCommandString
 	"
 	Run the command and answer the result
 
@@ -90,7 +91,7 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 	^result! !
 
 !CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 12/4/2009 15:33'!
-                     defaultShellPath
+defaultShellPath
 	"Default shell to run"
 
 	| path |
@@ -100,7 +101,7 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 		ifFalse: [self notify: path, ' not found']! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 11:27'!
-                     execAndWait
+execAndWait
 	"Start the external OS process. All instances variables except for pid  
 	should have been set. The pid will be set following creation of the new 
 	external process."
@@ -119,7 +120,7 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 	]! !
 
 !CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 11:17'!
-                            execAndWait: executableFile arguments: arrayOfStrings
+execAndWait: executableFile arguments: arrayOfStrings
 	"Run a program in an external OS process, and answer an instance of 
 	myself which represents the external process.
 	Run and wait for execution end."
@@ -134,7 +135,7 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 ! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 11:03'!
-      forkAndExec: executableFile arguments: arrayOfStrings
+forkAndExec: executableFile arguments: arrayOfStrings
 	"Call Unix vfork() and execve() to create a child process, and answer the child process.
 	This method is expected to be called by class side methods. Prepare the arguments before
 	calling the primitive, including null termination of all strings. anExternalProcess is an
@@ -177,7 +178,7 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 	^ self! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 12/4/2009 15:57'!
-                              forkAndExec: executableFile
+forkAndExec: executableFile
 	stdIn: inputFileHandle
 	stdOut: outputFileHandle
 	stdErr: errorFileHandle
@@ -217,7 +218,7 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 ! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 12:03'!
-                     forkAndForget
+forkAndForget
 	"Start the external OS process. All instances variables except for pid  
 	should have been set. The pid will be set following creation of the new 
 	external process.
@@ -231,7 +232,7 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 ! !
 
 !CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 12:04'!
-          forkAndForget: executableFile arguments: arrayOfStrings
+forkAndForget: executableFile arguments: arrayOfStrings
 	"Run a program in an external OS process, and answer an instance of 
 	myself which represents the external process.
 	
@@ -249,7 +250,7 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 ! !
 
 !CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 12:05'!
-                      forkAndForgetCommand: aCommandString
+forkAndForgetCommand: aCommandString
 "
 	Do not wait for the for the forked unix process to finish.
 	There is currently no means for the unix process to finish properly unless squeak exits
@@ -262,7 +263,7 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 		arguments: (Array with: '-c' with: aCommandString)! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 12/14/2009 11:35'!
-     primForkExec: executableFile
+primForkExec: executableFile
 	stdIn: inputFileHandle
 	stdOut: outputFileHandle
 	stdErr: errorFileHandle
@@ -305,14 +306,14 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 		workingDir: pathString"! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 10:55'!
-                       primGetChildExitStatus: childPid
+primGetChildExitStatus: childPid
 	"Clean up after the death of a child process, and answer the exit status of the child process."
 
 	<primitive: 'primitiveReapChildProcess' module: 'UnixOSProcessPlugin'>
 	^ Array with: childPid with: nil! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 12/4/2009 16:08'!
-                          primGetCurrentWorkingDirectory
+primGetCurrentWorkingDirectory
 	"Call getcwd() to get the current working directory."
 
 	"OSProcess thisOSProcess processAccessor primGetCurrentWorkingDirectory"
@@ -322,7 +323,7 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 ! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 12/4/2009 15:46'!
-           primSizeOfPointer
+primSizeOfPointer
 	"Size of a void pointer for this C compiler on this machine."
 
 	<primitive: 'primitiveSizeOfPointer' module: 'UnixOSProcessPlugin'>
@@ -330,18 +331,18 @@ CrappyUnixOSProcess command: 'open http://www.jvuletich.org'!
 ! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 12/4/2009 15:34'!
-                       programName: fileName
+programName: fileName
 
 	programName := fileName! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 12/4/2009 16:09'!
-                       pwd
+pwd
 
 	pwd ifNil: [pwd := self primGetCurrentWorkingDirectory].
 	^ pwd! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 12/4/2009 15:46'!
- sizeOfPointer
+sizeOfPointer
 	"Size of a void pointer on this machine with this C compiler."
 
 	^ self primSizeOfPointer! !

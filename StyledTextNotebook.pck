@@ -1,4 +1,5 @@
-'From Cuis 4.0 of 16 November 2011 [latest update: #1144] on 14 March 2012 at 1:26:59 pm'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:42:44 am'!
+'Description '!
 !classDefinition: #BpStyledTextNotebook category: #StyledTextNotebook!
 Object subclass: #BpStyledTextNotebook
 	instanceVariableNames: ''
@@ -11,7 +12,7 @@ BpStyledTextNotebook class
 
 
 !BpStyledTextNotebook class methodsFor: 'StyledText Notebook' stamp: 'jmv 8/2/2011 15:10'!
-         createModelAndView
+createModelAndView
 	"
 	BpStyledTextNotebook createModelAndView
 	"
@@ -32,7 +33,7 @@ BpStyledTextNotebook class
 	World addMorph: AppMorph.! !
 
 !BpStyledTextNotebook class methodsFor: 'StyledText Notebook' stamp: 'jmv 5/24/2011 08:53'!
-                           install
+install
 	"
 	BpStyledTextNotebook install
 	Preferences enable: #focusFollowsMouse
@@ -59,13 +60,13 @@ BpStyledTextNotebook class
 	Smalltalk saveImageInFileNamed: newName! !
 
 !BpStyledTextNotebook class methodsFor: 'StyledText Notebook' stamp: 'jmv 1/6/2012 14:17'!
-            save
+save
 	"Maybe we're still saving too much...
 	Besides, check if new instances of ParagraphStyle et al are created on startup..."
 	MyModel saveAs: Filename! !
 
 !BpStyledTextNotebook class methodsFor: 'StyledText Notebook' stamp: 'jmv 3/11/2011 17:39'!
-      saveIcon
+saveIcon
 	"Created using:
 	Clipboard default storeObject:
 	 	((PNGReadWriter bytesFor: (Form fromFileNamed: 'Save.png')) asString base64Encoded)

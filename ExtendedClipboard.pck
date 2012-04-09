@@ -1,4 +1,5 @@
-'From Cuis 4.0 of 16 November 2011 [latest update: #1144] on 14 March 2012 at 1:26:07 pm'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:42:08 am'!
+'Description '!
 !classDefinition: #ExtendedClipboardInterface category: #ExtendedClipboard!
 Object subclass: #ExtendedClipboardInterface
 	instanceVariableNames: 'clipboard'
@@ -61,7 +62,7 @@ Win32Bitmap class
 
 
 !ExtendedClipboardInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 23:45'!
- addClipboardData: data dataFormat: aFormat
+addClipboardData: data dataFormat: aFormat
 	clipboard = 0 ifTrue: [
 		"Should never happen!!"
 		self error: 'broken clipboard'.
@@ -69,93 +70,93 @@ Win32Bitmap class
 	self primAddClipboardData: clipboard data: data dataFormat: aFormat! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-          bmBits
+bmBits
 	"This method was automatically generated"
 	^ExternalData fromHandle: (handle pointerAt: 21) type: ExternalType byte asPointerType! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-               bmBits: anObject
+bmBits: anObject
 	"This method was automatically generated"
 	handle pointerAt: 21 put: anObject getHandle.! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-              bmBitsPixel
+bmBitsPixel
 	"This method was automatically generated"
 	^handle signedShortAt: 19! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-       bmBitsPixel: anObject
+bmBitsPixel: anObject
 	"This method was automatically generated"
 	handle signedShortAt: 19 put: anObject! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-                bmHeight
+bmHeight
 	"This method was automatically generated"
 	^handle signedLongAt: 9! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-            bmHeight: anObject
+bmHeight: anObject
 	"This method was automatically generated"
 	handle signedLongAt: 9 put: anObject! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-                     bmPlanes
+bmPlanes
 	"This method was automatically generated"
 	^handle signedShortAt: 17! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-          bmPlanes: anObject
+bmPlanes: anObject
 	"This method was automatically generated"
 	handle signedShortAt: 17 put: anObject! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-                   bmType
+bmType
 	"This method was automatically generated"
 	^handle signedLongAt: 1! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-              bmType: anObject
+bmType: anObject
 	"This method was automatically generated"
 	handle signedLongAt: 1 put: anObject! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-                       bmWidth
+bmWidth
 	"This method was automatically generated"
 	^handle signedLongAt: 5! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-             bmWidth: anObject
+bmWidth: anObject
 	"This method was automatically generated"
 	handle signedLongAt: 5 put: anObject! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-                      bmWidthBytes
+bmWidthBytes
 	"This method was automatically generated"
 	^handle signedLongAt: 13! !
 
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
-       bmWidthBytes: anObject
+bmWidthBytes: anObject
 	"This method was automatically generated"
 	handle signedLongAt: 13 put: anObject! !
 
 !ExtendedClipboardInterface methodsFor: 'testing' stamp: 'jmv 1/18/2011 23:44'!
-   canStore
+canStore
 	"Store into clipboard implemented on most platforms.
 	Answer false in subclasses that can't store into clipboard."
 	^clipboard ~= 0! !
 
 !ExtendedClipboardWinInterface methodsFor: 'testing' stamp: 'jmv 1/18/2011 22:27'!
-                           canStore
+canStore
 	"Store into clipboard not yet implemented on Windows"
 	^false! !
 
 !ExtendedClipboardInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 14:47'!
-    clearClipboard
+clearClipboard
 	clipboard = 0 ifTrue: [^self].
 	^ self primClearClipboard: clipboard! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'mir 2/14/2008 23:56'!
-               clipboardAvailable: format
+clipboardAvailable: format
 	"ExtendedClipboardWinInterface new clipboardAvailable: 8"
 
 	"http://msdn2.microsoft.com/en-us/library/ms649047(VS.85).aspx
@@ -167,7 +168,7 @@ BOOL IsClipboardFormatAvailable(
 	^self externalCallFailed! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'mir 5/10/2006 17:56'!
-            closeClipboard
+closeClipboard
 	"ExtendedClipboardWinInterface new closeClipboard"
 	"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/windowsuserinterface/dataexchange/clipboard/clipboardreference/clipboardfunctions/getclipboardformatname.asp
 
@@ -179,12 +180,12 @@ BOOL CloseClipboard(
 	^self externalCallFailed! !
 
 !ExtendedClipboardInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 14:47'!
-              createClipboard
+createClipboard
 	clipboard = 0 ifTrue: [^self].
 	^ self primCreateClipboard! !
 
 !ExtendedClipboardInterface class methodsFor: 'accessing' stamp: 'jmv 1/11/2011 13:59'!
-                        current
+current
 	| platform |
 	Current ifNil: [
 		platform _ Smalltalk platformName.
@@ -197,7 +198,7 @@ BOOL CloseClipboard(
 	^ Current.! !
 
 !Win32Bitmap class methodsFor: 'instance creation' stamp: 'mir 2/14/2008 22:47'!
-                   fields
+fields
 	"Win32TagBitmap defineFields"
 
 
@@ -223,7 +224,7 @@ BOOL CloseClipboard(
 ! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'mir 5/10/2006 16:09'!
-                              format: format
+format: format
 	"ExtendedClipboardInterface format: 0"
 
 	"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/windowsuserinterface/dataexchange/clipboard/clipboardreference/clipboardfunctions/emptyclipboard.asp
@@ -236,23 +237,23 @@ UINT EnumClipboardFormats(
 	^self externalCallFailed! !
 
 !ExtendedClipboardInterface methodsFor: 'object from raw data' stamp: 'jmv 1/26/2011 10:26'!
-                            fromBMPBytes: bytes
+fromBMPBytes: bytes
 	^ (BMPReadWriter on: bytes readStream) nextImage! !
 
 !ExtendedClipboardInterface methodsFor: 'object from raw data' stamp: 'jmv 1/26/2011 10:24'!
-                         fromJPEGBytes: bytes
+fromJPEGBytes: bytes
 	^ (JPEGReadWriter2 on: bytes readStream) nextImage! !
 
 !ExtendedClipboardInterface methodsFor: 'object from raw data' stamp: 'jmv 1/26/2011 10:25'!
-                      fromMacRomanBytes: bytes
+fromMacRomanBytes: bytes
 	^ (bytes collect: [ :c | Character macRomanToLatin1: c]) asString! !
 
 !ExtendedClipboardInterface methodsFor: 'object from raw data' stamp: 'jmv 1/26/2011 10:24'!
-   fromPNGBytes: bytes
+fromPNGBytes: bytes
 	^ (PNGReadWriter on: bytes readStream) nextImage! !
 
 !ExtendedClipboardInterface methodsFor: 'object from raw data' stamp: 'jmv 4/11/2011 18:10'!
-                         fromRTFBytes: bytes
+fromRTFBytes: bytes
 	| parser builder |
 	builder _ RTFTextBuilder currentClass new.
 	parser _ RTFParser new.
@@ -262,19 +263,19 @@ UINT EnumClipboardFormats(
 	^builder text! !
 
 !ExtendedClipboardInterface methodsFor: 'object from raw data' stamp: 'jmv 3/17/2011 09:23'!
-  fromRefStreamBytes: bytes
+fromRefStreamBytes: bytes
 	^ ReferenceStream unStream: bytes! !
 
 !ExtendedClipboardInterface methodsFor: 'object from raw data' stamp: 'jmv 1/26/2011 10:24'!
-  fromTIFFBytes: bytes
+fromTIFFBytes: bytes
 	^ (TIFFReadWriter on: bytes readStream) nextImage! !
 
 !ExtendedClipboardInterface methodsFor: 'object from raw data' stamp: 'jmv 3/13/2012 16:23'!
-                       fromUTF8Bytes: bytes
+fromUTF8Bytes: bytes
 	^ bytes asString utf8ToISO8859s15 withCuisLineEndings! !
 
 !Form methodsFor: '*extendedClipboard-Win32' stamp: 'mir 2/16/2008 19:52'!
-     fromWin32BitMap: bitmapBits
+fromWin32BitMap: bitmapBits
 	0 to: self height-1 do: [:y |
 		1 to: self width do: [:x |
 			bits integerAt: (y*width) + x put: ((bitmapBits unsignedLongAt: 1 + (y*width*4) + ((x-1) *4)) bitOr: 16rFF000000)
@@ -282,14 +283,14 @@ UINT EnumClipboardFormats(
 ! !
 
 !Form class methodsFor: '*extendedClipboard-Win32' stamp: 'mir 2/15/2008 10:24'!
-                        fromWin32BitMap: bitmap bits: bits
+fromWin32BitMap: bitmap bits: bits
 	| form |
 	form := self extent: bitmap bmWidth@bitmap bmHeight depth: bitmap bmBitsPixel.
 	form fromWin32BitMap: bits.
 	^form! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'mir 2/15/2008 00:09'!
-   getBitmapBitsFrom: handle count: nrOfBytes buffer: buffer
+getBitmapBitsFrom: handle count: nrOfBytes buffer: buffer
 	"ExtendedClipboardWinInterface new getBitmapBitsFrom: handle count: nrOfBytes buffer: buffer"
 
 	"http://msdn2.microsoft.com/en-us/library/ms532332(VS.85).aspx
@@ -303,7 +304,7 @@ LONG GetBitmapBits(
 	^self externalCallFailed! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'mir 5/10/2006 17:57'!
-      getClipboardData: format
+getClipboardData: format
 	"ExtendedClipboardWinInterface new getClipboardData: 1"
 
 	"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/windowsuserinterface/dataexchange/clipboard/clipboardreference/clipboardfunctions/getclipboarddata.asp
@@ -316,7 +317,7 @@ HANDLE GetClipboardData(
 	^self externalCallFailed! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'mir 2/14/2008 23:38'!
-        getClipboardDataHandle: format
+getClipboardDataHandle: format
 	"ExtendedClipboardWinInterface new getBMPClipboardData: 2"
 
 	"http://msdn2.microsoft.com/en-us/library/ms649039.aspx
@@ -329,12 +330,12 @@ HANDLE GetClipboardData(
 	^self externalCallFailed! !
 
 !ExtendedClipboardInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 14:47'!
-     getClipboardFormat: formatNumber
+getClipboardFormat: formatNumber
 	clipboard = 0 ifTrue: [^nil].
 	^ self primGetClipboardFormat: clipboard formatNumber: formatNumber! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'mir 5/10/2006 16:09'!
-                               getClipboardFormatName: format name: string size: stringSize
+getClipboardFormatName: format name: string size: stringSize
 	"ExtendedClipboardInterface getClipboardFormatName: 49171 name: (String new:128) size: 128"
 
 	"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/windowsuserinterface/dataexchange/clipboard/clipboardreference/clipboardfunctions/getclipboardformatname.asp
@@ -349,7 +350,7 @@ int GetClipboardFormatName(
 	^self externalCallFailed! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'mir 1/23/2008 12:13'!
-                        getClipboardSequenceNumber
+getClipboardSequenceNumber
 
 	"http://msdn2.microsoft.com/en-us/library/ms649042(VS.85).aspx
 
@@ -360,7 +361,7 @@ int GetClipboardFormatName(
 	^self externalCallFailed! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'mir 2/14/2008 21:57'!
-                getObject: handle bufferSize: bufferSize buffer: buffer
+getObject: handle bufferSize: bufferSize buffer: buffer
 	"ExtendedClipboardWinInterface new getObject: handle bufferSize buffer: buffer"
 
 	"http://msdn2.microsoft.com/en-us/library/ms533268.aspx
@@ -374,7 +375,7 @@ int GetObject(
 	^self externalCallFailed! !
 
 !ExtendedClipboardWinInterface methodsFor: 'testing' stamp: 'mir 1/23/2008 12:07'!
-     hasExternalClipboardChanged
+hasExternalClipboardChanged
 	| prevSequenceNr |
 	prevSequenceNr :=  self lastSeenSequenceNr.
 	self
@@ -383,7 +384,7 @@ int GetObject(
 	^prevSequenceNr < self lastSeenSequenceNr! !
 
 !ExtendedClipboardInterface class methodsFor: 'class initialization' stamp: 'mir 5/10/2006 19:12'!
-        initialize
+initialize
 	"ExtendedClipboardInterface initialize"
 	Current := nil.
 	Smalltalk
@@ -391,15 +392,15 @@ int GetObject(
 		addToShutDownList: self after: nil.! !
 
 !ExtendedClipboardInterface methodsFor: 'initialize-release' stamp: 'tak 5/16/2007 12:03'!
-      initialize
+initialize
 	clipboard := [self createClipboard] on: Error do: [:ex | clipboard := 0]! !
 
 !ExtendedClipboardWinInterface methodsFor: 'private' stamp: 'mir 1/23/2008 12:11'!
-                    lastSeenSequenceNr
+lastSeenSequenceNr
 	^lastSeenSequenceNr ifNil: [lastSeenSequenceNr := -1].! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'jmv 3/13/2012 12:33'!
-                         listFormats
+listFormats
 	"ExtendedClipboardWinInterface new listFormats"
 
 	| currentFormat result data buffer |
@@ -430,7 +431,7 @@ int GetObject(
 	self closeClipboard! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'mir 1/23/2008 12:11'!
-             openClipboard
+openClipboard
 	| result |
 	result := self openClipboard: 0.
 	lastSeenSequenceNr := self getClipboardSequenceNumber.
@@ -439,7 +440,7 @@ int GetObject(
 ! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'mir 5/10/2006 16:09'!
-            openClipboard: windowOwner
+openClipboard: windowOwner
 	"ExtendedClipboardInterface openClipboard: 0"
 
 	"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/windowsuserinterface/dataexchange/clipboard/clipboardreference/clipboardfunctions/openclipboard.asp
@@ -452,45 +453,45 @@ BOOL OpenClipboard(
 	^self externalCallFailed! !
 
 !ExtendedClipboardInterface methodsFor: 'system primitives' stamp: 'JSM 5/6/2006 16:32'!
-                        primAddClipboardData: clipboard data: data dataFormat: aFormat
+primAddClipboardData: clipboard data: data dataFormat: aFormat
 
 	<primitive:'ioAddClipboardData' module: 'ClipboardExtendedPlugin'>
 	^ self primitiveFailed.! !
 
 !ExtendedClipboardInterface methodsFor: 'system primitives' stamp: 'JSM 5/6/2006 16:32'!
-      primClearClipboard: clipboard
+primClearClipboard: clipboard
 
 	<primitive:'ioClearClipboard' module: 'ClipboardExtendedPlugin'>
 	^ self primitiveFailed.
 ! !
 
 !ExtendedClipboardInterface methodsFor: 'system primitives' stamp: 'JSM 5/6/2006 18:53'!
-        primCreateClipboard
+primCreateClipboard
 	<primitive:'ioCreateClipboard' module: 'ClipboardExtendedPlugin'>
 	^ self primitiveFailed.
 ! !
 
 !ExtendedClipboardInterface methodsFor: 'system primitives' stamp: 'JSM 5/6/2006 16:33'!
-                  primGetClipboardFormat: clipboard formatNumber: formatNumber
+primGetClipboardFormat: clipboard formatNumber: formatNumber
 
 	<primitive:'ioGetClipboardFormat' module: 'ClipboardExtendedPlugin'>
 	^ self primitiveFailed.
 ! !
 
 !ExtendedClipboardInterface methodsFor: 'system primitives' stamp: 'JSM 5/6/2006 16:33'!
-     primReadClipboardData: clipboard format: format
+primReadClipboardData: clipboard format: format
 
 	<primitive:'ioReadClipboardData' module: 'ClipboardExtendedPlugin'>.
 	^ self primitiveFailed.
 ! !
 
 !ExtendedClipboardInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 14:47'!
-                           readClipboardData: format
+readClipboardData: format
 	^clipboard = 0 ifFalse: [
 		self primReadClipboardData: clipboard format: format ]! !
 
 !ExtendedClipboardWinInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 14:47'!
-                           readClipboardData: format
+readClipboardData: format
 	| answer |
 	self openClipboard.
 	[
@@ -499,7 +500,7 @@ BOOL OpenClipboard(
 	^ answer! !
 
 !ExtendedClipboardMacInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 15:56'!
-      readPrimAvailableFormats
+readPrimAvailableFormats
 	| i availableFormats formatData |
 	availableFormats _ OrderedCollection new: 10.
 	i _ 1.
@@ -511,7 +512,7 @@ BOOL OpenClipboard(
 	^ availableFormats! !
 
 !ExtendedClipboardUnixInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 15:56'!
-                           readPrimAvailableFormats
+readPrimAvailableFormats
 	| i availableFormats formatData |
 	availableFormats _ OrderedCollection new: 10.
 	i _ 1.
@@ -523,7 +524,7 @@ BOOL OpenClipboard(
 	^ availableFormats! !
 
 !ExtendedClipboardWinInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 15:56'!
-                            readPrimAvailableFormats
+readPrimAvailableFormats
 	| i availableFormats |
 	availableFormats _ OrderedCollection new: 10.
 	i _ 0.
@@ -536,11 +537,11 @@ BOOL OpenClipboard(
 	^ availableFormats! !
 
 !ExtendedClipboardInterface methodsFor: 'api - retrieve' stamp: 'jmv 1/19/2011 15:17'!
-               retrieveId
+retrieveId
 	^self subclassResponsibility! !
 
 !ExtendedClipboardMacInterface methodsFor: 'api - retrieve' stamp: 'jmv 1/19/2011 14:55'!
-                         retrieveId
+retrieveId
 	| bytes formats |
 	formats _ self readPrimAvailableFormats.
 	(formats includes: 'cuis-id')
@@ -550,7 +551,7 @@ BOOL OpenClipboard(
 	^ nil! !
 
 !ExtendedClipboardUnixInterface methodsFor: 'api - retrieve' stamp: 'jmv 1/19/2011 15:17'!
-  retrieveId
+retrieveId
 	| bytes formats |
 	formats _ self readPrimAvailableFormats.
 	(formats includes: 'cuis-id')
@@ -560,16 +561,16 @@ BOOL OpenClipboard(
 	^ nil! !
 
 !ExtendedClipboardWinInterface methodsFor: 'api - retrieve' stamp: 'jmv 1/19/2011 15:18'!
-   retrieveId
+retrieveId
 	"Implement!!"
 	^nil! !
 
 !ExtendedClipboardInterface methodsFor: 'api - retrieve' stamp: 'jmv 1/26/2011 10:09'!
-     retrieveObject
+retrieveObject
 	^self subclassResponsibility! !
 
 !ExtendedClipboardMacInterface methodsFor: 'api - retrieve' stamp: 'jmv 3/29/2011 09:15'!
-                     retrieveObject
+retrieveObject
 	| conversion bytes |
 	self readPrimAvailableFormats do: [ :format |
 		conversion _ format caseOf: {
@@ -592,7 +593,7 @@ BOOL OpenClipboard(
 	^nil	"Could not read any of the available formats"! !
 
 !ExtendedClipboardUnixInterface methodsFor: 'api - retrieve' stamp: 'jmv 3/17/2011 09:08'!
-                               retrieveObject
+retrieveObject
 	| conversion bytes |
 	self readPrimAvailableFormats do: [ :format |
 		conversion _ format caseOf: {
@@ -614,7 +615,7 @@ BOOL OpenClipboard(
 	^nil	"Could not read any of the available formats"! !
 
 !ExtendedClipboardWinInterface methodsFor: 'api - retrieve' stamp: 'jmv 4/12/2011 11:55'!
-                          retrieveObject
+retrieveObject
 	| conversion formatName bytes |
 	conversion _ nil.
 	self readPrimAvailableFormats do: [ :format |
@@ -647,7 +648,7 @@ BOOL OpenClipboard(
 	^ nil	"Could not read any of the available formats"! !
 
 !ExtendedClipboardWinInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 16:05'!
-                          retrieveWindowsBMPForm
+retrieveWindowsBMPForm
 	| handle bitmap result form bitBuffer byteCount |
 	self openClipboard.
 	[handle := self getClipboardDataHandle: 2 " 'image/*' CF_BITMAP"]
@@ -668,7 +669,7 @@ BOOL OpenClipboard(
 	^form! !
 
 !ExtendedClipboardWinInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 16:05'!
-                              retrieveWindowsDIBForm
+retrieveWindowsDIBForm
 	| handle bitmap result form bitBuffer |
 	self openClipboard.
 	[handle := self getClipboardDataHandle: 8 "CF_DIB"]
@@ -694,7 +695,7 @@ self halt.
 	^form! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'mir 6/18/2006 18:47'!
-                             setClipboardFormat: format data: data 
+setClipboardFormat: format data: data 
 	"ExtendedClipboardInterface current setClipboardFormat: 1 data: ('clipboard test' copyWith: 0 asCharacter) "
 
 	"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/windowsuserinterface/dataexchange/clipboard/clipboardreference/clipboardfunctions/setclipboarddata.asp
@@ -708,7 +709,7 @@ HANDLE SetClipboardData(
 	^self externalCallFailed! !
 
 !ExtendedClipboardWinInterface methodsFor: 'system calls' stamp: 'jmv 1/13/2011 11:16'!
-                setClipboardString: string
+setClipboardString: string
 	"ExtendedClipboardInterface current setClipboardString: 'clipboard test'"
 
 	"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/windowsuserinterface/dataexchange/clipboard/clipboardreference/clipboardfunctions/setclipboarddata.asp
@@ -724,24 +725,24 @@ HANDLE SetClipboardData(
 	^self externalCallFailed! !
 
 !ExtendedClipboardInterface class methodsFor: 'system startup' stamp: 'JSM 5/6/2006 15:33'!
-     shutDown: quitting
+shutDown: quitting
 ! !
 
 !ExtendedClipboardInterface class methodsFor: 'system startup' stamp: 'JSM 5/6/2006 15:33'!
-            startUp: resuming
+startUp: resuming
 	"The image is either being newly started (resuming is true), or it's just been snapshotted"
 
 	Current := nil.
 	self current.! !
 
 !ExtendedClipboardInterface methodsFor: 'api - store' stamp: 'jmv 1/26/2011 10:07'!
-                        storeForm: aForm id: otherString
+storeForm: aForm id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id at the end."
 	^self subclassResponsibility! !
 
 !ExtendedClipboardMacInterface methodsFor: 'api - store' stamp: 'jmv 1/26/2011 10:07'!
-                     storeForm: aForm id: otherString
+storeForm: aForm id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id at the end."
 	self clearClipboard.
@@ -753,7 +754,7 @@ HANDLE SetClipboardData(
 	self addClipboardData: otherString dataFormat: 'cuis-id'! !
 
 !ExtendedClipboardUnixInterface methodsFor: 'api - store' stamp: 'jmv 1/26/2011 10:07'!
-                        storeForm: aForm id: otherString
+storeForm: aForm id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id at the end."
 	self clearClipboard.
@@ -761,20 +762,20 @@ HANDLE SetClipboardData(
 	self addClipboardData: otherString dataFormat: 'cuis-id'! !
 
 !ExtendedClipboardWinInterface methodsFor: 'api - store' stamp: 'jmv 1/26/2011 10:07'!
-                  storeForm: aForm id: otherString
+storeForm: aForm id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id at the end."
 	"To be implemented"
 	self halt! !
 
 !ExtendedClipboardInterface methodsFor: 'api - store' stamp: 'jmv 1/26/2011 10:07'!
-                      storeString: aString id: otherString
+storeString: aString id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id at the end."
 	^self subclassResponsibility! !
 
 !ExtendedClipboardMacInterface methodsFor: 'api - store' stamp: 'jmv 3/14/2012 09:33'!
-                 storeString: aString id: otherString
+storeString: aString id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id at the end."
 	self clearClipboard.
@@ -789,7 +790,7 @@ HANDLE SetClipboardData(
 	self addClipboardData: otherString dataFormat: 'cuis-id'! !
 
 !ExtendedClipboardUnixInterface methodsFor: 'api - store' stamp: 'jmv 3/14/2012 09:30'!
-                storeString: aString id: otherString
+storeString: aString id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id at the end."
 	self clearClipboard.
@@ -799,21 +800,21 @@ HANDLE SetClipboardData(
 	self addClipboardData: otherString dataFormat: 'cuis-id'! !
 
 !ExtendedClipboardWinInterface methodsFor: 'api - store' stamp: 'jmv 1/26/2011 10:07'!
-               storeString: aString id: otherString
+storeString: aString id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id at the end."
 	"To be implemented"
 	self halt! !
 
 !ExtendedClipboardInterface methodsFor: 'api - store' stamp: 'jmv 3/17/2011 09:35'!
-                  storeText: aText id: otherString
+storeText: aText id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id is usually at the end, but don't include it if we include a streamed representation."
 
 	^self subclassResponsibility! !
 
 !ExtendedClipboardMacInterface methodsFor: 'api - store' stamp: 'jmv 3/14/2012 09:29'!
-           storeText: aText id: otherString
+storeText: aText id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id is usually at the end, but don't include it if we include a streamed representation."
 	self clearClipboard.
@@ -834,7 +835,7 @@ HANDLE SetClipboardData(
 	self addClipboardData: otherString dataFormat: 'cuis-id'! !
 
 !ExtendedClipboardUnixInterface methodsFor: 'api - store' stamp: 'jmv 3/14/2012 09:31'!
-              storeText: aText id: otherString
+storeText: aText id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id is usually at the end, but don't include it if we include a streamed representation."
 	self clearClipboard.
@@ -857,14 +858,14 @@ HANDLE SetClipboardData(
 	self addClipboardData: otherString dataFormat: 'cuis-id'! !
 
 !ExtendedClipboardWinInterface methodsFor: 'api - store' stamp: 'jmv 3/17/2011 09:35'!
-                     storeText: aText id: otherString
+storeText: aText id: otherString
 	"To be implemented (store both as string and as RTF)"
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id is usually at the end, but don't include it if we include a streamed representation."
 	self halt! !
 
 !ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:34'!
-                    testSample1ToAndFromRTFClipboard
+testSample1ToAndFromRTFClipboard
 	"
 	ExtendedClipboardTest new testSample1ToAndFromRTFClipboard
 	"
@@ -882,7 +883,7 @@ HANDLE SetClipboardData(
 	self assert:Clipboard default retrieveObject = text.! !
 
 !ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:35'!
-             testSample2ToAndFromRTFClipboard
+testSample2ToAndFromRTFClipboard
 	"
 	ExtendedClipboardTest new testSample2ToAndFromRTFClipboard
 	"
@@ -900,7 +901,7 @@ HANDLE SetClipboardData(
 	self assert:Clipboard default retrieveObject = text.! !
 
 !ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:35'!
-             testSample3ToAndFromRTFClipboard
+testSample3ToAndFromRTFClipboard
 	"
 	ExtendedClipboardTest new testSample3ToAndFromRTFClipboard
 	"
@@ -918,7 +919,7 @@ HANDLE SetClipboardData(
 	self assert:Clipboard default retrieveObject = text.! !
 
 !ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:35'!
-             testSample4ToAndFromRTFClipboard
+testSample4ToAndFromRTFClipboard
 	"
 	ExtendedClipboardTest new testSample4ToAndFromRTFClipboard
 	"
@@ -936,7 +937,7 @@ HANDLE SetClipboardData(
 	self assert:Clipboard default retrieveObject = text.! !
 
 !ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:49'!
-             testSample5ToAndFromRTFClipboard
+testSample5ToAndFromRTFClipboard
 	"
 	ExtendedClipboardTest new testSample5ToAndFromRTFClipboard
 	"
@@ -954,7 +955,7 @@ HANDLE SetClipboardData(
 	self assert:Clipboard default retrieveObject = text.! !
 
 !ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:49'!
-             testSample6ToAndFromRTFClipboard
+testSample6ToAndFromRTFClipboard
 	"
 	ExtendedClipboardTest new testSample6ToAndFromRTFClipboard
 	"
@@ -978,7 +979,7 @@ Tom\u225? ag\u252?ita, \u241?and\u250?. \u209?and\u250?. \par \u339?\u381?\u174?
 	self assert: Clipboard default retrieveObject = text.! !
 
 !ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 4/6/2011 14:29'!
-            testStar16BitToAndFromImageClipboard
+testStar16BitToAndFromImageClipboard
 	"
 	ExtendedClipboardTest new testStar16BitToAndFromImageClipboard
 	"
@@ -1004,7 +1005,7 @@ Tom\u225? ag\u252?ita, \u241?and\u250?. \u209?and\u250?. \par \u339?\u381?\u174?
 	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.! !
 
 !ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 4/6/2011 14:29'!
-          testStar8BitToAndFromImageClipboard
+testStar8BitToAndFromImageClipboard
 	"
 	ExtendedClipboardTest new testStar8BitToAndFromImageClipboard
 	"
@@ -1030,7 +1031,7 @@ Tom\u225? ag\u252?ita, \u241?and\u250?. \u209?and\u250?. \par \u339?\u381?\u174?
 	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.! !
 
 !ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 4/6/2011 14:29'!
-             testStarToAndFromImageClipboard
+testStarToAndFromImageClipboard
 	"
 	ExtendedClipboardTest new testStarToAndFromImageClipboard
 	"

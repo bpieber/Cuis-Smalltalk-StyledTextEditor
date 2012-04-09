@@ -1,262 +1,262 @@
-'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1225] on 3 April 2012 at 10:00:35 am'!
-'Description Please enter a description for this package '!
-!classDefinition: #RTFChunkScanner category: #'RTFimporting'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:42:25 am'!
+'Description Description Please enter a description for this package '!
+!classDefinition: #RTFChunkScanner category: #RTFimporting!
 Object subclass: #RTFChunkScanner
 	instanceVariableNames: 'destX lastIndex xTable rightEdge stopConditions prevIndex bufferStream buffer chunk'
 	classVariableNames: 'BufferStream ScannerTable XTable'
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFChunkScanner class' category: #'RTFimporting'!
+!classDefinition: 'RTFChunkScanner class' category: #RTFimporting!
 RTFChunkScanner class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFColorDef category: #'RTFimporting'!
+!classDefinition: #RTFColorDef category: #RTFimporting!
 Object subclass: #RTFColorDef
 	instanceVariableNames: 'red green blue'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFColorDef class' category: #'RTFimporting'!
+!classDefinition: 'RTFColorDef class' category: #RTFimporting!
 RTFColorDef class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFException category: #'RTFimporting'!
+!classDefinition: #RTFException category: #RTFimporting!
 Error subclass: #RTFException
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFException class' category: #'RTFimporting'!
+!classDefinition: 'RTFException class' category: #RTFimporting!
 RTFException class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFFontInfo category: #'RTFimporting'!
+!classDefinition: #RTFFontInfo category: #RTFimporting!
 Object subclass: #RTFFontInfo
 	instanceVariableNames: 'name num family charset cpg'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFFontInfo class' category: #'RTFimporting'!
+!classDefinition: 'RTFFontInfo class' category: #RTFimporting!
 RTFFontInfo class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFParser category: #'RTFimporting'!
+!classDefinition: #RTFParser category: #RTFimporting!
 Object subclass: #RTFParser
 	instanceVariableNames: 'tokenizer state builder'
 	classVariableNames: 'HandleMessages'
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFParser class' category: #'RTFimporting'!
+!classDefinition: 'RTFParser class' category: #RTFimporting!
 RTFParser class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFParserDestination category: #'RTFimporting'!
+!classDefinition: #RTFParserDestination category: #RTFimporting!
 Object subclass: #RTFParserDestination
 	instanceVariableNames: 'block type'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFParserDestination class' category: #'RTFimporting'!
+!classDefinition: 'RTFParserDestination class' category: #RTFimporting!
 RTFParserDestination class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFParserState category: #'RTFimporting'!
+!classDefinition: #RTFParserState category: #RTFimporting!
 Object subclass: #RTFParserState
 	instanceVariableNames: 'stack destination context'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFParserState class' category: #'RTFimporting'!
+!classDefinition: 'RTFParserState class' category: #RTFimporting!
 RTFParserState class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFStylesheet category: #'RTFimporting'!
+!classDefinition: #RTFStylesheet category: #RTFimporting!
 Object subclass: #RTFStylesheet
 	instanceVariableNames: 'additive name type num style basedon'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFStylesheet class' category: #'RTFimporting'!
+!classDefinition: 'RTFStylesheet class' category: #RTFimporting!
 RTFStylesheet class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFSophieStylesheet category: #'RTFimporting'!
+!classDefinition: #RTFSophieStylesheet category: #RTFimporting!
 RTFStylesheet subclass: #RTFSophieStylesheet
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFSophieStylesheet class' category: #'RTFimporting'!
+!classDefinition: 'RTFSophieStylesheet class' category: #RTFimporting!
 RTFSophieStylesheet class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFTextBuilder category: #'RTFimporting'!
+!classDefinition: #RTFTextBuilder category: #RTFimporting!
 Object subclass: #RTFTextBuilder
 	instanceVariableNames: 'textConverter colorTable fontTable styleTable skipNextCharacters defaultSkipNextCharacters textStream currentFgColor fontFamilyName fontPointSize bold italic underline align stateStack firstIndent leftIndent rightIndent spaceBefore spaceAfter'
 	classVariableNames: 'CodePageConverterTable'
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFTextBuilder class' category: #'RTFimporting'!
+!classDefinition: 'RTFTextBuilder class' category: #RTFimporting!
 RTFTextBuilder class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFTextConverter category: #'RTFimporting'!
+!classDefinition: #RTFTextConverter category: #RTFimporting!
 Object subclass: #RTFTextConverter
 	instanceVariableNames: 'acceptingEncodings'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFTextConverter class' category: #'RTFimporting'!
+!classDefinition: 'RTFTextConverter class' category: #RTFimporting!
 RTFTextConverter class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFLatin1TextConverter category: #'RTFimporting'!
+!classDefinition: #RTFLatin1TextConverter category: #RTFimporting!
 RTFTextConverter subclass: #RTFLatin1TextConverter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFLatin1TextConverter class' category: #'RTFimporting'!
+!classDefinition: 'RTFLatin1TextConverter class' category: #RTFimporting!
 RTFLatin1TextConverter class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFMappingUnicodeTextConverter category: #'RTFimporting'!
+!classDefinition: #RTFMappingUnicodeTextConverter category: #RTFimporting!
 RTFTextConverter subclass: #RTFMappingUnicodeTextConverter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFMappingUnicodeTextConverter class' category: #'RTFimporting'!
+!classDefinition: 'RTFMappingUnicodeTextConverter class' category: #RTFimporting!
 RTFMappingUnicodeTextConverter class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFCP1250UnicodeTextConverter category: #'RTFimporting'!
+!classDefinition: #RTFCP1250UnicodeTextConverter category: #RTFimporting!
 RTFMappingUnicodeTextConverter subclass: #RTFCP1250UnicodeTextConverter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFCP1250UnicodeTextConverter class' category: #'RTFimporting'!
+!classDefinition: 'RTFCP1250UnicodeTextConverter class' category: #RTFimporting!
 RTFCP1250UnicodeTextConverter class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFCP1251UnicodeTextConverter category: #'RTFimporting'!
+!classDefinition: #RTFCP1251UnicodeTextConverter category: #RTFimporting!
 RTFMappingUnicodeTextConverter subclass: #RTFCP1251UnicodeTextConverter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFCP1251UnicodeTextConverter class' category: #'RTFimporting'!
+!classDefinition: 'RTFCP1251UnicodeTextConverter class' category: #RTFimporting!
 RTFCP1251UnicodeTextConverter class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFCP1252UnicodeTextConverter category: #'RTFimporting'!
+!classDefinition: #RTFCP1252UnicodeTextConverter category: #RTFimporting!
 RTFMappingUnicodeTextConverter subclass: #RTFCP1252UnicodeTextConverter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFCP1252UnicodeTextConverter class' category: #'RTFimporting'!
+!classDefinition: 'RTFCP1252UnicodeTextConverter class' category: #RTFimporting!
 RTFCP1252UnicodeTextConverter class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFMacRomanUnicodeTextConverter category: #'RTFimporting'!
+!classDefinition: #RTFMacRomanUnicodeTextConverter category: #RTFimporting!
 RTFMappingUnicodeTextConverter subclass: #RTFMacRomanUnicodeTextConverter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFMacRomanUnicodeTextConverter class' category: #'RTFimporting'!
+!classDefinition: 'RTFMacRomanUnicodeTextConverter class' category: #RTFimporting!
 RTFMacRomanUnicodeTextConverter class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFToken category: #'RTFimporting'!
+!classDefinition: #RTFToken category: #RTFimporting!
 Object subclass: #RTFToken
 	instanceVariableNames: 'type content arg'
 	classVariableNames: 'DefaultArgs'
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFToken class' category: #'RTFimporting'!
+!classDefinition: 'RTFToken class' category: #RTFimporting!
 RTFToken class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFTokenizer category: #'RTFimporting'!
+!classDefinition: #RTFTokenizer category: #RTFimporting!
 Object subclass: #RTFTokenizer
 	instanceVariableNames: 'stream buffer chunkBuffer last next afterNext afterAfter'
 	classVariableNames: 'ControlSymbolSet EndOfArgumentSet EndOfKeywordSet'
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFTokenizer class' category: #'RTFimporting'!
+!classDefinition: 'RTFTokenizer class' category: #RTFimporting!
 RTFTokenizer class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFUnicode category: #'RTFimporting'!
+!classDefinition: #RTFUnicode category: #RTFimporting!
 Object subclass: #RTFUnicode
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'RTFimporting'!
-!classDefinition: 'RTFUnicode class' category: #'RTFimporting'!
+!classDefinition: 'RTFUnicode class' category: #RTFimporting!
 RTFUnicode class
 	instanceVariableNames: ''!
 
 
 !RTFCP1250UnicodeTextConverter commentStamp: '<historical>' prior: 0!
-                            CP1250 to Unicode converter based on
+CP1250 to Unicode converter based on
 http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1250.TXT!
 
 !RTFCP1251UnicodeTextConverter commentStamp: '<historical>' prior: 0!
-          CP1251 to Unicode converter based on
+CP1251 to Unicode converter based on
 http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1251.TXT!
 
 !RTFCP1252UnicodeTextConverter commentStamp: '<historical>' prior: 0!
-          CP1251 to Unicode converter based on
+CP1251 to Unicode converter based on
 http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1252.TXT!
 
 !RTFColorDef commentStamp: '<historical>' prior: 0!
-                            Carries color information for the color table!
+Carries color information for the color table!
 
 !RTFFontInfo commentStamp: '<historical>' prior: 0!
-                            Carries RTF font information to be passed to a builder!
+Carries RTF font information to be passed to a builder!
 
 !RTFLatin1TextConverter commentStamp: '<historical>' prior: 0!
-        Text converter for ISO 8859-1.  An international encoding used in Western Europe.!
+Text converter for ISO 8859-1.  An international encoding used in Western Europe.!
 
 !RTFMacRomanUnicodeTextConverter commentStamp: '<historical>' prior: 0!
-    True MacRoman to Unicode converter based on
+True MacRoman to Unicode converter based on
 http://www.unicode.org/Public/MAPPINGS/VENDORS/APPLE/ROMAN.TXT!
 
 !RTFMappingUnicodeTextConverter commentStamp: '<historical>' prior: 0!
-            Base class for Unicode converters based on mappings as defined in
+Base class for Unicode converters based on mappings as defined in
 http://www.unicode.org/Public/MAPPINGS/!
 
 !RTFParser commentStamp: '<historical>' prior: 0!
-  An RTF parser!
+An RTF parser!
 
 !RTFParserState commentStamp: '<historical>' prior: 0!
-                         A state of the RTF parser contains:
+A state of the RTF parser contains:
 	- a destination block (to send plain text to)
 	- a context (a currently built object for the builder, e.g. RTFFontInfo)
 The state has abilities for saving and restoring states on a stack!
 
 !RTFSophieStylesheet commentStamp: '<historical>' prior: 0!
-  Adds style applying functionality to stylesheets!
+Adds style applying functionality to stylesheets!
 
 !RTFStylesheet commentStamp: '<historical>' prior: 0!
-                       Carries information about RTF styles!
+Carries information about RTF styles!
 
 !RTFTextBuilder commentStamp: '<historical>' prior: 0!
-  To do:
+To do:
 - Ensure consistency between rtf export and import
 - write tests for that consistency
 - integrate with StyledTextBuilder (el parser der rtf seria un transcodificador???)!!
 	(el builder es solo para StyledText... Yo quisiera que esto sea mas general!!)!
 
 !RTFTextConverter commentStamp: '<historical>' prior: 0!
-  The abstract class for all different type of text converters.  nextFromStream: and nextPut:toStream: are the public accessible methods.  If you are going to make a subclass for a stateful text conversion, you should override restoreStateOf:with: and saveStateOf: along the line of CompoundTextConverter.!
+The abstract class for all different type of text converters.  nextFromStream: and nextPut:toStream: are the public accessible methods.  If you are going to make a subclass for a stateful text conversion, you should override restoreStateOf:with: and saveStateOf: along the line of CompoundTextConverter.!
 
 !RTFToken commentStamp: '<historical>' prior: 0!
-                            token types:
+token types:
     #blockOpen - '{'
     #blockClose - '}'
     #keyword - e.g. '\alabala'
@@ -268,17 +268,17 @@ if any field unapplicable for type, it returns nil
 DafaultArgs: All keywords have argument value. Default keyowrd parameters is defined in DefaultArgs. If no default argument is fount, the default is assumed 0. !
 
 !RTFTokenizer commentStamp: '<historical>' prior: 0!
-   Because of getAfterNext, don't expect the stream of this token to behave as expected. Two tokens ahead are actually read from the stream
+Because of getAfterNext, don't expect the stream of this token to behave as expected. Two tokens ahead are actually read from the stream
 
 At initialization last is nil. Must getToken to get first
 
 newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped newlines!
 
 !RTFUnicode commentStamp: '<historical>' prior: 0!
-             Not a real Unicode implementation. Just compatibility for Sophie-RTF. Answers instances of Character (i.e. ISO-8859-15).Based on http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-15.TXT!
+Not a real Unicode implementation. Just compatibility for Sophie-RTF. Answers instances of Character (i.e. ISO-8859-15).Based on http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-15.TXT!
 
 !RTFParser methodsFor: 'handlers' stamp: 'tat 11/1/2006 15:00'!
- addContents
+addContents
 	"assuming that the next RTF token is a string - add the string to the content tree
 	using current style settings"
 
@@ -290,7 +290,7 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 ! !
 
 !RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/14/2006 16:25'!
-                      addScannedString
+addScannedString
 	| scannedString |
 	scannedString := ''.
 	prevIndex < lastIndex
@@ -305,22 +305,22 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 ! !
 
 !RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/12/2006 15:51'!
-    addScannedStringToBuffer
+addScannedStringToBuffer
 	prevIndex < lastIndex
 		ifFalse: [^self].
 	self bufferStream nextPutAll: (chunk copyFrom: prevIndex to: lastIndex-1)! !
 
 !RTFTokenizer methodsFor: 'private' stamp: 'MR 5/3/2006 13:26'!
-             addStringToken: aString to: aBuffer
+addStringToken: aString to: aBuffer
 	"puts the new token to the buffer only if it is not empty"
 	aString ifNotEmpty: [aBuffer add: (RTFToken newString: aString)]! !
 
 !RTFTextBuilder methodsFor: 'private' stamp: 'jmv 3/30/2011 15:53'!
-                      addToText: aString
+addToText: aString
 	self addToText: aString specialAttributes: nil! !
 
 !RTFTextBuilder methodsFor: 'private' stamp: 'jmv 4/11/2011 21:58'!
-                     addToText: aString specialAttributes: nonFormattingAttributesOrNil
+addToText: aString specialAttributes: nonFormattingAttributesOrNil
 	"nonFormattingAttributesOrNil should only contains attributes that answer false to #isForFormatting"
 	| attributes emphasis |
 
@@ -341,7 +341,7 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 	textStream nextPutAllString: aString withAttributes: attributes! !
 
 !RTFTextBuilder methodsFor: 'building' stamp: 'jmv 11/22/2011 15:21'!
- addUnicodeContents: string
+addUnicodeContents: string
 
 	"Add Unicode strings to the content tree. Skip characters if prescribed by the \uc command (see doSkipNextCharacters)"	
 
@@ -354,11 +354,11 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 	self skipNextCharacters: 0! !
 
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:50'!
-      additive
+additive
 	additive := true! !
 
 !RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 3/11/2007 22:15'!
-                       applyTo: builder
+applyTo: builder
 	"applies the stylesheet to the builder"
 	basedon isNil ifFalse: [ builder buildApplyStylesheet: basedon].
 	additive ifFalse: [ self resetStyle: builder ].
@@ -366,7 +366,7 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 	! !
 
 !RTFToken methodsFor: 'accessing' stamp: 'tat 7/11/2006 00:38'!
-                          arg
+arg
 
     "returns the argument of this keyword token"
 
@@ -380,71 +380,71 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 	^0! !
 
 !RTFToken methodsFor: 'converting' stamp: 'MR 5/5/2006 00:24'!
-            asString
+asString
 	self isKeyword ifTrue: [(arg = nil) ifTrue: [^'keyword:', content] ifFalse: [^'keyword:', content, ' ', (arg asString)]].
 	self isStringToken ifTrue: [^'string:', '!!',content,'!!'].
 	^type asString.! !
 
 !RTFTextBuilder methodsFor: 'private' stamp: 'jmv 3/30/2011 16:36'!
-      attachCharacterStyleToParagraph
+attachCharacterStyleToParagraph
 	"Ver si hace falta algo como lo que hace Sophie..."! !
 
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/6/2006 15:53'!
-   basedon
+basedon
 	^basedon! !
 
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/6/2006 15:53'!
-      basedon: bo
+basedon: bo
 	basedon := bo! !
 
 !RTFParserDestination methodsFor: 'accessing' stamp: 'tat 11/1/2006 15:03'!
-                     block
+block
 	^block! !
 
 !RTFParserDestination methodsFor: 'accessing' stamp: 'tat 11/1/2006 15:05'!
-  block: aBlock type: aSymbol
+block: aBlock type: aSymbol
 	block := aBlock.
 	type := aSymbol! !
 
 !RTFChunkScanner methodsFor: 'stop conditions' stamp: 'mir 8/12/2006 15:44'!
-                blockCloseAt: index
+blockCloseAt: index
 	self addScannedString.
 	buffer add: (RTFToken newBlockClose).
 	lastIndex := lastIndex  + 1.
 	prevIndex := lastIndex! !
 
 !RTFChunkScanner methodsFor: 'stop conditions' stamp: 'mir 8/12/2006 15:44'!
-      blockOpenAt: index
+blockOpenAt: index
 	self addScannedString.
 	buffer add: (RTFToken newBlockOpen).
 	lastIndex := lastIndex  + 1.
 	prevIndex := lastIndex! !
 
 !RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:49'!
-                   blue
+blue
 	^blue! !
 
 !RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:49'!
-              blue: b
+blue: b
 	blue := b! !
 
 !RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/12/2006 14:59'!
-    bufferStream
+bufferStream
 	^BufferStream! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-                 buildAddBullet
+buildAddBullet
 	self addUnicodeContents: (RTFUnicode value: 16r2022 or: $°) asString! !
 
 !RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/29/2011 22:26'!
-                           buildAddColorDef: coldef
+buildAddColorDef: coldef
 	"adds an entry to the color table"
 	(coldef red isNil or: [coldef green isNil or: [coldef blue isNil]])
 		ifTrue: [colorTable addLast: nil]
 		ifFalse: [colorTable addLast: (Color r: (coldef red) / 255 g: (coldef green) / 255 b: (coldef blue) / 255)]! !
 
 !RTFTextBuilder methodsFor: 'building' stamp: 'jmv 3/30/2011 15:42'!
-   buildAddContents: string
+buildAddContents: string
 	| possibleString |
 	possibleString _ self convertAndSkip: string.
 	possibleString ifNil: [^self].
@@ -452,78 +452,78 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 	self addToText: possibleString! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-                buildAddDoubleLeftQuote
+buildAddDoubleLeftQuote
 	self addUnicodeContents: (RTFUnicode value: 16r201C or: $") asString! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-               buildAddDoubleRightQuote
+buildAddDoubleRightQuote
 	self addUnicodeContents: (RTFUnicode value: 16r201D or: $") asString! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-              buildAddEmDash
+buildAddEmDash
 	self addUnicodeContents: (RTFUnicode value: 16r2014 or: '--') asString! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-                      buildAddEmSpace
+buildAddEmSpace
 	self addUnicodeContents: (RTFUnicode value: 16r2003 or: '  ') asString! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-                     buildAddEnDash
+buildAddEnDash
 	self addUnicodeContents: (RTFUnicode value: 16r2013 or: $-) asString! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-                        buildAddEnSpace
+buildAddEnSpace
 	self addUnicodeContents: (RTFUnicode value: 16r2002 or: ' ') asString! !
 
 !RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/30/2011 16:38'!
-                         buildAddFontInfo: fontInfo
+buildAddFontInfo: fontInfo
 	"add font information to the table"
 	"fontTable atProperty: (fontInfo num) put: fontInfo"
 	fontTable at: (fontInfo num) put: fontInfo! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-           buildAddLeftQuote
+buildAddLeftQuote
 	self addUnicodeContents: (RTFUnicode value: 16r2018 or: $') asString! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-                     buildAddNonBreakingHyphen
+buildAddNonBreakingHyphen
 	self addUnicodeContents: (RTFUnicode value: 16r2011 or: '-') asString! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-            buildAddNonBreakingSpace
+buildAddNonBreakingSpace
 	"This character is supported by ISO-8859-15"
 	self addUnicodeContents: (RTFUnicode value: 16r00A0) asString! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-       buildAddOptionalHyphen
+buildAddOptionalHyphen
 	"This character is supported by ISO-8859-15"
 	self addUnicodeContents: (RTFUnicode value: 16r00AD) asString! !
 
 !RTFTextBuilder methodsFor: 'building-pictures' stamp: 'jmv 3/30/2011 17:18'!
-          buildAddPicture: picInfo from: aStream
+buildAddPicture: picInfo from: aStream
 
 	(ImageReadWriter formFromStream: aStream)
 		ifNotNil: [ :form |
 			self addToText: '*' specialAttributes: {TextAnchor new anchoredFormOrMorph: form} ]! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-             buildAddQmSpace
+buildAddQmSpace
 	self addUnicodeContents: (RTFUnicode value: 16r2005 or: ' ') asString! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-                      buildAddRightQuote
+buildAddRightQuote
 	self addUnicodeContents: (RTFUnicode value: 16r2019 or: $') asString! !
 
 !RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/30/2011 16:38'!
-                       buildAddStylesheet: pp! !
+buildAddStylesheet: pp! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-                      buildAddTab
+buildAddTab
 	"This character is supported by ISO-8859-15"
 	self addUnicodeContents: (RTFUnicode value: 16r0009) asString! !
 
 !RTFTextBuilder methodsFor: 'building' stamp: 'jmv 3/30/2011 15:55'!
-                              buildAddURI: uriString alternate: string
+buildAddURI: uriString alternate: string
 	| possibleString |
 	possibleString _ self convertAndSkip: string.
 	possibleString ifNil: [^self].
@@ -531,23 +531,23 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 	self addToText: possibleString specialAttributes: { TextURL new url: uriString }! !
 
 !RTFTextBuilder methodsFor: 'building' stamp: 'jmv 3/30/2011 15:57'!
-                       buildAddUnicodeContents: string
+buildAddUnicodeContents: string
 
 	self addToText: string! !
 
 !RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 4/6/2011 10:44'!
-                       buildAnsiCharacterSet
+buildAnsiCharacterSet
 	self textConverter: RTFLatin1TextConverter new! !
 
 !RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 3/30/2011 16:39'!
-         buildApplyStylesheet:pp! !
+buildApplyStylesheet:pp! !
 
 !RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 3/30/2011 16:39'!
-                       buildCodePage: cp
+buildCodePage: cp
 	self textConverter: (CodePageConverterTable at: cp ifAbsent: [^nil]) new! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
-                  buildFirstLineIndent: aNumber
+buildFirstLineIndent: aNumber
 	"Guardar en una ivar, como todo lo demas.
 	meter en el stack tambien.
 	Quizas cambiar el stack... meter self copy????? no se.
@@ -558,48 +558,48 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 	firstIndent _ (aNumber / 20.0) rounded! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:27'!
-                         buildFirstLineIndentPercentage: i! !
+buildFirstLineIndentPercentage: i! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
-            buildLeftIndent: aNumber
+buildLeftIndent: aNumber
 
 	leftIndent _ (aNumber / 20.0) rounded! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
-            buildLeftIndentPercentage: i! !
+buildLeftIndentPercentage: i! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
-                buildLineSpacing:pp! !
+buildLineSpacing:pp! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
-                         buildLineSpacingType:pp! !
+buildLineSpacingType:pp! !
 
 !RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 3/30/2011 16:40'!
-                       buildMacCharacterSet! !
+buildMacCharacterSet! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
-                        buildParagraphAlignCenter
+buildParagraphAlignCenter
 	align _ 2! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/7/2011 09:06'!
-         buildParagraphAlignJustified
+buildParagraphAlignJustified
 "Atencion. Este, y cualquier otro de parrafo, falla si la ultima linea NO termina en enter... atrapar el final, y hacer algo como #buildStartParagraph..."
 align _ 3! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/11/2011 09:58'!
-           buildParagraphAlignLeft
+buildParagraphAlignLeft
 
 	align _ 0! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
-         buildParagraphAlignRight
+buildParagraphAlignRight
 align _ 1! !
 
 !RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:20'!
-         buildResetCharFormat! !
+buildResetCharFormat! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/11/2011 21:39'!
-                        buildResetParagraphSettings
+buildResetParagraphSettings
 	"resets the paragraph settings to the default paragraph 
 	settings"
 	
@@ -610,21 +610,21 @@ align _ 1! !
 	rightIndent _ nil! !
 
 !RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 3/30/2011 16:40'!
-      buildResetSectionSettings! !
+buildResetSectionSettings! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
-                    buildRightIndent: aNumber
+buildRightIndent: aNumber
 	rightIndent _ (aNumber / 20.0) rounded! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:29'!
-           buildRightIndentPercentage: i! !
+buildRightIndentPercentage: i! !
 
 !RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:19'!
-              buildSetBaselineOffset: s
+buildSetBaselineOffset: s
 	"sets the font size in half points"! !
 
 !RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:21'!
-             buildSetBkColor: index
+buildSetBkColor: index
 	"Ignored in Sophie"! !
 
 !RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:19'!
@@ -632,14 +632,14 @@ buildSetBold: aBoolean
 	bold _ aBoolean! !
 
 !RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:21'!
-    buildSetCaps
+buildSetCaps
 	"Ignored in Sophie"! !
 
 !RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/30/2011 16:38'!
-              buildSetDefaultFont: pp! !
+buildSetDefaultFont: pp! !
 
 !RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:19'!
-                    buildSetFgColor: zindex
+buildSetFgColor: zindex
 		"sets the current foreground color to
 		color with the given index in the
 		color table"
@@ -648,12 +648,12 @@ index _ zindex + 1.
 currentFgColor _ colorTable at: index! !
 
 !RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/31/2011 15:36'!
-                     buildSetFont: i
+buildSetFont: i
 	"en Sophie, pone el textConverter... ver!!"
 	"Hasta donde entiendo, el font NO incluye emphasis ni pointSize, solo la familia, charset y code page"! !
 
 !RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 4/12/2011 09:16'!
-       buildSetFontSize: s
+buildSetFontSize: s
 	"sets the font size in half points"
 
 	"Note font shoudl always be a baseFont, any emphasis should be done by emphasis attributes"
@@ -665,60 +665,60 @@ currentFgColor _ colorTable at: index! !
 		ifFalse: [ fontFamilyName _ 'DejaVu' ]! !
 
 !RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:20'!
-                      buildSetItalic: aBoolean
+buildSetItalic: aBoolean
 	italic _ aBoolean! !
 
 !RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 4/8/2011 09:43'!
- buildSetKerning: popo! !
+buildSetKerning: popo! !
 
 !RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:20'!
-                      buildSetUnderline: aBoolean
+buildSetUnderline: aBoolean
 	underline _ aBoolean! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
-                            buildSpaceAbove: aNumber
+buildSpaceAbove: aNumber
 	spaceBefore _ (aNumber / 20.0) rounded! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
-             buildSpaceBelow: aNumber
+buildSpaceBelow: aNumber
 	spaceAfter _ (aNumber / 20.0) rounded! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 11:36'!
-              buildStartParagraph
+buildStartParagraph
 
 	self finishParagraph! !
 
 !RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/30/2011 16:38'!
-     buildStartStylesheet
+buildStartStylesheet
 	"?????"
 	^RTFStylesheet new! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:40'!
-        charset
+charset
 	^charset! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:40'!
-        charset: c
+charset: c
 	charset := c! !
 
 !RTFTokenizer methodsFor: 'private' stamp: 'mir 8/12/2006 14:24'!
- chunkBuffer
+chunkBuffer
 	^chunkBuffer ifNil: [chunkBuffer := String new: 2048]! !
 
 !RTFParserState methodsFor: 'accessing' stamp: 'tat 5/4/2006 23:39'!
-                    context
+context
 	^context! !
 
 !RTFParserState methodsFor: 'accessing' stamp: 'tat 5/4/2006 23:39'!
-     context: anObject
+context: anObject
 	context := anObject! !
 
 !RTFTokenizer methodsFor: 'private' stamp: 'mir 8/11/2006 20:54'!
-                   controlSymbolSet
+controlSymbolSet
 	^ControlSymbolSet! !
 
 !RTFTextBuilder methodsFor: 'private' stamp: 'jmv 11/22/2011 15:26'!
-                   convert: string startingAt: startIndex withConverter: converter
+convert: string startingAt: startIndex withConverter: converter
 
 	| writeStream |
 	converter ifNil: [^string copyFrom: startIndex to: string size].
@@ -728,7 +728,7 @@ currentFgColor _ colorTable at: index! !
 	^writeStream contents! !
 
 !RTFTextBuilder methodsFor: 'building' stamp: 'jmv 11/22/2011 15:26'!
-         convertAndSkip: string
+convertAndSkip: string
 
 	"Convert non-Unicode string using the specified encoder.
 	Skip characters if prescribed by the \uc command (see doSkipNextCharacters)."
@@ -753,26 +753,26 @@ currentFgColor _ colorTable at: index! !
 	^convertedString! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:44'!
-                        cpg
+cpg
 	^cpg! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:44'!
-                cpg: n
+cpg: n
 	cpg := n! !
 
 !RTFChunkScanner methodsFor: 'stop conditions' stamp: 'mir 8/12/2006 15:46'!
-                              crAt: index
+crAt: index
 	self addScannedStringToBuffer.
 	lastIndex := lastIndex  + 1.
 	prevIndex := lastIndex! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'mir 8/12/2006 16:56'!
-                         createHandleMessage: token
+createHandleMessage: token
 	"builds a handle message from a keyword token"
 	^HandleMessages at: token word ifAbsent: [('handle' , token word , ':') asSymbol]! !
 
 !RTFTextBuilder class methodsFor: 'instance creation' stamp: 'jmv 4/11/2011 18:10'!
-          currentClass
+currentClass
 	^Smalltalk at: #RTFStyledTextBuilder ifAbsent: [ self ]! !
 
 !RTFTextConverter class methodsFor: 'instance creation' stamp: 'jmv 3/29/2011 08:43'!
@@ -781,19 +781,19 @@ default
 	^ "UTF8TextConverter new." nil! !
 
 !RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/29/2011 10:15'!
-                             defaultSkipNextCharacters: anInteger
+defaultSkipNextCharacters: anInteger
 	defaultSkipNextCharacters := anInteger! !
 
 !RTFParserState methodsFor: 'accessing' stamp: 'tat 5/4/2006 23:39'!
-          destination
+destination
 	^destination! !
 
 !RTFParserState methodsFor: 'accessing' stamp: 'tat 5/4/2006 23:38'!
-                             destination: aBlock
+destination: aBlock
 	destination := aBlock! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'jmv 4/4/2011 16:28'!
-                 digitValue: char
+digitValue: char
 
 	| value |
 	value _ char asciiValue.
@@ -806,7 +806,7 @@ default
 ! !
 
 !RTFTextConverter class methodsFor: 'services' stamp: 'jmv 4/4/2011 16:28'!
-                     digitValue: char
+digitValue: char
 
 	| value |
 	value _ char asciiValue.
@@ -819,11 +819,11 @@ default
 ! !
 
 !RTFParserState methodsFor: 'private' stamp: 'tat 5/4/2006 23:48'!
-                              empty
+empty
 	^stack size = 0! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'tat 5/3/2006 02:18'!
-     emptyToken
+emptyToken
 	^tokenizer tokenClass emptyToken
 	! !
 
@@ -832,28 +832,28 @@ emptyToken
 	^self new type: #empty; word: #empty! !
 
 !RTFTokenizer methodsFor: 'private' stamp: 'mir 8/11/2006 20:53'!
-         endOfArgumentSet
+endOfArgumentSet
 	^EndOfArgumentSet! !
 
 !RTFTokenizer methodsFor: 'private' stamp: 'mir 8/11/2006 21:01'!
-                      endOfKeywordSet
+endOfKeywordSet
 	^EndOfKeywordSet! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:31'!
-                        family
+family
 	^family! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:31'!
-          family: f
+family: f
 	family := f! !
 
 !RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 4/11/2011 10:18'!
-                        finishBuild
+finishBuild
 	"Don't do this. It looks like it would help, include the paragraphstyle of the last paragraph, but it will hurt when, for example, we are pasting one or a few words, not an entire paragraph."
 "	self finishParagraph"! !
 
 !RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/13/2012 16:57'!
-        finishParagraph
+finishParagraph
 
 	| attrs |
 	"Don't include attributes for left alignment. No need to."
@@ -865,7 +865,7 @@ emptyToken
 		withAttributes: attrs! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'jmv 4/4/2011 16:26'!
-                           getAddress: string
+getAddress: string
 
 	"expects a string of the type 
 	HYPERLINK<whitespaces>('|dblquot)<some link text>('|dblquot)
@@ -892,30 +892,30 @@ emptyToken
 	^string copyFrom: first to: last! !
 
 !RTFToken methodsFor: 'deprecated' stamp: 'kalin 5/7/2006 19:14'!
-   getArg
+getArg
 
 	self isKeyword ifTrue: [^arg].
 	^nil! !
 
 !RTFToken methodsFor: 'deprecated' stamp: 'kalin 5/7/2006 19:14'!
-            getString
+getString
 
 	self isString ifTrue: [^content].
 	^nil! !
 
 !RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 5/6/2006 17:05'!
-                               getStyleFrom: builder
+getStyleFrom: builder
 	type = #paragraph ifTrue: [^builder activeParagraphStyle].
 	type = #character ifTrue: [^builder activeCharacterStyle]! !
 
 !RTFTokenizer methodsFor: 'tokenizing' stamp: 'MR 5/5/2006 14:30'!
-            getToken
+getToken
 
 	self readNext.
 	^self peekLast! !
 
 !RTFToken methodsFor: 'deprecated' stamp: 'MR 5/1/2006 16:23'!
-                   getType
+getType
 	self isBlockOpen ifTrue: [^#blockOpen].
 	self isBlockClose ifTrue: [^#blockClose].
 	self isKeyword ifTrue: [^#keyword].
@@ -924,7 +924,7 @@ emptyToken
 ! !
 
 !RTFToken methodsFor: 'deprecated' stamp: 'kalin 5/7/2006 19:14'!
-          getWord
+getWord
     
     "if this token is a command, returns the command's keyword.
      For example:   \kw0102  getWord -> kw"
@@ -933,11 +933,11 @@ emptyToken
 	^nil! !
 
 !RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:48'!
-                      green
+green
 	^green! !
 
 !RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:48'!
-            green: g
+green: g
 	green := g! !
 
 !RTFParser methodsFor: 'handlers-general' stamp: 'tat 5/5/2006 13:53'!
@@ -948,17 +948,17 @@ handleLeftCurlyBracket: token
 	builder addUnicodeContents: '{'! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 4/11/2007 14:30'!
-                  handleRightCurlyBracket: token
+handleRightCurlyBracket: token
 	builder addUnicodeContents: '}'! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 11/1/2006 15:06'!
-                 handleSomeCodePageHexValue: token
+handleSomeCodePageHexValue: token
 	"send text to destination if not nil"
 	state destination value: (String value: token arg)
 ! !
 
 !RTFParser methodsFor: 'handlers-general' stamp: 'tat 5/5/2006 14:36'!
-                       handleStar: token
+handleStar: token
 	"check if the parser can respond to the command following the *"
 	(self respondsTo: (self createHandleMessage: (tokenizer lookAhead: 1))) ifFalse: [
 		"if not, suppress plain text within this block"
@@ -966,72 +966,72 @@ handleLeftCurlyBracket: token
 	]! !
 
 !RTFParser methodsFor: 'handlers-stylesheet' stamp: 'tat 5/5/2006 14:45'!
-                           handleadditive: token
+handleadditive: token
 	state context additive! !
 
 !RTFParser methodsFor: 'handlers-skipping' stamp: 'kalin 7/9/2006 16:58'!
-    handleaftnsep: token
+handleaftnsep: token
 
 	self skipUntilBlockClose.! !
 
 !RTFParser methodsFor: 'handlers-general' stamp: 'tat 7/11/2006 22:26'!
-   handleansi: token
+handleansi: token
 	builder buildAnsiCharacterSet! !
 
 !RTFParser methodsFor: 'handlers-general' stamp: 'tat 7/27/2006 11:38'!
-   handleansicpg: token
+handleansicpg: token
 	builder buildCodePage: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 7/10/2006 23:31'!
-                        handleb: token
+handleb: token
 
 	builder buildSetBold: (token arg = 1)! !
 
 !RTFParser methodsFor: 'handlers-general' stamp: 'tat 6/24/2006 00:37'!
-                             handlebin: token
+handlebin: token
 	"ignore binary data in RTF"
 	self skipUntilBlockClose! !
 
 !RTFParser methodsFor: 'handlers-colortable' stamp: 'tat 5/5/2006 13:50'!
-          handleblue: token
+handleblue: token
 	state context blue: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:54'!
-                              handlebullet: token
+handlebullet: token
 	builder buildAddBullet! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'kalin 5/3/2006 12:00'!
-    handlecaps: token
+handlecaps: token
 
 	builder buildSetCaps! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'kalin 5/3/2006 12:03'!
-       handlecb: token
+handlecb: token
 
 	builder buildSetBkColor: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 3/12/2007 19:22'!
-                          handlecbpat: token
+handlecbpat: token
 	"treat this as changing the background color"
 	self handlecb: token! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'kalin 5/3/2006 12:03'!
-                        handlecf: token
+handlecf: token
 
 	builder buildSetFgColor: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 3/1/2007 15:37'!
-                           handlechcbpat: token
+handlechcbpat: token
 	"treat this as changing the background color"
 	self handlecb: token! !
 
 !RTFParser methodsFor: 'handlers-skipping' stamp: 'kalin 7/9/2006 16:57'!
-                        handlechftnsep: token
+handlechftnsep: token
 
 	self skipUntilBlockClose.! !
 
 !RTFParser methodsFor: 'handlers-colortable' stamp: 'tat 11/1/2006 15:09'!
-                               handlecolortbl: token
+handlecolortbl: token
 	state destination block: [:string | string = ';' ifTrue: [
 		builder buildAddColorDef: state context.
 		state context: RTFColorDef new
@@ -1040,98 +1040,98 @@ handleLeftCurlyBracket: token
 	! !
 
 !RTFParser methodsFor: 'handlers-fonttable' stamp: 'tat 5/5/2006 01:45'!
-                            handlecpg: token
+handlecpg: token
 	state context cpg: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-stylesheet' stamp: 'tat 5/6/2006 17:08'!
- handlecs: token
+handlecs: token
 	self handles: token.
 	state context isNil ifFalse: [state context type: #character]! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'MR 5/4/2006 13:43'!
-               handlecufi: token
+handlecufi: token
 
 	builder buildFirstLineIndentPercentage: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'MR 5/4/2006 13:42'!
-            handleculi: token
+handleculi: token
 
 	builder buildLeftIndentPercentage: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'MR 5/4/2006 13:43'!
-                 handlecuri: token
+handlecuri: token
 
 	builder buildRightIndentPercentage: (token arg)! !
 
 !RTFParser methodsFor: 'handlers' stamp: 'tat 11/1/2006 15:09'!
-                        handledatafield: token
+handledatafield: token
 
 	state destination block: [:string|] type: #ignore.
 	self parseUntilBlockClose.! !
 
 !RTFParser methodsFor: 'handlers-header' stamp: 'tat 11/1/2006 15:18'!
-             handledeff: token
+handledeff: token
 	builder buildSetDefaultFont: token arg! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'tat 5/18/2007 18:53'!
-                         handledibitmap: token
+handledibitmap: token
 	"Windows device-independent bitmap (DIB)"
 	"state context atProperty: #type put: #bmp"
 	state context at: #type put: #bmp! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'MR 6/7/2006 18:09'!
-  handledn: token
+handledn: token
 		
 	builder buildSetBaselineOffset: (token arg negated)! !
 
 !RTFParser methodsFor: 'handlers-stylesheet' stamp: 'tat 5/6/2006 16:57'!
-          handleds: token
+handleds: token
 	self handles: token.
 	state context isNil ifFalse: [state context type: #paragraph]! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:53'!
-            handleemdash: token
+handleemdash: token
 	builder buildAddEmDash! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'tat 5/18/2007 18:54'!
-       handleemfblip: token
+handleemfblip: token
 	"Enhanced metafile (EMF)"
 	"state context atProperty: #type put: #emf"
 	state context at: #type put: #emf! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:53'!
-                 handleemspace: token
+handleemspace: token
 	builder buildAddEmSpace! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:53'!
-   handleendash: token
+handleendash: token
 	builder buildAddEnDash! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:53'!
-     handleenspace: token
+handleenspace: token
 	builder buildAddEnSpace! !
 
 !RTFParser methodsFor: 'handlers-fonttable' stamp: 'tat 1/16/2007 11:59'!
-    handlef: token
+handlef: token
 	"check if we are defining or using a font"
 	(state destination type = #fonttable)
 		ifTrue: [ state context: (RTFFontInfo new). state context num: (token arg) ]
 		ifFalse: [ builder buildSetFont: (token arg) ]! !
 
 !RTFParser methodsFor: 'handlers-fonttable' stamp: 'tat 5/5/2006 01:36'!
-                 handlefbidi: token
+handlefbidi: token
 	self handlefnil: token! !
 
 !RTFParser methodsFor: 'handlers-fonttable' stamp: 'tat 5/5/2006 01:40'!
-        handlefcharset: token
+handlefcharset: token
 	state context charset: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-fonttable' stamp: 'tat 5/5/2006 01:35'!
-                         handlefdecor: token
+handlefdecor: token
 	self handlefnil: token! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'kalin 5/3/2006 11:45'!
-     handlefi: token
+handlefi: token
 
 	builder buildFirstLineIndent: (token arg)! !
 
@@ -1157,23 +1157,23 @@ handlefield: token
 ! !
 
 !RTFParser methodsFor: 'handlers-header' stamp: 'tat 5/5/2006 13:44'!
-                        handlefiletbl: token
+handlefiletbl: token
 	self handlerSupressText! !
 
 !RTFParser methodsFor: 'handlers' stamp: 'kalin 6/24/2006 17:17'!
-            handlefldinst: token
+handlefldinst: token
 ! !
 
 !RTFParser methodsFor: 'handlers-fonttable' stamp: 'tat 5/5/2006 01:32'!
-                             handlefmodern: token
+handlefmodern: token
 	self handlefnil: token! !
 
 !RTFParser methodsFor: 'handlers-fonttable' stamp: 'tat 5/5/2006 01:31'!
-      handlefnil: token
+handlefnil: token
 	state context family: (token word)! !
 
 !RTFParser methodsFor: 'handlers-fonttable' stamp: 'tat 11/1/2006 15:10'!
-                            handlefonttbl: token
+handlefonttbl: token
 	state destination block: [:string |
 		(string endsWith: ';')
 			ifTrue: [string = ';'
@@ -1191,170 +1191,170 @@ handlefield: token
 	type: #fonttable! !
 
 !RTFParser methodsFor: 'handlers-skipping' stamp: 'tat 6/18/2007 00:47'!
-      handlefooter: token
+handlefooter: token
 
 	self skipUntilBlockClose.! !
 
 !RTFParser methodsFor: 'handlers-general' stamp: 'tat 11/1/2006 17:24'!
-    handlefootnote: token
+handlefootnote: token
 	self skipUntilBlockClose! !
 
 !RTFParser methodsFor: 'handlers-fonttable' stamp: 'tat 5/5/2006 01:32'!
-   handlefroman: token
+handlefroman: token
 	self handlefnil: token! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'kalin 5/3/2006 12:12'!
-    handlefs: token
+handlefs: token
 		
 	builder buildSetFontSize: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-fonttable' stamp: 'tat 5/5/2006 01:32'!
-                         handlefscript: token
+handlefscript: token
 	self handlefnil: token! !
 
 !RTFParser methodsFor: 'handlers-fonttable' stamp: 'tat 5/5/2006 01:32'!
-      handlefswiss: token
+handlefswiss: token
 	self handlefnil: token! !
 
 !RTFParser methodsFor: 'handlers-fonttable' stamp: 'tat 5/5/2006 01:36'!
-       handleftech: token
+handleftech: token
 	self handlefnil: token! !
 
 !RTFParser methodsFor: 'handlers-skipping' stamp: 'kalin 7/9/2006 16:58'!
-       handleftnsepc: token
+handleftnsepc: token
 
 	self skipUntilBlockClose.! !
 
 !RTFParser methodsFor: 'handlers-colortable' stamp: 'tat 5/5/2006 13:50'!
- handlegreen: token
+handlegreen: token
 	state context green: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-skipping' stamp: 'kalin 7/9/2006 16:55'!
-                             handleheader: token
+handleheader: token
 
 	self skipUntilBlockClose.! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 23:50'!
- handlehighlight: token
+handlehighlight: token
 	"treat highlighting as changing the background color"
 	self handlecb: token! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 7/11/2006 00:38'!
-             handlei: token
+handlei: token
 
 	builder buildSetItalic: (token arg = 1)! !
 
 !RTFParser methodsFor: 'handlers' stamp: 'tat 5/5/2006 00:30'!
-    handleinfo: token
+handleinfo: token
 	self handlerSupressText! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'tat 5/18/2007 18:10'!
-        handlejpegblip: token
+handlejpegblip: token
 	"state context atProperty: #type put: #jpeg"
 	state context at: #type put: #jpeg! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'MR 6/7/2006 17:59'!
-           handlekerning: token
+handlekerning: token
 		
 	builder buildSetKerning: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:42'!
-                   handleldblquote: token
+handleldblquote: token
 
 	builder buildAddDoubleLeftQuote! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'kalin 5/3/2006 11:47'!
-                        handleli: token
+handleli: token
 
 	builder buildLeftIndent: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'kalin 5/3/2006 11:47'!
-                          handlelin: token
+handlelin: token
 
 	builder buildLeftIndent: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'MR 7/10/2007 08:31'!
-                          handleline: token
+handleline: token
 
 	builder buildStartParagraph! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:54'!
- handlelquote: token
+handlelquote: token
 	builder buildAddLeftQuote! !
 
 !RTFParser methodsFor: 'handlers-general' stamp: 'tat 7/11/2006 22:26'!
-     handlemac: token
+handlemac: token
 	builder buildMacCharacterSet! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'tat 5/18/2007 18:54'!
-    handlemacpict: token
+handlemacpict: token
 	"QuickDraw image (PICT)"
 	"state context atProperty: #type put: #pict"
 	state context at: #type put: #pict! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:55'!
-                handlenbhyph: token
+handlenbhyph: token
 	builder buildAddNonBreakingHyphen! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:55'!
-                          handlenbsp: token
+handlenbsp: token
 	builder buildAddNonBreakingSpace! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'tat 6/24/2006 00:38'!
-                               handlenonshppict: token
+handlenonshppict: token
 	"ignore this group"
 	self skipUntilBlockClose! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:55'!
-          handleopthyph: token
+handleopthyph: token
 	builder buildAddOptionalHyphen! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'kalin 5/3/2006 11:25'!
-                            handlepar: token
+handlepar: token
 	builder buildStartParagraph! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'tat 11/1/2006 15:40'!
-    handlepard: token
+handlepard: token
 	builder buildResetParagraphSettings! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'MR 7/2/2006 19:24'!
-                              handlepiccropb: token
+handlepiccropb: token
 	"Bottom cropping value in twips. A positive value crops toward the center of the picture; a negative value crops away from the center, adding a space border around the picture (the default value is 0). OPTIONAL"
 	state context at: 'piccropb' put: token arg
 ! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'MR 7/2/2006 19:23'!
-                            handlepiccropr: token
+handlepiccropr: token
 	"Right cropping value in twips. A positive value crops toward the center of the picture; a negative value crops away from the center, adding a space border around the picture (the default value is 0). OPTIONAL"
 	state context at: 'piccropr' put: token arg
 ! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'MR 7/2/2006 19:17'!
-                             handlepich: token
+handlepich: token
 	"yExt field if the picture is a Windows metafile; picture height in pixels if the picture is a bitmap or from QuickDraw. The N argument is a long integer"
 	state context at: 'pich' put: token arg
 ! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'MR 7/2/2006 19:18'!
-                             handlepichgoal: token
+handlepichgoal: token
 	"Desired height of the picture in twips. The N argument is a long integer. OPTIONAL"
 	state context at: 'pichgoal' put: token arg
 ! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'MR 7/2/2006 19:20'!
-                           handlepicscalex: token
+handlepicscalex: token
 	"Horizontal scaling value. The N argument is a value representing a percentage (the default is 100 percent). OPTIONAL"
 	state context at: 'picscalex' put: token arg
 ! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'MR 7/2/2006 19:20'!
-                       handlepicscaley: token
+handlepicscaley: token
 	"Vertical scaling value. The N argument is a value representing a percentage (the default is 100 percent). OPTIONAL"
 	state context at: 'picscaley' put: token arg
 ! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'tat 5/18/2007 18:45'!
-                       handlepict: token
+handlepict: token
 	| stream |
 	stream _ ReadWriteStream with: ByteArray new.
 	
@@ -1374,65 +1374,65 @@ handlefield: token
 	builder buildAddPicture: state context from: stream! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'MR 7/2/2006 19:17'!
-                       handlepicw: token
+handlepicw: token
 	"xExt field if the picture is a Windows metafile; picture width in pixels if the picture is a bitmap or from QuickDraw. The N argument is a long integer"
 	state context at: 'picw' put: token arg
 ! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'MR 7/2/2006 19:19'!
-                              handlepicwgoal: token
+handlepicwgoal: token
 	"Desired width of the picture in twips. The N argument is a long integer. OPTIONAL"
 	state context at: 'picwgoal' put: token arg
 ! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'kalin 5/3/2006 11:58'!
-                       handleplain: token
+handleplain: token
 
 	builder buildResetCharFormat! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'tat 5/18/2007 18:51'!
- handlepmmetafile: token
+handlepmmetafile: token
 	"OS/2 bitmap"
 	"state context atProperty: #type put: #pmm"
 	state context at: #type put: #pmm! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'tat 6/23/2006 22:39'!
-                            handlepngblip: token
+handlepngblip: token
 	"state context atProperty: #type put: #png"
 	state context at: #type put: #png! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 5/2/2006 01:46'!
-             handlepntxta: token
+handlepntxta: token
 	"only skips the text that follows"
 	((tokenizer lookAhead: 1) type = #string) 
 		ifTrue: [tokenizer getToken].
 ! !
 
 !RTFParser methodsFor: 'handlers' stamp: 'tat 5/2/2006 02:04'!
-                        handlepntxtb: token
+handlepntxtb: token
 	self handlepntxta: token! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'kalin 5/3/2006 11:29'!
-   handleqc: token
+handleqc: token
 
 	builder buildParagraphAlignCenter! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'kalin 5/3/2006 11:29'!
-                             handleqj: token
+handleqj: token
 
 		builder buildParagraphAlignJustified! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'kalinm 5/4/2006 19:00'!
-                        handleql: token
+handleql: token
 
 		builder buildParagraphAlignLeft! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:53'!
-                              handleqmspace: token
+handleqmspace: token
 	builder buildAddQmSpace! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'kalin 5/3/2006 11:30'!
-   handleqr: token
+handleqr: token
 	
 	builder buildParagraphAlignRight! !
 
@@ -1443,12 +1443,12 @@ handlerSupressText
 	self parseUntilBlockClose.! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:42'!
-              handlerdblquote: token
+handlerdblquote: token
 
 	builder buildAddDoubleRightQuote! !
 
 !RTFParser methodsFor: 'handlers-colortable' stamp: 'tat 5/5/2006 13:50'!
-                        handlered: token
+handlered: token
 	state context red: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'kalin 5/3/2006 11:47'!
@@ -1457,16 +1457,16 @@ handleri: token
 	builder buildRightIndent: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'kalin 5/3/2006 11:47'!
-                         handlerin: token
+handlerin: token
 
 	builder buildRightIndent: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/22/2006 22:54'!
-                        handlerquote: token
+handlerquote: token
 	builder buildAddRightQuote! !
 
 !RTFParser methodsFor: 'handlers-stylesheet' stamp: 'tat 11/1/2006 15:13'!
- handles: token
+handles: token
 	state destination type = #stylesheet
 		ifFalse: [ builder buildApplyStylesheet: (token arg)]
 		ifTrue: [		
@@ -1476,28 +1476,28 @@ handleri: token
 		]! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'MR 5/4/2006 13:26'!
-                              handlesa: token
+handlesa: token
 	"sa = space after"
 
 	builder buildSpaceBelow: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'MR 5/4/2006 13:27'!
-         handlesb: token
+handlesb: token
 	"sb = space before"
 
 	builder buildSpaceAbove: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-stylesheet' stamp: 'tat 5/6/2006 16:53'!
-      handlesbasedon: token
+handlesbasedon: token
 	state context basedon: (token arg)! !
 
 !RTFParser methodsFor: 'handlers' stamp: 'kalin 5/3/2006 11:16'!
- handlesectd: token
+handlesectd: token
 	
 	builder buildResetSectionSettings! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'tat 7/11/2006 22:11'!
-                          handlesl: token
+handlesl: token
 
 	builder buildLineSpacing: (token arg).
 
@@ -1510,12 +1510,12 @@ handleri: token
 ! !
 
 !RTFParser methodsFor: 'handlers-paragraph' stamp: 'MR 5/6/2006 13:15'!
-                              handleslmult: token
+handleslmult: token
 
 	builder buildLineSpacingType: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-stylesheet' stamp: 'tat 11/1/2006 15:11'!
-                 handlestylesheet: token
+handlestylesheet: token
 	state destination block: [:string | (string endsWith: ';')
 		ifTrue: [builder buildAddStylesheet: state context]
 		ifFalse: [state context name: string]
@@ -1524,12 +1524,12 @@ handleri: token
 ! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'kalin 5/3/2006 12:34'!
-                        handletab: token
+handletab: token
 
 	builder buildAddTab! !
 
 !RTFParser methodsFor: 'handlers-general' stamp: 'jmv 11/22/2011 15:23'!
-            handleu: token
+handleu: token
 	| string char |
 	char _ token arg < 0
 		ifTrue: [ RTFUnicode value: (65536 + token arg) or: nil ]
@@ -1551,101 +1551,101 @@ handleuc: token
 	builder defaultSkipNextCharacters: token arg! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/21/2006 23:51'!
-                             handleud: token
+handleud: token
 	"Do nothing. This handler exists only to state that the upcoming block of unicode text should not be ignored"! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'kalinm 5/4/2006 19:51'!
-                handleul: token
+handleul: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:35'!
-                               handleuld: token
+handleuld: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:35'!
-                              handleuldash: token
+handleuldash: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:35'!
-                           handleuldashd: token
+handleuldashd: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:35'!
-                          handleuldb: token
+handleuldb: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:35'!
-                             handleulhwave: token
+handleulhwave: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:35'!
-                          handleulldash: token
+handleulldash: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tpr 9/6/2006 13:00'!
-                           handleulnone: token
+handleulnone: token
 
 	builder buildSetUnderline: false! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:36'!
-                          handleulth: token
+handleulth: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:36'!
-                             handleulthd: token
+handleulthd: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:36'!
-                            handleulthdash: token
+handleulthdash: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:36'!
-                         handleulthdashd: token
+handleulthdashd: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:36'!
-                        handleulthdashdd: token
+handleulthdashdd: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:36'!
-                       handleulthldashd: token
+handleulthldashd: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:36'!
-                       handleululdbwave: token
+handleululdbwave: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:36'!
-                       handleulw: token
+handleulw: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'tat 6/13/2007 11:36'!
-                              handleulwave: token
+handleulwave: token
 
 	builder buildSetUnderline: true! !
 
 !RTFParser methodsFor: 'handlers-charformat' stamp: 'MR 6/7/2006 18:09'!
-                             handleup: token
+handleup: token
 		
 	builder buildSetBaselineOffset: (token arg)! !
 
 !RTFParser methodsFor: 'handlers-characters' stamp: 'tat 6/21/2006 23:51'!
-                 handleupr: token
+handleupr: token
 	"{\upr{keyword ansi_text}{\*\ud{keyword Unicode_text}}}"
 
 	"skip the first block of ansi text"
@@ -1655,19 +1655,19 @@ handleuc: token
 	"the Unicode block will be parsed by the \ud keyword"! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'tat 5/18/2007 18:54'!
-                         handlewbitmap: token
+handlewbitmap: token
 	"Windows device-dependent bitmap (DDB)"
 	"state context atProperty: #type put: #ddb"
 	state context at: #type put: #ddb! !
 
 !RTFParser methodsFor: 'handlers-pictures' stamp: 'tat 5/18/2007 18:51'!
-     handlewmetafile: token
+handlewmetafile: token
 	"Windows metafile"
 	"state context atProperty: #type put: #wmf"
 	state context at: #type put: #wmf! !
 
 !RTFChunkScanner class methodsFor: 'class initialization' stamp: 'mir 8/12/2006 15:51'!
-         initialize
+initialize
 	"RTFChunkScanner initialize"
 
 	BufferStream := (String new: 4096) writeStream.
@@ -1684,8 +1684,13 @@ handleuc: token
 	ScannerTable at: Character crCharacter asciiValue + 1 put: #crAt:.
 ! !
 
+!RTFParser methodsFor: 'initialization' stamp: 'kalin 5/7/2006 19:25'!
+initialize
+
+	RTFToken initialize! !
+
 !RTFParser class methodsFor: 'class initialization' stamp: 'tat 4/11/2007 14:28'!
-       initialize
+initialize
 	"RTFParser initialize"
 
 	HandleMessages := Dictionary new: 11.
@@ -1701,41 +1706,21 @@ handleuc: token
 		yourself.
 ! !
 
-!RTFParser methodsFor: 'initialization' stamp: 'kalin 5/7/2006 19:25'!
-                        initialize
-
-	RTFToken initialize! !
-
 !RTFParserState methodsFor: 'initialization' stamp: 'tat 11/1/2006 15:06'!
-                initialize
+initialize
 	super initialize.
 	destination := RTFParserDestination new.
 	context := nil.
 	stack := OrderedCollection new! !
 
 !RTFStylesheet methodsFor: 'initializing' stamp: 'tat 5/6/2006 16:50'!
-                            initialize
+initialize
 	additive := false.
 	type := #paragraph.
 	num := 0! !
 
-!RTFTextBuilder class methodsFor: 'class initialization' stamp: 'jmv 4/6/2011 10:37'!
-        initialize
-	"
-	self initialize
-	"
-	(CodePageConverterTable := Dictionary new)
-	"atProperty: 10000 put: MacRomanUnicodeTextConverter;
-	atProperty: 1250 put: CP1250UnicodeTextConverter;
-	atProperty: 1251 put: CP1251UnicodeTextConverter;
-	atProperty: 1252 put: CP1252UnicodeTextConverter"
-	at: 10000 put: RTFMacRomanUnicodeTextConverter;
-	at: 1250 put: RTFCP1250UnicodeTextConverter;
-	at: 1251 put: RTFCP1251UnicodeTextConverter;
-	at: 1252 put: RTFCP1252UnicodeTextConverter! !
-
 !RTFTextBuilder methodsFor: 'initialize' stamp: 'jmv 4/11/2011 21:39'!
-                             initialize
+initialize
 	
 "	state := RTFSophieContentTreeBuilderState new."
 
@@ -1771,13 +1756,28 @@ handleuc: token
 	self skipNextCharacters: 0.
 ! !
 
+!RTFTextBuilder class methodsFor: 'class initialization' stamp: 'jmv 4/6/2011 10:37'!
+initialize
+	"
+	self initialize
+	"
+	(CodePageConverterTable := Dictionary new)
+	"atProperty: 10000 put: MacRomanUnicodeTextConverter;
+	atProperty: 1250 put: CP1250UnicodeTextConverter;
+	atProperty: 1251 put: CP1251UnicodeTextConverter;
+	atProperty: 1252 put: CP1252UnicodeTextConverter"
+	at: 10000 put: RTFMacRomanUnicodeTextConverter;
+	at: 1250 put: RTFCP1250UnicodeTextConverter;
+	at: 1251 put: RTFCP1251UnicodeTextConverter;
+	at: 1252 put: RTFCP1252UnicodeTextConverter! !
+
 !RTFToken class methodsFor: 'class initialization' stamp: 'kalin 5/7/2006 19:23'!
-                       initialize
+initialize
 
 	self initializeDefaultArgs.! !
 
 !RTFTokenizer class methodsFor: 'class initialization' stamp: 'tat 4/11/2007 15:10'!
-                              initialize
+initialize
 	"RTFTokenizer initialize"
 
 	EndOfKeywordSet := CharacterSet new.
@@ -1796,7 +1796,7 @@ handleuc: token
 ! !
 
 !RTFToken class methodsFor: 'class initialization' stamp: 'tat 7/10/2006 23:31'!
-                          initializeDefaultArgs
+initializeDefaultArgs
 
 	DefaultArgs := Dictionary new.
 
@@ -1805,29 +1805,29 @@ handleuc: token
 ! !
 
 !RTFToken methodsFor: 'testing' stamp: 'MR 4/30/2006 23:10'!
-              isBlockClose
+isBlockClose
 	^(type = #blockClose)! !
 
 !RTFToken methodsFor: 'testing' stamp: 'MR 4/30/2006 23:10'!
-                           isBlockOpen
+isBlockOpen
 	^(type = #blockOpen)! !
 
 !RTFToken methodsFor: 'testing' stamp: 'MR 4/30/2006 23:10'!
-                             isKeyword
+isKeyword
 	^(type = #keyword)! !
 
 !RTFToken methodsFor: 'testing' stamp: 'MR 5/1/2006 16:23'!
-  isStringToken
+isStringToken
 	^(type = #string)! !
 
 !RTFChunkScanner methodsFor: 'stop conditions' stamp: 'mir 8/12/2006 15:50'!
-              lfAt: index
+lfAt: index
 	self addScannedStringToBuffer.
 	lastIndex := lastIndex  + 1.
 	prevIndex := lastIndex! !
 
 !RTFTokenizer methodsFor: 'tokenizing' stamp: 'kalin 5/6/2006 01:04'!
-                    lookAhead: n     
+lookAhead: n     
      "peeks n tokens ahead where n is less or equal to 3"
 
 	n = 0 ifTrue: [^self peekLast].
@@ -1837,86 +1837,86 @@ handleuc: token
 ! !
 
 !RTFTokenizer methodsFor: 'tokenizing' stamp: 'kalin 5/6/2006 01:05'!
-                         moreTokens
+moreTokens
     "are there any tokens left?"
 
 	^next notNil
 ! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:21'!
-                              name
+name
 	^name! !
 
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
-            name
+name
 	^name! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:21'!
-              name: fn
+name: fn
 	name := fn! !
 
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
-   name: n
+name: n
 	name := n! !
 
 !RTFToken class methodsFor: 'instance creation' stamp: 'MR 7/4/2006 10:51'!
-                             newBlockClose
+newBlockClose
 	| instance |
 	instance := self new.
 	instance type: #blockClose.
 	^instance! !
 
 !RTFToken class methodsFor: 'instance creation' stamp: 'MR 7/4/2006 10:51'!
-                     newBlockOpen
+newBlockOpen
 	| instance |
 	instance := self new.
 	instance type: #blockOpen.
 	^instance! !
 
 !RTFTokenizer class methodsFor: 'instance creation' stamp: 'mir 8/11/2006 20:57'!
-                 newFromString: aString
+newFromString: aString
 	^self on: aString readStream! !
 
 !RTFToken class methodsFor: 'instance creation' stamp: 'MR 4/30/2006 23:24'!
-                          newKeyword: aWord
+newKeyword: aWord
 	^(self newKeyword: aWord withArg: nil)! !
 
 !RTFToken class methodsFor: 'instance creation' stamp: 'MR 7/4/2006 10:51'!
-                      newKeyword: aWord withArg: anArg
+newKeyword: aWord withArg: anArg
 	| instance |
 	instance := self new.
 	instance word: aWord withArg: anArg.
 	^instance! !
 
 !RTFToken class methodsFor: 'instance creation' stamp: 'MR 7/4/2006 10:51'!
-                         newString: aString
+newString: aString
 	| instance |
 	instance := self new.
 	instance string: aString.
 	^instance! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:22'!
-                            num
+num
 	^num! !
 
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 15:02'!
-              num
+num
 	^num! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:22'!
-                num: n
+num: n
 	num := n! !
 
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 15:01'!
-       num: n
+num: n
 	num := n! !
 
 !RTFTokenizer class methodsFor: 'instance creation' stamp: 'mir 8/11/2006 20:57'!
-                         on: aStream
+on: aStream
 	^self new on: aStream! !
 
 !RTFTokenizer methodsFor: 'private' stamp: 'tat 8/13/2007 11:00'!
-                       on: aStream
+on: aStream
 
 	"this message expects proper RTF as input"
 
@@ -1937,17 +1937,17 @@ handleuc: token
 ! !
 
 !RTFParser methodsFor: 'parsing' stamp: 'tat 5/4/2006 18:52'!
-                  parse
+parse
 	self parseBlock.
 ! !
 
 !RTFParser methodsFor: 'parsing' stamp: 'tat 5/4/2006 00:50'!
-     parse: string buildWith: b
+parse: string buildWith: b
 	"parse the string with the specified builder"
 	self parseWithTokenizer: (RTFTokenizer newFromString: string) buildWith: b! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'tat 8/13/2007 10:41'!
-     parseBlock
+parseBlock
 	| token |
 	"parses a complete {..} block"
 
@@ -1971,7 +1971,7 @@ handleuc: token
 	self restoreState! !
 
 !RTFTokenizer methodsFor: 'private' stamp: 'mir 8/31/2006 12:27'!
-                          parseChunk
+parseChunk
 
 	"reads a string between two backslashes into buffer"
 
@@ -2028,7 +2028,7 @@ handleuc: token
 	^buffer! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'kalin 5/1/2006 14:08'!
-                               parseCommand
+parseCommand
 
 	"parse a command, string or a block of commands
 	disregarding their inner sctructure"
@@ -2046,7 +2046,7 @@ handleuc: token
 ! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'kalin 5/16/2006 12:04'!
-                          parseKeyWord
+parseKeyWord
 	"assuming that the next RTF token is a keyword,
 	 find appropriate keyword handler and execute it"
 
@@ -2071,7 +2071,7 @@ handleuc: token
 	! !
 
 !RTFTokenizer methodsFor: 'private' stamp: 'mir 8/12/2006 16:04'!
-   parseNoKeywordChunk: aString startingAt: index
+parseNoKeywordChunk: aString startingAt: index
 	"reads a string without \ into buffer"
 	"tokenizes on {, and then tokenizes chunks on }"
 
@@ -2103,7 +2103,7 @@ handleuc: token
 "! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:09'!
-                          parseUntilBlockClose
+parseUntilBlockClose
 	"reads until a not parsed #blockClose token"
 
 	[(tokenizer lookAhead: 1) type = #blockClose] whileFalse: 
@@ -2112,7 +2112,7 @@ handleuc: token
 ! !
 
 !RTFParser methodsFor: 'parsing' stamp: 'jmv 4/8/2011 11:29'!
-      parseWithTokenizer: t buildWith: b
+parseWithTokenizer: t buildWith: b
 	tokenizer := t.
 	builder := b.
 	state := RTFParserState new.
@@ -2122,11 +2122,11 @@ handleuc: token
 	builder finishBuild! !
 
 !RTFTokenizer methodsFor: 'accesing' stamp: 'MR 5/3/2006 10:51'!
-  peekAfterAfter
+peekAfterAfter
 	^afterAfter! !
 
 !RTFTokenizer methodsFor: 'accesing' stamp: 'MR 4/30/2006 23:41'!
-                              peekAfterNext
+peekAfterNext
 	^afterNext! !
 
 !RTFTokenizer methodsFor: 'accesing' stamp: 'MR 4/30/2006 23:40'!
@@ -2134,19 +2134,19 @@ peekLast
 	^last! !
 
 !RTFTokenizer methodsFor: 'accesing' stamp: 'MR 4/30/2006 23:40'!
-          peekNext
+peekNext
 	^next! !
 
 !RTFParserState methodsFor: 'private' stamp: 'tat 5/5/2006 00:25'!
-         pop
+pop
 	self empty ifTrue: [^nil] ifFalse: [^stack removeLast]! !
 
 !RTFParserState methodsFor: 'private' stamp: 'tat 5/5/2006 00:25'!
-                             push: anObject
+push: anObject
 	stack addLast: anObject! !
 
 !RTFTokenizer methodsFor: 'accesing' stamp: 'MR 7/4/2006 10:54'!
-                   readNext
+readNext
 	last := next.
 	next := afterNext.
 	afterNext := afterAfter.
@@ -2155,7 +2155,7 @@ peekLast
 ! !
 
 !RTFTokenizer methodsFor: 'private' stamp: 'jmv 3/30/2011 14:39'!
-                           readStreamUpToNoEscapeInto: tokenStream
+readStreamUpToNoEscapeInto: tokenStream
 	"reads from the stream until the \ at the end is not an escape character (i.e. not \\,\{ or \}"
 	"assume that stream is not at end"
 	| token peek index peekValue |
@@ -2213,31 +2213,31 @@ peekLast
 ! !
 
 !RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:48'!
-                         red
+red
 	^red! !
 
 !RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:48'!
-                red: r
+red: r
 	red := r! !
 
 !RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 5/6/2006 17:40'!
-  resetStyle: builder
+resetStyle: builder
 	type = #paragraph ifTrue: [builder buildResetParagraphSettings. builder buildResetCharFormat].
 	type = #character ifTrue: [builder buildResetCharFormat ]! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:59'!
-             restoreState
+restoreState
 	"restores the state of the parser on exiting a block"
 	state restoreState.
 	builder restoreState! !
 
 !RTFParserState methodsFor: 'stack' stamp: 'tat 5/4/2006 23:42'!
-            restoreState
+restoreState
 	context := self pop.
 	destination := self pop! !
 
 !RTFTextBuilder methodsFor: 'state' stamp: 'jmv 4/8/2011 15:07'!
-                               restoreState
+restoreState
 
 	spaceAfter _ stateStack removeLast.
 	spaceBefore _ stateStack removeLast.
@@ -2255,18 +2255,18 @@ peekLast
 	textConverter _ stateStack removeLast! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:59'!
-                         saveState
+saveState
 	"saves the state of the parser on entering a block"
 	state saveState.
 	builder saveState! !
 
 !RTFParserState methodsFor: 'stack' stamp: 'tat 11/1/2006 15:00'!
-                      saveState
+saveState
 	self push: (destination copy).
 	self push: (context copy)! !
 
 !RTFTextBuilder methodsFor: 'state' stamp: 'jmv 4/8/2011 15:08'!
-                      saveState
+saveState
 	
 	stateStack
 		addLast: textConverter;
@@ -2284,18 +2284,18 @@ peekLast
 		addLast: spaceBefore;
 		addLast: spaceAfter! !
 
-!RTFChunkScanner class methodsFor: 'instance creation' stamp: 'mir 8/12/2006 16:04'!
-                              scan: chunk into: buffer startingAt: index
-	^self new scan: chunk into: buffer startingAt: index! !
-
 !RTFChunkScanner methodsFor: 'initialize' stamp: 'mir 8/12/2006 16:05'!
-                   scan: chunkString into: aBuffer startingAt: index
+scan: chunkString into: aBuffer startingAt: index
 	chunk := chunkString.
 	buffer := aBuffer.
 	self scanStartingAt: index! !
 
+!RTFChunkScanner class methodsFor: 'instance creation' stamp: 'mir 8/12/2006 16:04'!
+scan: chunk into: buffer startingAt: index
+	^self new scan: chunk into: buffer startingAt: index! !
+
 !RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/12/2006 15:59'!
-                              scanCharactersFrom: startIndex to: stopIndex in: sourceString rightX: rightX stopConditions: stops kern: kernDelta
+scanCharactersFrom: startIndex to: stopIndex in: sourceString rightX: rightX stopConditions: stops kern: kernDelta
 	"Primitive. This is the inner loop of text display--but see 
 	scanCharactersFrom: to:rightX: which would get the string, 
 	stopConditions and displaying from the instance. March through source 
@@ -2320,7 +2320,7 @@ peekLast
 	^stops at: CharacterScanner endOfRunCode! !
 
 !RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/12/2006 15:16'!
-                    scanFrom: startIndex to: stopIndex
+scanFrom: startIndex to: stopIndex
 	| stopCondition |
 	stopCondition := self scanCharactersFrom: startIndex to: stopIndex in: chunk rightX: SmallInteger maxVal stopConditions: stopConditions kern: 0.
 	stopCondition
@@ -2330,7 +2330,7 @@ peekLast
 			ifFalse: [self perform: stopCondition with: lastIndex]]! !
 
 !RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/14/2006 16:32'!
-                       scanStartingAt: index
+scanStartingAt: index
 	| chunkSize |
 	self bufferStream reset.
 	stopConditions := ScannerTable.
@@ -2347,7 +2347,7 @@ peekLast
 	self addScannedString! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:11'!
-                              skipBlock
+skipBlock
 
 	"skips a complete {..} block"
 
@@ -2364,7 +2364,7 @@ peekLast
 	tokenizer getToken! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'kalin 4/30/2006 23:12'!
-         skipCommand
+skipCommand
 
 	"skips a command. skips the whole block if the next token
 	is a #blockOpen"
@@ -2376,12 +2376,12 @@ peekLast
 	! !
 
 !RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/29/2011 10:14'!
-       skipNextCharacters: value
+skipNextCharacters: value
 	"sets a count to skip the next character added with simplyAddContents:"
 	skipNextCharacters := value! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:13'!
-                            skipUntilBlockClose
+skipUntilBlockClose
 	"skips until a not parsed #blockClose token"
 
 	[(tokenizer lookAhead: 1) type = #blockClose] whileFalse: 
@@ -2390,14 +2390,14 @@ peekLast
 ! !
 
 !RTFToken methodsFor: 'accessing' stamp: 'kalin 5/7/2006 19:15'!
-     string
+string
     "returns the contents of this string token"
 
 	self isStringToken ifTrue: [^content].
 	^nil! !
 
 !RTFToken methodsFor: 'private' stamp: 'MR 7/4/2006 10:50'!
-                          string: aContent
+string: aContent
 	content := aContent.
 	type := #string! !
 
@@ -2406,11 +2406,11 @@ style
 	^style! !
 
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 15:32'!
-          style: s
+style: s
 	style := s! !
 
 !RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/30/2011 16:34'!
- text
+text
 	"viene a ser equivalente a #contentTree, no?
 	En ese caso, llamara #finishBuild, PERO SOLO UNA VEZ!!
 	"
@@ -2421,15 +2421,15 @@ style
 	^textStream contents! !
 
 !RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/29/2011 10:16'!
-                              textConverter
+textConverter
 	^textConverter! !
 
 !RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/29/2011 10:24'!
-                        textConverter: aTextConverter
+textConverter: aTextConverter
 	textConverter := aTextConverter! !
 
 !RTFTextBuilder methodsFor: 'private' stamp: 'jmv 4/6/2011 10:38'!
-                          textConverterFromCharset: n
+textConverterFromCharset: n
 	"returns a new text converter from a given font charset"
 	n = 77 ifTrue: [^RTFMacRomanUnicodeTextConverter new].
 	n = 204 ifTrue: [^RTFCP1251UnicodeTextConverter new].
@@ -2437,26 +2437,26 @@ style
 	^self textConverter! !
 
 !RTFCP1250UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
-                        toSqueak: char
+toSqueak: char
 	^self toSqueak: char withTable: #(8364 129 8218 131 8222 8230 8224 8225 136 8240 352 8249 346 356 381 377 144 8216 8217 8220 8221 8226 8211 8212 152 8482 353 8250 347 357 382 378 160 711 728 321 164 260 166 167 168 169 350 171 172 173 174 379 176 177 731 322 180 181 182 183 184 261 351 187 317 733 318 380 340 193 194 258 196 313 262 199 268 201 280 203 282 205 206 270 272 323 327 211 212 336 214 215 344 366 218 368 220 221 354 223 341 225 226 259 228 314 263 231 269 233 281 235 283 237 238 271 273 324 328 243 244 337 246 247 345 367 250 369 252 253 355 729)
 ! !
 
 !RTFCP1251UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
-  toSqueak: char
+toSqueak: char
 	^self toSqueak: char withTable: #(1026 1027 8218 1107 8222 8230 8224 8225 8364 8240 1033 8249 1034 1036 1035 1039 1106 8216 8217 8220 8221 8226 8211 8212 152 8482 1113 8250 1114 1116 1115 1119 160 1038 1118 1032 164 1168 166 167 1025 169 1028 171 172 173 174 1031 176 177 1030 1110 1169 181 182 183 1105 8470 1108 187 1112 1029 1109 1111 1040 1041 1042 1043 1044 1045 1046 1047 1048 1049 1050 1051 1052 1053 1054 1055 1056 1057 1058 1059 1060 1061 1062 1063 1064 1065 1066 1067 1068 1069 1070 1071 1072 1073 1074 1075 1076 1077 1078 1079 1080 1081 1082 1083 1084 1085 1086 1087 1088 1089 1090 1091 1092 1093 1094 1095 1096 1097 1098 1099 1100 1101 1102 1103)
 ! !
 
 !RTFCP1252UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
-   toSqueak: char
+toSqueak: char
 	^self toSqueak: char withTable: #(8364 129 8218 402 8222 8230 8224 8225 710 8240 352 8249 338 141 381 143 144 8216 8217 8220 8221 8226 8211 8212 732 8482 353 8250 339 157 382 376 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255)
 ! !
 
 !RTFLatin1TextConverter methodsFor: 'conversion' stamp: 'mir 8/13/2006 17:36'!
-        toSqueak: aChar
+toSqueak: aChar
 	^aChar! !
 
 !RTFMacRomanUnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:13'!
-             toSqueak: char
+toSqueak: char
 	^self toSqueak: char withTable: #(
 		196 197 199 201 209 214 220 225 224 226 228 227 229 231 233 232
 		234 235 237 236 238 239 241 243 242 244 246 245 250 249 251 252
@@ -2468,11 +2468,11 @@ style
 		63743 210 218 219 217 305 710 732 175 728 729 730 184 733 731 711 256)! !
 
 !RTFMappingUnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:15'!
-                          toSqueak: char
+toSqueak: char
 	^self subclassResponsibility! !
 
 !RTFMappingUnicodeTextConverter methodsFor: 'conversion' stamp: 'jmv 4/6/2011 10:40'!
-                         toSqueak: char withTable: table
+toSqueak: char withTable: table
 
 	| value |
 	value _ char asciiValue.
@@ -2482,20 +2482,20 @@ style
 ! !
 
 !RTFTokenizer methodsFor: 'accesing' stamp: 'tat 5/4/2006 00:46'!
- tokenClass
+tokenClass
 	"the token class used by this tokenizer"
 	^RTFToken! !
 
 !RTFParserDestination methodsFor: 'accessing' stamp: 'tat 11/1/2006 15:03'!
-                type
+type
 	^type! !
 
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
-            type
+type
 	^type! !
 
 !RTFToken methodsFor: 'accessing' stamp: 'MR 5/2/2006 13:48'!
-                  type
+type
 	self isBlockOpen ifTrue: [^#blockOpen].
 	self isBlockClose ifTrue: [^#blockClose].
 	self isKeyword ifTrue: [^#keyword].
@@ -2504,15 +2504,15 @@ style
 ! !
 
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
-           type: t
+type: t
 	type := t! !
 
 !RTFToken methodsFor: 'private' stamp: 'MR 7/4/2006 10:50'!
-             type: aType
+type: aType
 	type := aType.! !
 
 !RTFParserDestination methodsFor: 'accessing' stamp: 'tat 11/1/2006 15:03'!
-                    value: arg
+value: arg
 	block ifNotNil: [^block value: arg]! !
 
 !RTFUnicode class methodsFor: 'compatibility' stamp: 'jmv 3/30/2011 14:55'!
@@ -2520,12 +2520,12 @@ value: unicodeCodePoint
 	^self value: unicodeCodePoint or: $?! !
 
 !RTFUnicode class methodsFor: 'compatibility' stamp: 'jmv 3/30/2011 15:27'!
-                  value: unicodeCodePoint or: aCharacter
+value: unicodeCodePoint or: aCharacter
 	"In Cuis, #unicodeCodePoint: handles those Unicode characters that are present in the ISO8859-15 char set"
 	^(Character unicodeCodePoint: unicodeCodePoint) ifNil: [ aCharacter ]! !
 
 !RTFToken methodsFor: 'accessing' stamp: 'kalin 5/7/2006 19:14'!
- word
+word
     
     "if this token is a command, returns the command's keyword.
      For example:   \kw0102  getWord -> kw"
@@ -2534,11 +2534,11 @@ value: unicodeCodePoint
 	^nil! !
 
 !RTFToken methodsFor: 'private' stamp: 'MR 4/30/2006 23:16'!
-                              word: aWord
+word: aWord
 	self word: aWord withArg: nil! !
 
 !RTFToken methodsFor: 'private' stamp: 'MR 7/4/2006 10:50'!
-                     word: aWord withArg: anArg
+word: aWord withArg: anArg
 	content := aWord.
 	arg := anArg.
 	type := #keyword! !

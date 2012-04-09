@@ -1,8 +1,8 @@
-'From Cuis 4.0Alpha of 29 March 2012 [latest update: #1225] on 3 April 2012 at 10:00:33 am'!
-'Description Please enter a description for this package '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:42:23 am'!
+'Description Description Please enter a description for this package '!
 
 !String methodsFor: '*rtfExporting' stamp: 'jmv 11/22/2011 14:52'!
-  iso8859s15ToRTFEncoding
+iso8859s15ToRTFEncoding
 	"Convert the given string to RTF escaped Unicode from the internal encoding: ISO Latin 9 (ISO 8859-15)"
 	"
 	self assert: ('A¢¤' iso8859s15ToRTFEncoding) hex = ' 'A\u162?\u8364?''
@@ -23,7 +23,7 @@
 					strm nextPut: $? ]]]! !
 
 !Text class methodsFor: '*rtfExporting' stamp: 'jmv 11/1/2011 10:40'!
-                    pointSizeConversionFactor
+pointSizeConversionFactor
 	"This constant is used for conversion of font point sizes ofr RTF export and import.
 	In theory, it shouldn't be needed. After all, a 72point font in RTF should be imported as a 72 point font in Cuis.
 	
@@ -35,7 +35,7 @@
 	^1! !
 
 !Text methodsFor: '*rtfExporting' stamp: 'jmv 11/22/2011 15:30'!
-            rtfString
+rtfString
 	"
 	| text |
 	text _ RTFConversionTest textSample1 asStyledText.
@@ -83,7 +83,7 @@
 		estimatedSize: string size! !
 
 !Text methodsFor: '*rtfExporting' stamp: 'jmv 3/13/2012 12:55'!
-       writeRTFHeaderOn: aStream colorTable: colorArray fontTable: fontNamesArray
+writeRTFHeaderOn: aStream colorTable: colorArray fontTable: fontNamesArray
 
 	aStream nextPutAll: '{\rtf'; newLine.
 
@@ -97,7 +97,7 @@
 	aStream nextPutAll: '}'; newLine! !
 
 !TextAlignment methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:52'!
-          writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 	alignment caseOf: {
 		[ 0 ] -> [ aStream nextPutAll: '\ql ' ].
@@ -107,7 +107,7 @@
 	^0! !
 
 !TextAnchor methodsFor: '*rtfExporting' stamp: 'jmv 4/7/2011 15:08'!
-               writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip: one in this case"
 	aStream
 		nextPutAll: '{\*\shppict{\pict\pngblip ';
@@ -117,18 +117,18 @@
 	^1! !
 
 !TextAttribute methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:51'!
-                  writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 	^0! !
 
 !TextColor methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:52'!
-                  writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 	aStream nextPutAll: '\cf'; nextPutAll: (colorArray indexOf: color) asString; space.
 	^0! !
 
 !TextEmphasis methodsFor: '*rtfExporting' stamp: 'jmv 4/12/2011 09:59'!
-                          writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 
 	(emphasisCode allMask: AbstractFont boldCode) ifTrue: [
@@ -144,7 +144,7 @@
 	^0! !
 
 !TextFontFamilyAndSize methodsFor: '*rtfExporting' stamp: 'jmv 4/12/2011 09:06'!
-                        writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 	"We should also reference familyName, in the table with \f# where # is the number in the table..."
 
@@ -152,7 +152,7 @@
 	^0! !
 
 !TextKern methodsFor: '*rtfExporting' stamp: 'jmv 4/7/2011 15:21'!
-                          writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 	| quarterPoints twips |
 	quarterPoints _ kern * 4.	"This maybe needs tweaking!!"
@@ -163,25 +163,25 @@
 	^0! !
 
 !TextAlignment methodsFor: '*rtfExporting' stamp: 'jmv 1/21/2011 14:57'!
- writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop."
 	aStream nextPutAll: '\ql '! !
 
 !TextAnchor methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:12'!
-           writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop."! !
 
 !TextAttribute methodsFor: '*rtfExporting' stamp: 'jmv 1/21/2011 13:41'!
-    writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop."! !
 
 !TextColor methodsFor: '*rtfExporting' stamp: 'jmv 1/21/2011 13:51'!
-        writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop."
 	aStream nextPutAll: '\cf0 '! !
 
 !TextEmphasis methodsFor: '*rtfExporting' stamp: 'jmv 4/12/2011 09:59'!
-        writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop.
 	Do it in the inverse order of writeRTFStartOn:colorTable:fontTable:"
 
@@ -197,11 +197,11 @@
 		aStream nextPutAll: '\b0 ' ]! !
 
 !TextFontFamilyAndSize methodsFor: '*rtfExporting' stamp: 'jmv 4/7/2011 15:20'!
-     writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop."
 	aStream nextPutAll: '\fs0 '! !
 
 !TextKern methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:52'!
-            writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
+writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop."
 	aStream nextPutAll: '\kerning1\expnd0\expndtw0 ' ! !

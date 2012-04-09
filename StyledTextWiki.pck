@@ -1,4 +1,5 @@
-'From Cuis 4.0 of 16 November 2011 [latest update: #1144] on 14 March 2012 at 1:27:05 pm'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:42:46 am'!
+'Description '!
 !classDefinition: #StyledTextWiki category: #StyledTextWiki!
 Object subclass: #StyledTextWiki
 	instanceVariableNames: 'textModel pages currentPage'
@@ -31,10 +32,10 @@ StyledTextWikiPage class
 
 
 !StyledTextWikiEditor commentStamp: 'bp 12/18/2011 18:09' prior: 0!
-              (StyledTextWikiEditor wiki: StyledTextWiki new) morphicWindow openInWorld!
+(StyledTextWikiEditor wiki: StyledTextWiki new) morphicWindow openInWorld!
 
 !StyledTextWikiEditor methodsFor: 'as yet unclassified' stamp: 'bp 12/21/2011 10:04'!
-                              createMorph
+createMorph
 	| appMorph pagesList newPageButton toolbar |
 	textModel := StyledTextModel withText: wiki currentPage text.
 	appMorph := PluggableStyledTextMorph withModel: textModel in: STEMainMorph newColumn.
@@ -59,30 +60,30 @@ StyledTextWikiPage class
 	^appMorph! !
 
 !StyledTextWiki methodsFor: 'as yet unclassified' stamp: 'bp 10/24/2010 16:58'!
-              currentPage
+currentPage
 	^currentPage! !
 
 !StyledTextWiki methodsFor: 'as yet unclassified' stamp: 'bp 10/24/2010 17:00'!
-                  currentPageIndex
+currentPageIndex
 	^pages indexOf: currentPage! !
 
 !StyledTextWikiEditor methodsFor: 'as yet unclassified' stamp: 'bp 10/24/2010 17:00'!
-                        currentPageIndex
+currentPageIndex
 	^wiki currentPageIndex! !
 
 !StyledTextWiki methodsFor: 'as yet unclassified' stamp: 'jmv 8/10/2011 10:55'!
-   currentPageIndex: anInteger
+currentPageIndex: anInteger
 	currentPage := pages at: anInteger.
 	textModel actualContents: currentPage text! !
 
 !StyledTextWikiEditor methodsFor: 'as yet unclassified' stamp: 'bp 7/8/2011 22:49'!
-                           currentPageIndex: anInteger
+currentPageIndex: anInteger
 	self updateCurrentPage.
 	wiki currentPageIndex: anInteger.
 	textModel actualContents: wiki currentPage text! !
 
 !StyledTextWiki methodsFor: 'as yet unclassified' stamp: 'jmv 8/10/2011 10:56'!
-   initialize
+initialize
 	| heading1 |
 	textModel _ StyledTextModel new.
 	heading1 _ textModel styleSet paragraphStyleNamed: 'Heading 1'.
@@ -94,7 +95,7 @@ StyledTextWikiPage class
 	textModel actualContents: currentPage text! !
 
 !StyledTextWikiEditor methodsFor: 'as yet unclassified' stamp: 'jmv 5/24/2011 11:00'!
-               morphicWindow
+morphicWindow
 	| window |
 	window _ SystemWindow new model: self.
 	window setLabel: 'Styled Text Wiki'.
@@ -104,7 +105,7 @@ StyledTextWikiPage class
 	^ window! !
 
 !StyledTextWikiPage methodsFor: 'as yet unclassified' stamp: 'jmv 3/14/2012 08:27'!
-          name
+name
 	| string |
 	string _ self text asString lines first.
 	string size > 30 ifTrue: [
@@ -113,7 +114,7 @@ StyledTextWikiPage class
 	^ string! !
 
 !StyledTextWiki methodsFor: 'as yet unclassified' stamp: 'jmv 1/13/2012 14:03'!
-                            newPage
+newPage
 	| normal |
 	normal _ textModel styleSet defaultStyle.
 	currentPage := self newPage:
@@ -121,7 +122,7 @@ StyledTextWikiPage class
 	textModel actualContents: currentPage text! !
 
 !StyledTextWikiEditor methodsFor: 'as yet unclassified' stamp: 'bp 7/8/2011 23:11'!
-                         newPage
+newPage
 	| selection pageName |
 	selection := textMorph selectionInterval.
 	pageName := textModel actualContents copyFrom: selection first to: selection last.
@@ -134,51 +135,51 @@ StyledTextWikiPage class
 		currentParagraphStyleIndex: 3! !
 
 !StyledTextWiki methodsFor: 'as yet unclassified' stamp: 'bp 10/24/2010 16:47'!
-                              newPage: aText
+newPage: aText
 	^pages add: ((StyledTextWikiPage wiki: self)
 		text: aText;
 		yourself)! !
 
 !StyledTextWiki methodsFor: 'as yet unclassified' stamp: 'bp 10/24/2010 16:39'!
-                    pageNames
+pageNames
 	^pages collect: [:each | each name]! !
 
 !StyledTextWikiEditor methodsFor: 'as yet unclassified' stamp: 'bp 7/8/2011 22:49'!
-                         pageNames
+pageNames
 	^wiki pageNames! !
 
 !StyledTextWikiEditor methodsFor: 'as yet unclassified' stamp: 'bp 10/24/2010 16:58'!
-           setWiki: aStyledTextWiki
+setWiki: aStyledTextWiki
 	wiki := aStyledTextWiki! !
 
 !StyledTextWikiPage methodsFor: 'as yet unclassified' stamp: 'jmv 1/13/2012 14:03'!
-                      setWiki: aStyledTextWiki
+setWiki: aStyledTextWiki
 	| normal |
 	wiki := aStyledTextWiki.
 	normal _ wiki textModel styleSet defaultStyle.
 	text := Text string: '' attribute: (ParagraphStyleReference for: normal)! !
 
 !StyledTextWikiPage methodsFor: 'as yet unclassified' stamp: 'bp 10/24/2010 16:17'!
-               text
+text
 	^text! !
 
 !StyledTextWikiPage methodsFor: 'as yet unclassified' stamp: 'bp 10/24/2010 16:45'!
-                            text: aText
+text: aText
 	text := aText! !
 
 !StyledTextWiki methodsFor: 'as yet unclassified' stamp: 'jmv 8/10/2011 10:53'!
-                 textModel
+textModel
 	^textModel! !
 
 !StyledTextWikiEditor methodsFor: 'as yet unclassified' stamp: 'jmv 1/6/2012 12:03'!
-                 updateCurrentPage
+updateCurrentPage
 	textMorph textMorph acceptContents.
 	wiki currentPage text: textModel actualContents! !
 
 !StyledTextWikiEditor class methodsFor: 'as yet unclassified' stamp: 'bp 10/24/2010 16:56'!
-                        wiki: aStyledTextWiki
+wiki: aStyledTextWiki
 	^self new setWiki: aStyledTextWiki! !
 
 !StyledTextWikiPage class methodsFor: 'as yet unclassified' stamp: 'bp 10/24/2010 16:56'!
-        wiki: aStyledTextWiki
+wiki: aStyledTextWiki
 	^self new setWiki: aStyledTextWiki! !
