@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:42:20 am'!
-'Description '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 10 April 2012 at 1:00:26 pm'!
+'Description Description '!
 !classDefinition: #ExternalAddress category: #'FFI-Kernel'!
 ByteArray variableByteSubclass: #ExternalAddress
 	instanceVariableNames: ''
@@ -30,16 +30,6 @@ Object subclass: #ExternalObject
 ExternalObject class
 	instanceVariableNames: ''!
 
-!classDefinition: #ExternalFunction category: #'FFI-Kernel'!
-ExternalObject subclass: #ExternalFunction
-	instanceVariableNames: 'flags argTypes'
-	classVariableNames: 'FFIErrorMessages'
-	poolDictionaries: 'FFIConstants'
-	category: 'FFI-Kernel'!
-!classDefinition: 'ExternalFunction class' category: #'FFI-Kernel'!
-ExternalFunction class
-	instanceVariableNames: ''!
-
 !classDefinition: #ExternalLibrary category: #'FFI-Kernel'!
 ExternalObject subclass: #ExternalLibrary
 	instanceVariableNames: 'name'
@@ -48,6 +38,26 @@ ExternalObject subclass: #ExternalLibrary
 	category: 'FFI-Kernel'!
 !classDefinition: 'ExternalLibrary class' category: #'FFI-Kernel'!
 ExternalLibrary class
+	instanceVariableNames: ''!
+
+!classDefinition: #FFIConstants category: #'FFI-Pools'!
+SharedPool subclass: #FFIConstants
+	instanceVariableNames: ''
+	classVariableNames: 'FFIAtomicTypeMask FFIAtomicTypeShift FFICallTypeApi FFICallTypeCDecl FFIErrorAddressNotFound FFIErrorAttemptToPassVoid FFIErrorBadAddress FFIErrorBadArg FFIErrorBadArgs FFIErrorBadAtomicType FFIErrorBadExternalFunction FFIErrorBadExternalLibrary FFIErrorBadReturn FFIErrorCallFrameTooBig FFIErrorCallType FFIErrorCoercionFailed FFIErrorGenericError FFIErrorIntAsPointer FFIErrorInvalidPointer FFIErrorModuleNotFound FFIErrorNoModule FFIErrorNotFunction FFIErrorStructSize FFIErrorWrongType FFIFlagAtomic FFIFlagPointer FFIFlagStructure FFINoCalloutAvailable FFIStructSizeMask FFITypeBool FFITypeDoubleFloat FFITypeSignedByte FFITypeSignedChar FFITypeSignedInt FFITypeSignedLongLong FFITypeSignedShort FFITypeSingleFloat FFITypeUnsignedByte FFITypeUnsignedChar FFITypeUnsignedInt FFITypeUnsignedLongLong FFITypeUnsignedShort FFITypeVoid'
+	poolDictionaries: ''
+	category: 'FFI-Pools'!
+!classDefinition: 'FFIConstants class' category: #'FFI-Pools'!
+FFIConstants class
+	instanceVariableNames: ''!
+
+!classDefinition: #ExternalFunction category: #'FFI-Kernel'!
+ExternalObject subclass: #ExternalFunction
+	instanceVariableNames: 'flags argTypes'
+	classVariableNames: 'FFIErrorMessages'
+	poolDictionaries: 'FFIConstants'
+	category: 'FFI-Kernel'!
+!classDefinition: 'ExternalFunction class' category: #'FFI-Kernel'!
+ExternalFunction class
 	instanceVariableNames: ''!
 
 !classDefinition: #ExternalLibraryFunction category: #'FFI-Kernel'!
@@ -88,16 +98,6 @@ Object subclass: #ExternalType
 	category: 'FFI-Kernel'!
 !classDefinition: 'ExternalType class' category: #'FFI-Kernel'!
 ExternalType class
-	instanceVariableNames: ''!
-
-!classDefinition: #FFIConstants category: #'FFI-Pools'!
-SharedPool subclass: #FFIConstants
-	instanceVariableNames: ''
-	classVariableNames: 'FFIAtomicTypeMask FFIAtomicTypeShift FFICallTypeApi FFICallTypeCDecl FFIErrorAddressNotFound FFIErrorAttemptToPassVoid FFIErrorBadAddress FFIErrorBadArg FFIErrorBadArgs FFIErrorBadAtomicType FFIErrorBadExternalFunction FFIErrorBadExternalLibrary FFIErrorBadReturn FFIErrorCallFrameTooBig FFIErrorCallType FFIErrorCoercionFailed FFIErrorGenericError FFIErrorIntAsPointer FFIErrorInvalidPointer FFIErrorModuleNotFound FFIErrorNoModule FFIErrorNotFunction FFIErrorStructSize FFIErrorWrongType FFIFlagAtomic FFIFlagPointer FFIFlagStructure FFINoCalloutAvailable FFIStructSizeMask FFITypeBool FFITypeDoubleFloat FFITypeSignedByte FFITypeSignedChar FFITypeSignedInt FFITypeSignedLongLong FFITypeSignedShort FFITypeSingleFloat FFITypeUnsignedByte FFITypeUnsignedChar FFITypeUnsignedInt FFITypeUnsignedLongLong FFITypeUnsignedShort FFITypeVoid'
-	poolDictionaries: ''
-	category: 'FFI-Pools'!
-!classDefinition: 'FFIConstants class' category: #'FFI-Pools'!
-FFIConstants class
 	instanceVariableNames: ''!
 
 
