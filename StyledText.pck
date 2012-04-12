@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:27:44 am'!
-'Description Description '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1253] on 12 April 2012 at 7:55:33 pm'!
+'Description Description Description '!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
 	instanceVariableNames: 'name familyName pointSize emphasis color kern'
@@ -1617,7 +1617,7 @@ initialize
 initialize
 	words _ EnglishDict! !
 
-!STECompleter class methodsFor: 'class initialization' stamp: 'jmv 4/9/2012 10:27'!
+!STECompleter class methodsFor: 'class initialization' stamp: 'bp 4/12/2012 19:55'!
 initialize
 	"
 	STECompleter initialize
@@ -1644,7 +1644,7 @@ initialize
 					strm nextLine substrings do: [ :word | 
 						EnglishDict add: word asLowercase ]
 					]
-				] ensure: strm close ]]! !
+				] ensure: [strm close]]]! !
 
 !STEMainMorph methodsFor: 'initialization' stamp: 'jmv 5/24/2011 09:02'!
 initialize
@@ -1914,14 +1914,6 @@ model: aModel
 	emphasisHere _ { ParagraphStyleReference for: model styleSet defaultStyle }.
 	self buildCmdActions! !
 
-!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 9/16/2009 11:29'!
-model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
-
-	self model: anObject.
-	getListSelector _ getListSel.
-	getIndexSelector _ getSelectionSel.
-	setIndexSelector _ setSelectionSel.! !
-
 !PluggableDropDownListMorph class methodsFor: 'instance creation' stamp: 'jmv 9/16/2009 11:30'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
 
@@ -1930,6 +1922,14 @@ model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter:
 		listGetter: getListSel
 		indexGetter: getSelectionSel
 		indexSetter: setSelectionSel! !
+
+!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 9/16/2009 11:29'!
+model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
+
+	self model: anObject.
+	getListSelector _ getListSel.
+	getIndexSelector _ getSelectionSel.
+	setIndexSelector _ setSelectionSel.! !
 
 !PluggableDropDownListMorph methodsFor: 'model' stamp: 'jmv 6/3/2011 14:43'!
 modelChanged
