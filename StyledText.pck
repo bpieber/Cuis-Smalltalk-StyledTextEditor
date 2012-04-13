@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1253] on 12 April 2012 at 7:55:33 pm'!
-'Description Description Description '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1255] on 12 April 2012 at 10:40:04 pm'!
+'Description Description Description Description '!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
 	instanceVariableNames: 'name familyName pointSize emphasis color kern'
@@ -18,6 +18,36 @@ TextAttribute subclass: #CharacterStyleReference
 	category: 'StyledText'!
 !classDefinition: 'CharacterStyleReference class' category: #StyledText!
 CharacterStyleReference class
+	instanceVariableNames: ''!
+
+!classDefinition: #FancyButtonMorph category: #'StyledText-Morphic-Windows'!
+PluggableButtonMorph subclass: #FancyButtonMorph
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'StyledText-Morphic-Windows'!
+!classDefinition: 'FancyButtonMorph class' category: #'StyledText-Morphic-Windows'!
+FancyButtonMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #FancyDraggeableButtonMorph category: #'StyledText-Morphic-Windows'!
+DraggeableButtonMorph subclass: #FancyDraggeableButtonMorph
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'StyledText-Morphic-Windows'!
+!classDefinition: 'FancyDraggeableButtonMorph class' category: #'StyledText-Morphic-Windows'!
+FancyDraggeableButtonMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #FancyScrollBar category: #'StyledText-Morphic-Windows'!
+ScrollBar subclass: #FancyScrollBar
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'StyledText-Morphic-Windows'!
+!classDefinition: 'FancyScrollBar class' category: #'StyledText-Morphic-Windows'!
+FancyScrollBar class
 	instanceVariableNames: ''!
 
 !classDefinition: #ParagraphStyle category: #StyledText!
@@ -199,6 +229,15 @@ They should not be copied, but new instances might be created.!
 
 !CharacterStyleReference commentStamp: '<historical>' prior: 0!
 A CharacterStyleReference encodes a CharacterStyle change applicable over a given range of text. Instances of CharacterStyleReference (and other TextAttributes) are usually volatile, and they are usually referenced only from the Text.!
+
+!FancyButtonMorph commentStamp: '<historical>' prior: 0!
+For STE drop down list and fancy scrollbars!
+
+!FancyDraggeableButtonMorph commentStamp: '<historical>' prior: 0!
+for STE scrollbars!
+
+!FancyScrollBar commentStamp: '<historical>' prior: 0!
+A Fancy Scrollbar for STE.!
 
 !ParagraphStyle commentStamp: '<historical>' prior: 0!
 A ParagraphStyle comprises the formatting information for composing and displaying a unit (usually a paragraph) of text.
@@ -607,10 +646,9 @@ buildWithStyles: aDictionary contents: aBlock
 	aBlock value: builder.
 	^builder text! !
 
-!STETheme methodsFor: 'colors' stamp: 'jmv 1/4/2012 15:49'!
-buttonPressedIconColor
-
-	^Color red! !
+!FancyScrollBar methodsFor: 'initialize' stamp: 'jmv 4/12/2012 22:12'!
+buttonClass
+	^FancyButtonMorph! !
 
 !StyledTextEditor methodsFor: 'editing keys' stamp: 'jmv 9/21/2011 10:54'!
 changeCharacterStyle: aKeyboardEvent
@@ -1198,6 +1236,34 @@ drawLabelOn: aCanvas
 drawLabelOn: aCanvas
 	"Not needed. Our label is a submorph"! !
 
+!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:15'!
+drawOn: aCanvas
+
+	self isRoundButton
+		ifTrue: [ icon ifNil: [ self drawRoundGradientLookOn: aCanvas ]]
+		ifFalse: [
+			self drawSTELookOn: aCanvas].
+
+	icon ifNotNil: [
+		self drawInconOn: aCanvas ].! !
+
+!FancyDraggeableButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:14'!
+drawOn: aCanvas
+
+	self drawSTELookOn: aCanvas! !
+
+!FancyScrollBar methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:20'!
+drawOn: aCanvas
+
+	aCanvas
+		roundRect: bounds
+		color: (Color gray: 0.4)
+		radius: 4.
+	aCanvas
+		roundRect: (bounds insetBy: 1)
+		color: (Color gray: 0.95)
+		radius: 4! !
+
 !PluggableActOnReturnKeyListMorph methodsFor: 'drawing' stamp: 'jmv 3/13/2012 10:10'!
 drawOn: aCanvas
 	"We draw our shadow outside our strict bounds..."
@@ -1214,12 +1280,30 @@ drawOn: aCanvas
 		color: (Color white)
 		radius: 4! !
 
-!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 1/2/2012 22:15'!
+!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:19'!
 drawOn: aCanvas
 
-	Theme current steButtons
+	"Theme current steButtons"
+	true
 		ifTrue: [ self drawSTELookOn: aCanvas ]
 		ifFalse: [ self drawBasicLookOn: aCanvas ]! !
+
+!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:21'!
+drawSTELookOn: aCanvas
+
+	aCanvas image: (FormCanvas steButtonForm: bounds extent) at: bounds topLeft! !
+
+!FancyDraggeableButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:21'!
+drawSTELookOn: aCanvas
+
+	aCanvas
+		roundRect: ((bounds insetBy: (owner bounds isWide ifTrue: [0@4] ifFalse: [4@0])) translateBy: (0@0))
+		color: (Color black)
+		radius: 4.
+	aCanvas
+		roundRect: ((bounds insetBy: (owner bounds isWide ifTrue: [0@4] ifFalse: [5@0 corner: 4@0])) translateBy: (-1@0))
+		color: (self isPressed ifTrue: [Color red] ifFalse: [Color gray: 0.86])
+		radius: 4.! !
 
 !PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 1/4/2012 15:55'!
 drawSTELookOn: aCanvas
@@ -1557,6 +1641,26 @@ hash
 	"Rather cheap. Can be improved."
 	^ paragraphStyle shortDescription hash! !
 
+!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:37'!
+iconColor
+
+	^ self isPressed
+		ifTrue: [ Color red ]
+		ifFalse: [
+			self mouseIsOver
+				ifTrue: [ Color gray: 0.75 ]
+				ifFalse: [ Color white ]].! !
+
+!FancyDraggeableButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:37'!
+iconColor
+
+	^ self isPressed
+		ifTrue: [ Color red ]
+		ifFalse: [
+			self mouseIsOver
+				ifTrue: [ Color gray: 0.75 ]
+				ifFalse: [ Color white ]].! !
+
 !CharacterStyle methodsFor: 'initialization' stamp: 'jmv 8/11/2011 10:37'!
 initialize
 	name _ ''.
@@ -1572,7 +1676,7 @@ initialize
 	alignment _ 0.
 	tabsArray _ ParagraphStyle defaultTabsArray! !
 
-!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 1/4/2012 17:39'!
+!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 4/12/2012 22:31'!
 initialize
 	| icon |
 	super initialize.
@@ -1580,10 +1684,10 @@ initialize
 	self borderColor: Color black.
 	self getLabel.
 	self extent: 120 @ 20.
-	icon _ Theme current steButtons
-		ifFalse: [ FormCanvas arrowOfDirection: #down size: Theme current scrollbarThickness ]
+	icon _ "Theme current steButtons" true
+		ifFalse: [ FormCanvas arrowOfDirection: #down size: ScrollBar scrollbarThickness ]
 		ifTrue: [ FormCanvas arrowWithGradientOfDirection: #down ].
-	downButton _ PluggableButtonMorph new.
+	downButton _ FancyButtonMorph new.
 	downButton
 		model: self;
 		roundButtonStyle: false;
@@ -1914,6 +2018,14 @@ model: aModel
 	emphasisHere _ { ParagraphStyleReference for: model styleSet defaultStyle }.
 	self buildCmdActions! !
 
+!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 9/16/2009 11:29'!
+model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
+
+	self model: anObject.
+	getListSelector _ getListSel.
+	getIndexSelector _ getSelectionSel.
+	setIndexSelector _ setSelectionSel.! !
+
 !PluggableDropDownListMorph class methodsFor: 'instance creation' stamp: 'jmv 9/16/2009 11:30'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
 
@@ -1922,14 +2034,6 @@ model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter:
 		listGetter: getListSel
 		indexGetter: getSelectionSel
 		indexSetter: setSelectionSel! !
-
-!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 9/16/2009 11:29'!
-model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
-
-	self model: anObject.
-	getListSelector _ getListSel.
-	getIndexSelector _ getSelectionSel.
-	setIndexSelector _ setSelectionSel.! !
 
 !PluggableDropDownListMorph methodsFor: 'model' stamp: 'jmv 6/3/2011 14:43'!
 modelChanged
@@ -2426,9 +2530,18 @@ saveAs: aName
 		ifFalse: [ aName, '.object' ].
 	self save! !
 
-!STETheme methodsFor: 'other options' stamp: 'jmv 1/4/2012 17:36'!
+!PluggableActOnReturnKeyListMorph methodsFor: 'initialization' stamp: 'jmv 4/12/2012 22:05'!
+scrollBarClass
+	^FancyScrollBar! !
+
+!PluggableStyledTextMorph methodsFor: 'initialization' stamp: 'jmv 4/12/2012 22:06'!
+scrollBarClass
+	^FancyScrollBar! !
+
+!FancyScrollBar class methodsFor: 'constants' stamp: 'jmv 4/12/2012 22:27'!
 scrollbarThickness
-	^Preferences scrollbarThickness + 10! !
+
+	^super scrollbarThickness + 10! !
 
 !SampleListModel methodsFor: 'as yet unclassified' stamp: 'jmv 9/16/2009 10:09'!
 sel
@@ -2625,6 +2738,17 @@ shoutAboutToStyle: aSHTextStyler
 	aSHTextStyler classOrMetaClass: nil.
 	^true! !
 
+!FancyScrollBar methodsFor: 'initialize' stamp: 'jmv 4/12/2012 22:23'!
+sliderClass
+	^FancyDraggeableButtonMorph! !
+
+!FancyScrollBar methodsFor: 'scrolling' stamp: 'jmv 4/12/2012 22:21'!
+sliderGrabbed
+
+	sliderShadow
+		bounds: (slider bounds insetBy: (bounds isWide ifTrue: [0@3] ifFalse: [3@0]));
+		show! !
+
 !StyledTextEditor methodsFor: 'notifications' stamp: 'jmv 12/30/2011 10:12'!
 someStyleChanged
 	paragraph composeAll.
@@ -2641,10 +2765,6 @@ spaceAfter
 !ParagraphStyle methodsFor: 'accessing' stamp: 'jmv 4/7/2011 11:14'!
 spaceBefore
 	^spaceBefore! !
-
-!STETheme methodsFor: 'other options' stamp: 'jmv 1/2/2012 18:25'!
-steButtons
-	^true! !
 
 !STEMainMorph methodsFor: 'stepping' stamp: 'jmv 7/11/2011 16:14'!
 step
@@ -4017,6 +4137,50 @@ textHighlight
 !STETheme methodsFor: 'colors' stamp: 'jmv 12/30/2011 11:42'!
 unfocusedTextHighlightFrom: aColor
 	^Color r: 218 g: 228 b: 228 range: 255! !
+
+!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 4/12/2012 22:17'!
+updateDownButtonImage
+	"update the receiver's as a downButton.  put a new image inside"
+
+	icon _ FormCanvas arrowWithGradientOfDirection: #down.
+	actionSelector _ #scrollDown.
+	self
+		roundButtonStyle: false;
+		actWhen: #buttonStillDown;		"to enable multiple action if held down"
+		redrawNeeded! !
+
+!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 4/12/2012 22:17'!
+updateLeftButtonImage
+	"update the receiver's as a downButton.  put a new image inside"
+
+	icon _ FormCanvas arrowWithGradientOfDirection: #left.
+	actionSelector _ #scrollUp.
+	self
+		roundButtonStyle: false;
+		actWhen: #buttonStillDown;		"to enable multiple action if held down"
+		redrawNeeded! !
+
+!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 4/12/2012 22:17'!
+updateRightButtonImage
+	"update the receiver's as a downButton.  put a new image inside"
+
+	icon _ FormCanvas arrowWithGradientOfDirection: #right.
+	actionSelector _ #scrollDown.
+	self
+		roundButtonStyle: false;
+		actWhen: #buttonStillDown;		"to enable multiple action if held down"
+		redrawNeeded! !
+
+!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 4/12/2012 22:17'!
+updateUpButtonImage
+	"update the receiver's as a upButton. put a new image inside"
+
+	icon _ FormCanvas arrowWithGradientOfDirection: #up.
+	actionSelector _ #scrollUp.
+	self
+		roundButtonStyle: false;
+		actWhen: #buttonStillDown;		"to enable multiple action if held down"
+		redrawNeeded! !
 
 !StyleSet methodsFor: 'private' stamp: 'jmv 12/30/2011 10:38'!
 useWeakArrays
