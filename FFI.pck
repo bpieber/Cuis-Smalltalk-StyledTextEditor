@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 10 April 2012 at 1:00:26 pm'!
-'Description Description '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1259] on 17 April 2012 at 10:44:32 pm'!
+'Description Please enter a description for this package'!
 !classDefinition: #ExternalAddress category: #'FFI-Kernel'!
 ByteArray variableByteSubclass: #ExternalAddress
 	instanceVariableNames: ''

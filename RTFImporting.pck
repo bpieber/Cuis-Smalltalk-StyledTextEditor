@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:42:25 am'!
-'Description Description Please enter a description for this package '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1259] on 17 April 2012 at 10:44:38 pm'!
+'Description Please enter a description for this package'!
 !classDefinition: #RTFChunkScanner category: #RTFimporting!
 Object subclass: #RTFChunkScanner
 	instanceVariableNames: 'destX lastIndex xTable rightEdge stopConditions prevIndex bufferStream buffer chunk'
@@ -2284,15 +2284,15 @@ saveState
 		addLast: spaceBefore;
 		addLast: spaceAfter! !
 
+!RTFChunkScanner class methodsFor: 'instance creation' stamp: 'mir 8/12/2006 16:04'!
+scan: chunk into: buffer startingAt: index
+	^self new scan: chunk into: buffer startingAt: index! !
+
 !RTFChunkScanner methodsFor: 'initialize' stamp: 'mir 8/12/2006 16:05'!
 scan: chunkString into: aBuffer startingAt: index
 	chunk := chunkString.
 	buffer := aBuffer.
 	self scanStartingAt: index! !
-
-!RTFChunkScanner class methodsFor: 'instance creation' stamp: 'mir 8/12/2006 16:04'!
-scan: chunk into: buffer startingAt: index
-	^self new scan: chunk into: buffer startingAt: index! !
 
 !RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/12/2006 15:59'!
 scanCharactersFrom: startIndex to: stopIndex in: sourceString rightX: rightX stopConditions: stops kern: kernDelta

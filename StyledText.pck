@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1255] on 12 April 2012 at 10:40:04 pm'!
-'Description Description Description Description '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1259] on 17 April 2012 at 10:44:44 pm'!
+'Description Please enter a description for this package'!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
 	instanceVariableNames: 'name familyName pointSize emphasis color kern'
@@ -1717,10 +1717,6 @@ initialize
 	}.
 	Theme current class beCurrent! !
 
-!STECompleter methodsFor: 'initialization' stamp: 'jmv 7/14/2011 13:58'!
-initialize
-	words _ EnglishDict! !
-
 !STECompleter class methodsFor: 'class initialization' stamp: 'bp 4/12/2012 19:55'!
 initialize
 	"
@@ -1749,6 +1745,10 @@ initialize
 						EnglishDict add: word asLowercase ]
 					]
 				] ensure: [strm close]]]! !
+
+!STECompleter methodsFor: 'initialization' stamp: 'jmv 7/14/2011 13:58'!
+initialize
+	words _ EnglishDict! !
 
 !STEMainMorph methodsFor: 'initialization' stamp: 'jmv 5/24/2011 09:02'!
 initialize
@@ -2018,14 +2018,6 @@ model: aModel
 	emphasisHere _ { ParagraphStyleReference for: model styleSet defaultStyle }.
 	self buildCmdActions! !
 
-!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 9/16/2009 11:29'!
-model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
-
-	self model: anObject.
-	getListSelector _ getListSel.
-	getIndexSelector _ getSelectionSel.
-	setIndexSelector _ setSelectionSel.! !
-
 !PluggableDropDownListMorph class methodsFor: 'instance creation' stamp: 'jmv 9/16/2009 11:30'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
 
@@ -2034,6 +2026,14 @@ model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter:
 		listGetter: getListSel
 		indexGetter: getSelectionSel
 		indexSetter: setSelectionSel! !
+
+!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 9/16/2009 11:29'!
+model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
+
+	self model: anObject.
+	getListSelector _ getListSel.
+	getIndexSelector _ getSelectionSel.
+	setIndexSelector _ setSelectionSel.! !
 
 !PluggableDropDownListMorph methodsFor: 'model' stamp: 'jmv 6/3/2011 14:43'!
 modelChanged
@@ -2800,18 +2800,18 @@ style: aParagraphStyle
 styleSet
 	^styleSet! !
 
-!StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'bp 12/21/2011 10:19'!
-styleSet: aStyleSet
-	^super new
-		styleSet: aStyleSet;
-		yourself! !
-
 !StyledTextModel methodsFor: 'accessing' stamp: 'jmv 8/11/2011 11:31'!
 styleSet: aStyleSet
 	"All assignments to the styleSet ivar should call this method."
 	styleSet ifNotNil: [ styleSet removeActionsWithReceiver: self ].
 	styleSet _ aStyleSet.
 	styleSet ifNotNil: [ styleSet when: #stylesChanged send: #styleSetChanged to: self ]! !
+
+!StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'bp 12/21/2011 10:19'!
+styleSet: aStyleSet
+	^super new
+		styleSet: aStyleSet;
+		yourself! !
 
 !StyledTextModel methodsFor: 'events' stamp: 'jmv 8/11/2011 11:33'!
 styleSetChanged

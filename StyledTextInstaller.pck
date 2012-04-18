@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1253] on 12 April 2012 at 5:49:15 pm'!
-'Description Description Description Description Description Description Description Description '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1259] on 17 April 2012 at 10:41:31 pm'!
+'Description A small package whose purpose is to install the rest of the packages that comprise the StyledTextEditor project.'!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
 	instanceVariableNames: ''

@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:42:46 am'!
-'Description '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1259] on 17 April 2012 at 10:44:49 pm'!
+'Description Please enter a description for this package'!
 !classDefinition: #StyledTextWiki category: #StyledTextWiki!
 Object subclass: #StyledTextWiki
 	instanceVariableNames: 'textModel pages currentPage'

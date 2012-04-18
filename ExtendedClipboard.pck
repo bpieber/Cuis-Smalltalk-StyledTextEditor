@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:42:08 am'!
-'Description '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1259] on 17 April 2012 at 10:44:30 pm'!
+'Description Please enter a description for this package'!
 !classDefinition: #ExtendedClipboardInterface category: #ExtendedClipboard!
 Object subclass: #ExtendedClipboardInterface
 	instanceVariableNames: 'clipboard'

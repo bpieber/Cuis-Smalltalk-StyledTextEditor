@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1254] on 9 April 2012 at 10:42:23 am'!
-'Description Description Please enter a description for this package '!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1259] on 17 April 2012 at 10:44:35 pm'!
+'Description Please enter a description for this package'!
 
 !String methodsFor: '*rtfExporting' stamp: 'jmv 11/22/2011 14:52'!
 iso8859s15ToRTFEncoding
