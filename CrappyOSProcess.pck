@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1259] on 17 April 2012 at 10:44:26 pm'!
-'Description Please enter a description for this package'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 17 April 2012 at 11:21:05 pm'!
+'Description Please enter a description for this package.'!
 !classDefinition: #CrappyUnixOSProcess category: #CrappyOSProcess!
 Object subclass: #CrappyUnixOSProcess
 	instanceVariableNames: 'programName arguments pid pwd runState exitStatus'
@@ -54,52 +54,6 @@ arguments: arrayOfArgumentStrings
 
 	arguments := arrayOfArgumentStrings! !
 
-!CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 11:16'!
-command: aCommandString
-
-	"CrappyUnixOSProcess command: 'ls -l /etc'"
-
-	^ self
-		execAndWait: self defaultShellPath
-		arguments: (Array with: '-c' with: aCommandString)! !
-
-!CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 6/24/2010 10:46'!
-commandResult: aCommandString
-	"
-	Run the command and answer the result
-
-	CrappyUnixOSProcess commandResult: 'ls -l /etc'
-	"
-
-	| r tmpName result directory |
-	r _ Random new.
-	tmpName _ nil.
-	[ tmpName isNil or: [StandardFileStream isAFileNamed: tmpName] ] whileTrue: [
-		tmpName _ FileDirectory default fullNameFor: 'tmp', (r next * 1000000) truncated printString, '.txt' ].
-
-	self command: (aCommandString, ' > "', tmpName, '"').
-
-	(StandardFileStream isAFileNamed: tmpName) ifFalse: [
-		^ nil ].
-
-	[
-		result _ (StandardFileStream readOnlyFileNamed: tmpName) contentsOfEntireFile.
-	] ensure: [
-		directory _ FileDirectory default.
-		directory deleteFileNamed: tmpName ].
-
-	^result! !
-
-!CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 12/4/2009 15:33'!
-defaultShellPath
-	"Default shell to run"
-
-	| path |
-	path := '/bin/sh'.
-	(FileDirectory default fileExists: path)
-		ifTrue: [^ path]
-		ifFalse: [self notify: path, ' not found']! !
-
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 11:27'!
 execAndWait
 	"Start the external OS process. All instances variables except for pid  
@@ -118,21 +72,6 @@ execAndWait
 			runState _ #complete ].
 		d wait.
 	]! !
-
-!CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 11:17'!
-execAndWait: executableFile arguments: arrayOfStrings
-	"Run a program in an external OS process, and answer an instance of 
-	myself which represents the external process.
-	Run and wait for execution end."
-
-	"ExternalUnixOSProcess execAndWait: '/bin/ls' arguments: (Array with: '-l') environment: (UnixProcess env)"
-
-	^ self new
-		programName: executableFile;
-		arguments: arrayOfStrings;
-		initialize;
-		execAndWait
-! !
 
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 11:03'!
 forkAndExec: executableFile arguments: arrayOfStrings
@@ -231,37 +170,6 @@ forkAndForget
 		arguments: arguments
 ! !
 
-!CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 12:04'!
-forkAndForget: executableFile arguments: arrayOfStrings
-	"Run a program in an external OS process, and answer an instance of 
-	myself which represents the external process.
-	
-	Do not wait for the for the forked unix process to finish.
-	There is currently no means for the unix process to finish properly unless squeak exits
-	Use with care, and only for never-ending loops"
-
-	"ExternalUnixOSProcess forkAndExec: '/bin/ls' arguments: (Array with: '-l') environment: (UnixProcess env)"
-
-	^ self new
-		programName: executableFile;
-		arguments: arrayOfStrings;
-		initialize;
-		forkAndForget
-! !
-
-!CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 12:05'!
-forkAndForgetCommand: aCommandString
-"
-	Do not wait for the for the forked unix process to finish.
-	There is currently no means for the unix process to finish properly unless squeak exits
-	Use with care, and only for never-ending loops"
-	
-	"CrappyUnixOSProcess command: 'ls -l /etc'"
-
-	^ self
-		forkAndForget: self defaultShellPath
-		arguments: (Array with: '-c' with: aCommandString)! !
-
 !CrappyUnixOSProcess methodsFor: 'as yet unclassified' stamp: 'jmv 12/14/2009 11:35'!
 primForkExec: executableFile
 	stdIn: inputFileHandle
@@ -346,3 +254,95 @@ sizeOfPointer
 	"Size of a void pointer on this machine with this C compiler."
 
 	^ self primSizeOfPointer! !
+
+!CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 11:16'!
+command: aCommandString
+
+	"CrappyUnixOSProcess command: 'ls -l /etc'"
+
+	^ self
+		execAndWait: self defaultShellPath
+		arguments: (Array with: '-c' with: aCommandString)! !
+
+!CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 6/24/2010 10:46'!
+commandResult: aCommandString
+	"
+	Run the command and answer the result
+
+	CrappyUnixOSProcess commandResult: 'ls -l /etc'
+	"
+
+	| r tmpName result directory |
+	r _ Random new.
+	tmpName _ nil.
+	[ tmpName isNil or: [StandardFileStream isAFileNamed: tmpName] ] whileTrue: [
+		tmpName _ FileDirectory default fullNameFor: 'tmp', (r next * 1000000) truncated printString, '.txt' ].
+
+	self command: (aCommandString, ' > "', tmpName, '"').
+
+	(StandardFileStream isAFileNamed: tmpName) ifFalse: [
+		^ nil ].
+
+	[
+		result _ (StandardFileStream readOnlyFileNamed: tmpName) contentsOfEntireFile.
+	] ensure: [
+		directory _ FileDirectory default.
+		directory deleteFileNamed: tmpName ].
+
+	^result! !
+
+!CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 12/4/2009 15:33'!
+defaultShellPath
+	"Default shell to run"
+
+	| path |
+	path := '/bin/sh'.
+	(FileDirectory default fileExists: path)
+		ifTrue: [^ path]
+		ifFalse: [self notify: path, ' not found']! !
+
+!CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 11:17'!
+execAndWait: executableFile arguments: arrayOfStrings
+	"Run a program in an external OS process, and answer an instance of 
+	myself which represents the external process.
+	Run and wait for execution end."
+
+	"ExternalUnixOSProcess execAndWait: '/bin/ls' arguments: (Array with: '-l') environment: (UnixProcess env)"
+
+	^ self new
+		programName: executableFile;
+		arguments: arrayOfStrings;
+		initialize;
+		execAndWait
+! !
+
+!CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 12:04'!
+forkAndForget: executableFile arguments: arrayOfStrings
+	"Run a program in an external OS process, and answer an instance of 
+	myself which represents the external process.
+	
+	Do not wait for the for the forked unix process to finish.
+	There is currently no means for the unix process to finish properly unless squeak exits
+	Use with care, and only for never-ending loops"
+
+	"ExternalUnixOSProcess forkAndExec: '/bin/ls' arguments: (Array with: '-l') environment: (UnixProcess env)"
+
+	^ self new
+		programName: executableFile;
+		arguments: arrayOfStrings;
+		initialize;
+		forkAndForget
+! !
+
+!CrappyUnixOSProcess class methodsFor: 'as yet unclassified' stamp: 'jmv 3/23/2010 12:05'!
+forkAndForgetCommand: aCommandString
+"
+	Do not wait for the for the forked unix process to finish.
+	There is currently no means for the unix process to finish properly unless squeak exits
+	Use with care, and only for never-ending loops"
+	
+	"CrappyUnixOSProcess command: 'ls -l /etc'"
+
+	^ self
+		forkAndForget: self defaultShellPath
+		arguments: (Array with: '-c' with: aCommandString)! !

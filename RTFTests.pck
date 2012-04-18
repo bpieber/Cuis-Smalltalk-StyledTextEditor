@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1259] on 17 April 2012 at 10:44:41 pm'!
-'Description Please enter a description for this package'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 17 April 2012 at 11:21:18 pm'!
+'Description Please enter a description for this package.'!
 !classDefinition: #RTFConversionTest category: #RTFtests!
 TestCase subclass: #RTFConversionTest
 	instanceVariableNames: ''
@@ -30,6 +30,140 @@ TestCase subclass: #RTFTokenizerTest
 RTFTokenizerTest class
 	instanceVariableNames: ''!
 
+
+!RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/11/2011 19:45'!
+testSample1ToAndFromRTF
+	"
+	RTFConversionTest new testSample1ToAndFromRTF
+	"
+	| builder parser rtf text result |
+	text _ RTFConversionTest textSample1.
+	rtf _ text rtfString.
+
+	builder _ RTFTextBuilder new.
+	parser _ RTFParser new.
+	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
+	self assert: builder text = text.
+	self assert: builder text runs = text runs.
+
+	builder _ RTFTextBuilder currentClass new.
+	parser _ RTFParser new.
+	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
+	result _ builder text asNonStyledText.
+	self assert: result = text.
+	self assert: result runs = text runs.! !
+
+!RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/11/2011 19:45'!
+testSample2ToAndFromRTF
+	"
+	RTFConversionTest new testSample2ToAndFromRTF
+	"
+	| builder parser rtf text result |
+	text _ RTFConversionTest textSample2.
+	rtf _ text rtfString.
+
+	builder _ RTFTextBuilder new.
+	parser _ RTFParser new.
+	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.
+	self assert: builder text = text.
+	self assert: builder text runs = text runs.
+
+	builder _ RTFTextBuilder currentClass new.
+	parser _ RTFParser new.
+	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.
+	result _ builder text asNonStyledText.
+	self assert: result = text.
+	self assert:result runs = text runs.! !
+
+!RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/11/2011 20:03'!
+testSample3ToAndFromRTF
+	"
+	RTFConversionTest new testSample3ToAndFromRTF
+	"
+	| builder parser rtf text result |
+	text _ RTFConversionTest textSample3.
+	rtf _ text rtfString.
+
+	builder _ RTFTextBuilder new.
+	parser _ RTFParser new.
+	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.
+	self assert: builder text = text.
+	self assert: builder text runs = text runs.
+
+	builder _ RTFTextBuilder currentClass new.
+	parser _ RTFParser new.
+	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.
+	result _ builder text asNonStyledText.
+	self assert: result = text.
+	self assert: result runs = text runs.! !
+
+!RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/12/2011 10:09'!
+testSample4ToAndFromRTF
+	"
+	RTFConversionTest new testSample4ToAndFromRTF
+	"
+	| builder parser rtf text result |
+	text _ RTFConversionTest textSample4.
+	rtf _ text rtfString.
+
+	builder _ RTFTextBuilder new.
+	parser _ RTFParser new.
+	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
+	self assert: builder text = text.
+	"kern and struckThrough not supported in rtf yet..."
+"	self assert: builder text runs = text runs."
+
+	builder _ RTFTextBuilder currentClass new.
+	parser _ RTFParser new.
+	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
+	result _ builder text asNonStyledText.
+	self assert: result = text.
+	"kern and struckThrough not supported in rtf yet..."
+"	self assert: result runs = text runs."! !
+
+!RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/11/2011 19:45'!
+testSample5ToAndFromRTF
+	"
+	RTFConversionTest new testSample5ToAndFromRTF
+	"
+	| builder parser rtf text result |
+	text _ RTFConversionTest textSample5.
+	rtf _ text rtfString.
+
+	builder _ RTFTextBuilder new.
+	parser _ RTFParser new.
+	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
+	self assert: builder text = text.
+	self assert: builder text runs = text runs.
+
+	builder _ RTFTextBuilder currentClass new.
+	parser _ RTFParser new.
+	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
+	result _ builder text asNonStyledText.
+	self assert: result = text.
+	self assert: result runs = text runs.! !
+
+!RTFConversionTest methodsFor: 'tests' stamp: 'jmv 11/22/2011 15:27'!
+testSample6ToAndFromRTF
+	"
+	RTFConversionTest new testSample6ToAndFromRTF
+	"
+	| builder parser rtf text result |
+	text _ RTFConversionTest textSample6.
+	rtf _ text rtfString.
+
+	builder _ RTFTextBuilder new.
+	parser _ RTFParser new.
+	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
+	self assert: builder text = text.
+	self assert: builder text runs = text runs.
+
+	builder _ RTFTextBuilder currentClass new.
+	parser _ RTFParser new.
+	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
+	result _ builder text asNonStyledText.
+	self assert: result = text.
+	self assert: result runs = text runs.! !
 
 !RTFConversionTest class methodsFor: 'rtf examples' stamp: 'jmv 3/13/2012 11:45'!
 rtfABCExample
@@ -466,6 +600,106 @@ e.
 
 \par }} '! !
 
+!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 4/11/2011 20:06'!
+textSample1
+	"
+	| text |
+	text _ RTFConversionTest textSample1.
+	text edit.
+	Clipboard default storeObject: text
+	"
+	^
+		(Text string: 'normal '),
+		(Text string: 'bold ' attribute: (TextEmphasis bold)),
+		(Text string: 'boldItalic ' attributes: {TextEmphasis new emphasisCode: AbstractFont boldCode + AbstractFont italicCode}),
+		(Text string: 'italic ' attributes: {TextEmphasis italic}),
+		(Text string: 'boldGreen ' attributes: {TextEmphasis bold. TextColor green}),
+		(Text string: 'red ' attributes: {TextColor red}),
+		(Text string: 'underlined ' attribute: (TextEmphasis underlined)),
+		(Text string: 'normal ' attributes: #())! !
+
+!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 3/13/2012 16:57'!
+textSample2
+	"
+	| text |
+	text _ RTFConversionTest textSample2.
+	text edit.
+	Clipboard default storeObject: text
+	"
+	^
+		(Text string: 'This text has no tyle set', String newLineString),
+		(Text string: 'This is centered', String newLineString attribute: TextAlignment centered),
+		(Text string: 'This text has no tyle set', String newLineString),
+		(Text string: 'This is right', String newLineString attribute: TextAlignment rightFlush),
+		(Text string: 'This text has no tyle set', String newLineString),
+		(Text string: 'This is justified, and to see the effect, the paragraph needs to span over several lines, ',
+			'as, otherwise, you won"t be able to see the effect', String newLineString attribute: TextAlignment justified),
+		(Text string: 'This text has no tyle set', String newLineString),
+		(Text string: 'This is left', String newLineString),
+		(Text string: 'This text has no tyle set', String newLineString),
+		(Text string: 'This is right', String newLineString attribute: TextAlignment rightFlush)! !
+
+!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 4/11/2011 20:06'!
+textSample3
+	"
+	| text |
+	text _ RTFConversionTest textSample3.
+	text edit.
+	Clipboard default storeObject: text
+	"
+	^ (
+		(Text string: 'normal '),
+		(Text string: 'bold ' attributes: {(TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 17). TextEmphasis bold}),
+		(Text string: 'italic ' attributes: {(TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 6). TextEmphasis italic}),
+		(Text string: 'boldGreen ' attributes: {(TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 12). TextEmphasis bold. TextColor green}),
+		(Text string: 'red ' attributes: {TextColor red}),
+		(Text string: 'underlined ' attribute: (TextEmphasis underlined)),
+		(Text string: 'normal ' attributes: #())
+	)! !
+
+!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 4/12/2011 10:00'!
+textSample4
+	"
+	| text |
+	text _ RTFConversionTest textSample4.
+	text edit.
+	Clipboard default storeObject: text
+	"
+	^ (
+		(Text string: 'normal '),
+		(Text string: 'bold ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 17). TextEmphasis bold }),
+		(Text string: 'italic ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 6). TextEmphasis italic }),
+		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 12). TextEmphasis bold. TextColor green }),
+		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 12). TextEmphasis bold. TextColor green. TextKern kern: 2}),
+		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 12). TextEmphasis bold. TextColor green. TextKern kern: -2}),
+		(Text string: 'red ' attributes: {TextColor red}),
+		(Text string: 'underlined ' attribute: (TextEmphasis underlined)),
+		(Text string: 'struckThrough ' attribute: (TextEmphasis struckThrough)),
+		(Text string: 'normal ' attributes: #())
+	)! !
+
+!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 3/30/2011 11:23'!
+textSample5
+	"
+	| text |
+	text _ RTFConversionTest textSample5.
+	text edit.
+	Clipboard default storeObject: text
+	"
+	^'Hello', (Text withForm: EllipseMorph new imageForm), 'world'! !
+
+!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 11/22/2011 15:00'!
+textSample6
+	"
+	| text |
+	text _ RTFConversionTest textSample6.
+	text edit.
+	Clipboard default storeObject: text
+	"
+	^'Tomá agüita, ñandú. Ñandú. 
+½´®¥¨øåßƒ©Ý²Þ¬­ç¦µ.
+¼´®Á¨ØÅÍÎÏ©ÓÔÞÒ­Ç¦ÐÂ' asText! !
+
 !RTFTokenTest methodsFor: 'as yet unclassified' stamp: 'MR 5/24/2006 12:10'!
 testCreateBlockClose
 	| token |	
@@ -620,140 +854,6 @@ testMacLookAhead
 
 ! !
 
-!RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/11/2011 19:45'!
-testSample1ToAndFromRTF
-	"
-	RTFConversionTest new testSample1ToAndFromRTF
-	"
-	| builder parser rtf text result |
-	text _ RTFConversionTest textSample1.
-	rtf _ text rtfString.
-
-	builder _ RTFTextBuilder new.
-	parser _ RTFParser new.
-	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
-	self assert: builder text = text.
-	self assert: builder text runs = text runs.
-
-	builder _ RTFTextBuilder currentClass new.
-	parser _ RTFParser new.
-	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
-	result _ builder text asNonStyledText.
-	self assert: result = text.
-	self assert: result runs = text runs.! !
-
-!RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/11/2011 19:45'!
-testSample2ToAndFromRTF
-	"
-	RTFConversionTest new testSample2ToAndFromRTF
-	"
-	| builder parser rtf text result |
-	text _ RTFConversionTest textSample2.
-	rtf _ text rtfString.
-
-	builder _ RTFTextBuilder new.
-	parser _ RTFParser new.
-	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.
-	self assert: builder text = text.
-	self assert: builder text runs = text runs.
-
-	builder _ RTFTextBuilder currentClass new.
-	parser _ RTFParser new.
-	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.
-	result _ builder text asNonStyledText.
-	self assert: result = text.
-	self assert:result runs = text runs.! !
-
-!RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/11/2011 20:03'!
-testSample3ToAndFromRTF
-	"
-	RTFConversionTest new testSample3ToAndFromRTF
-	"
-	| builder parser rtf text result |
-	text _ RTFConversionTest textSample3.
-	rtf _ text rtfString.
-
-	builder _ RTFTextBuilder new.
-	parser _ RTFParser new.
-	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.
-	self assert: builder text = text.
-	self assert: builder text runs = text runs.
-
-	builder _ RTFTextBuilder currentClass new.
-	parser _ RTFParser new.
-	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.
-	result _ builder text asNonStyledText.
-	self assert: result = text.
-	self assert: result runs = text runs.! !
-
-!RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/12/2011 10:09'!
-testSample4ToAndFromRTF
-	"
-	RTFConversionTest new testSample4ToAndFromRTF
-	"
-	| builder parser rtf text result |
-	text _ RTFConversionTest textSample4.
-	rtf _ text rtfString.
-
-	builder _ RTFTextBuilder new.
-	parser _ RTFParser new.
-	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
-	self assert: builder text = text.
-	"kern and struckThrough not supported in rtf yet..."
-"	self assert: builder text runs = text runs."
-
-	builder _ RTFTextBuilder currentClass new.
-	parser _ RTFParser new.
-	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
-	result _ builder text asNonStyledText.
-	self assert: result = text.
-	"kern and struckThrough not supported in rtf yet..."
-"	self assert: result runs = text runs."! !
-
-!RTFConversionTest methodsFor: 'tests' stamp: 'jmv 4/11/2011 19:45'!
-testSample5ToAndFromRTF
-	"
-	RTFConversionTest new testSample5ToAndFromRTF
-	"
-	| builder parser rtf text result |
-	text _ RTFConversionTest textSample5.
-	rtf _ text rtfString.
-
-	builder _ RTFTextBuilder new.
-	parser _ RTFParser new.
-	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
-	self assert: builder text = text.
-	self assert: builder text runs = text runs.
-
-	builder _ RTFTextBuilder currentClass new.
-	parser _ RTFParser new.
-	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
-	result _ builder text asNonStyledText.
-	self assert: result = text.
-	self assert: result runs = text runs.! !
-
-!RTFConversionTest methodsFor: 'tests' stamp: 'jmv 11/22/2011 15:27'!
-testSample6ToAndFromRTF
-	"
-	RTFConversionTest new testSample6ToAndFromRTF
-	"
-	| builder parser rtf text result |
-	text _ RTFConversionTest textSample6.
-	rtf _ text rtfString.
-
-	builder _ RTFTextBuilder new.
-	parser _ RTFParser new.
-	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
-	self assert: builder text = text.
-	self assert: builder text runs = text runs.
-
-	builder _ RTFTextBuilder currentClass new.
-	parser _ RTFParser new.
-	parser parseWithTokenizer: (RTFTokenizer newFromString: rtf) buildWith: builder.	
-	result _ builder text asNonStyledText.
-	self assert: result = text.
-	self assert: result runs = text runs.! !
-
 !RTFTokenizerTest methodsFor: 'as yet unclassified' stamp: 'MR 5/25/2006 18:45'!
 testWinGetToken
 	| string tokenizer token |
@@ -845,103 +945,3 @@ soft Word 11.0.6568;}{\info{\author Compay Sedungo}{\operator Compay Sedungo}{\c
 		assert: (tokenizer moreTokens).
 
 ! !
-
-!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 4/11/2011 20:06'!
-textSample1
-	"
-	| text |
-	text _ RTFConversionTest textSample1.
-	text edit.
-	Clipboard default storeObject: text
-	"
-	^
-		(Text string: 'normal '),
-		(Text string: 'bold ' attribute: (TextEmphasis bold)),
-		(Text string: 'boldItalic ' attributes: {TextEmphasis new emphasisCode: AbstractFont boldCode + AbstractFont italicCode}),
-		(Text string: 'italic ' attributes: {TextEmphasis italic}),
-		(Text string: 'boldGreen ' attributes: {TextEmphasis bold. TextColor green}),
-		(Text string: 'red ' attributes: {TextColor red}),
-		(Text string: 'underlined ' attribute: (TextEmphasis underlined)),
-		(Text string: 'normal ' attributes: #())! !
-
-!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 3/13/2012 16:57'!
-textSample2
-	"
-	| text |
-	text _ RTFConversionTest textSample2.
-	text edit.
-	Clipboard default storeObject: text
-	"
-	^
-		(Text string: 'This text has no tyle set', String newLineString),
-		(Text string: 'This is centered', String newLineString attribute: TextAlignment centered),
-		(Text string: 'This text has no tyle set', String newLineString),
-		(Text string: 'This is right', String newLineString attribute: TextAlignment rightFlush),
-		(Text string: 'This text has no tyle set', String newLineString),
-		(Text string: 'This is justified, and to see the effect, the paragraph needs to span over several lines, ',
-			'as, otherwise, you won"t be able to see the effect', String newLineString attribute: TextAlignment justified),
-		(Text string: 'This text has no tyle set', String newLineString),
-		(Text string: 'This is left', String newLineString),
-		(Text string: 'This text has no tyle set', String newLineString),
-		(Text string: 'This is right', String newLineString attribute: TextAlignment rightFlush)! !
-
-!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 4/11/2011 20:06'!
-textSample3
-	"
-	| text |
-	text _ RTFConversionTest textSample3.
-	text edit.
-	Clipboard default storeObject: text
-	"
-	^ (
-		(Text string: 'normal '),
-		(Text string: 'bold ' attributes: {(TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 17). TextEmphasis bold}),
-		(Text string: 'italic ' attributes: {(TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 6). TextEmphasis italic}),
-		(Text string: 'boldGreen ' attributes: {(TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 12). TextEmphasis bold. TextColor green}),
-		(Text string: 'red ' attributes: {TextColor red}),
-		(Text string: 'underlined ' attribute: (TextEmphasis underlined)),
-		(Text string: 'normal ' attributes: #())
-	)! !
-
-!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 4/12/2011 10:00'!
-textSample4
-	"
-	| text |
-	text _ RTFConversionTest textSample4.
-	text edit.
-	Clipboard default storeObject: text
-	"
-	^ (
-		(Text string: 'normal '),
-		(Text string: 'bold ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 17). TextEmphasis bold }),
-		(Text string: 'italic ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 6). TextEmphasis italic }),
-		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 12). TextEmphasis bold. TextColor green }),
-		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 12). TextEmphasis bold. TextColor green. TextKern kern: 2}),
-		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 12). TextEmphasis bold. TextColor green. TextKern kern: -2}),
-		(Text string: 'red ' attributes: {TextColor red}),
-		(Text string: 'underlined ' attribute: (TextEmphasis underlined)),
-		(Text string: 'struckThrough ' attribute: (TextEmphasis struckThrough)),
-		(Text string: 'normal ' attributes: #())
-	)! !
-
-!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 3/30/2011 11:23'!
-textSample5
-	"
-	| text |
-	text _ RTFConversionTest textSample5.
-	text edit.
-	Clipboard default storeObject: text
-	"
-	^'Hello', (Text withForm: EllipseMorph new imageForm), 'world'! !
-
-!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 11/22/2011 15:00'!
-textSample6
-	"
-	| text |
-	text _ RTFConversionTest textSample6.
-	text edit.
-	Clipboard default storeObject: text
-	"
-	^'Tomá agüita, ñandú. Ñandú. 
-½´®¥¨øåßƒ©Ý²Þ¬­ç¦µ.
-¼´®Á¨ØÅÍÎÏ©ÓÔÞÒ­Ç¦ÐÂ' asText! !

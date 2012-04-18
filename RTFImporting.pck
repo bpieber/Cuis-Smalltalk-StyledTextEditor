@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1259] on 17 April 2012 at 10:44:38 pm'!
-'Description Please enter a description for this package'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 17 April 2012 at 11:21:15 pm'!
+'Description Please enter a description for this package.'!
 !classDefinition: #RTFChunkScanner category: #RTFimporting!
 Object subclass: #RTFChunkScanner
 	instanceVariableNames: 'destX lastIndex xTable rightEdge stopConditions prevIndex bufferStream buffer chunk'
@@ -277,16 +277,19 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 !RTFUnicode commentStamp: '<historical>' prior: 0!
 Not a real Unicode implementation. Just compatibility for Sophie-RTF. Answers instances of Character (i.e. ISO-8859-15).Based on http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-15.TXT!
 
-!RTFParser methodsFor: 'handlers' stamp: 'tat 11/1/2006 15:00'!
-addContents
-	"assuming that the next RTF token is a string - add the string to the content tree
-	using current style settings"
+!RTFCP1250UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
+toSqueak: char
+	^self toSqueak: char withTable: #(8364 129 8218 131 8222 8230 8224 8225 136 8240 352 8249 346 356 381 377 144 8216 8217 8220 8221 8226 8211 8212 152 8482 353 8250 347 357 382 378 160 711 728 321 164 260 166 167 168 169 350 171 172 173 174 379 176 177 731 322 180 181 182 183 184 261 351 187 317 733 318 380 340 193 194 258 196 313 262 199 268 201 280 203 282 205 206 270 272 323 327 211 212 336 214 215 344 366 218 368 220 221 354 223 341 225 226 259 228 314 263 231 269 233 281 235 283 237 238 271 273 324 328 243 244 337 246 247 345 367 250 369 252 253 355 729)
+! !
 
-	|token|
-	"self break."
+!RTFCP1251UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
+toSqueak: char
+	^self toSqueak: char withTable: #(1026 1027 8218 1107 8222 8230 8224 8225 8364 8240 1033 8249 1034 1036 1035 1039 1106 8216 8217 8220 8221 8226 8211 8212 152 8482 1113 8250 1114 1116 1115 1119 160 1038 1118 1032 164 1168 166 167 1025 169 1028 171 172 173 174 1031 176 177 1030 1110 1169 181 182 183 1105 8470 1108 187 1112 1029 1109 1111 1040 1041 1042 1043 1044 1045 1046 1047 1048 1049 1050 1051 1052 1053 1054 1055 1056 1057 1058 1059 1060 1061 1062 1063 1064 1065 1066 1067 1068 1069 1070 1071 1072 1073 1074 1075 1076 1077 1078 1079 1080 1081 1082 1083 1084 1085 1086 1087 1088 1089 1090 1091 1092 1093 1094 1095 1096 1097 1098 1099 1100 1101 1102 1103)
+! !
 
-	token := tokenizer getToken.
-	state destination value: (token string)
+!RTFCP1252UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
+toSqueak: char
+	^self toSqueak: char withTable: #(8364 129 8218 402 8222 8230 8224 8225 710 8240 352 8249 338 141 381 143 144 8216 8217 8220 8221 8226 8211 8212 732 8482 353 8250 339 157 382 376 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255)
 ! !
 
 !RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/14/2006 16:25'!
@@ -310,102 +313,6 @@ addScannedStringToBuffer
 		ifFalse: [^self].
 	self bufferStream nextPutAll: (chunk copyFrom: prevIndex to: lastIndex-1)! !
 
-!RTFTokenizer methodsFor: 'private' stamp: 'MR 5/3/2006 13:26'!
-addStringToken: aString to: aBuffer
-	"puts the new token to the buffer only if it is not empty"
-	aString ifNotEmpty: [aBuffer add: (RTFToken newString: aString)]! !
-
-!RTFTextBuilder methodsFor: 'private' stamp: 'jmv 3/30/2011 15:53'!
-addToText: aString
-	self addToText: aString specialAttributes: nil! !
-
-!RTFTextBuilder methodsFor: 'private' stamp: 'jmv 4/11/2011 21:58'!
-addToText: aString specialAttributes: nonFormattingAttributesOrNil
-	"nonFormattingAttributesOrNil should only contains attributes that answer false to #isForFormatting"
-	| attributes emphasis |
-
-	attributes _ Array streamContents: [ :strm |
-		fontFamilyName ifNotNil: [
-			fontPointSize ifNotNil: [
-				strm nextPut: (TextFontFamilyAndSize
-					familyName: fontFamilyName pointSize: fontPointSize) ]].
-		emphasis _ 0.
-		bold ifTrue: [ emphasis _ emphasis + 1 ].
-		italic ifTrue: [ emphasis _ emphasis + 2 ].
-		underline ifTrue: [ emphasis _ emphasis + 4 ].
-		emphasis > 0 ifTrue: [
-			strm nextPut: (TextEmphasis new emphasisCode: emphasis) ].
-		currentFgColor ifNotNil: [
-			strm nextPut: (TextColor color: currentFgColor) ].
-		nonFormattingAttributesOrNil ifNotNil: [ strm nextPutAll: nonFormattingAttributesOrNil ]].
-	textStream nextPutAllString: aString withAttributes: attributes! !
-
-!RTFTextBuilder methodsFor: 'building' stamp: 'jmv 11/22/2011 15:21'!
-addUnicodeContents: string
-
-	"Add Unicode strings to the content tree. Skip characters if prescribed by the \uc command (see doSkipNextCharacters)"	
-
-	string size <= skipNextCharacters ifTrue: [
-		self skipNextCharacters: skipNextCharacters - (string size). ^self].
-
-	"For unicode characters do not use converter"
-	self addToText: (string allButFirst: skipNextCharacters).
-
-	self skipNextCharacters: 0! !
-
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:50'!
-additive
-	additive := true! !
-
-!RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 3/11/2007 22:15'!
-applyTo: builder
-	"applies the stylesheet to the builder"
-	basedon isNil ifFalse: [ builder buildApplyStylesheet: basedon].
-	additive ifFalse: [ self resetStyle: builder ].
-	style do: [:aBlock | aBlock value: builder state]
-	! !
-
-!RTFToken methodsFor: 'accessing' stamp: 'tat 7/11/2006 00:38'!
-arg
-
-    "returns the argument of this keyword token"
-
-	self isKeyword ifFalse: [^nil].
-
-	arg isNil not ifTrue: [^arg].
-
-     (DefaultArgs includesKey: self word)
-		ifTrue: [^ DefaultArgs at: self word].
-
-	^0! !
-
-!RTFToken methodsFor: 'converting' stamp: 'MR 5/5/2006 00:24'!
-asString
-	self isKeyword ifTrue: [(arg = nil) ifTrue: [^'keyword:', content] ifFalse: [^'keyword:', content, ' ', (arg asString)]].
-	self isStringToken ifTrue: [^'string:', '!!',content,'!!'].
-	^type asString.! !
-
-!RTFTextBuilder methodsFor: 'private' stamp: 'jmv 3/30/2011 16:36'!
-attachCharacterStyleToParagraph
-	"Ver si hace falta algo como lo que hace Sophie..."! !
-
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/6/2006 15:53'!
-basedon
-	^basedon! !
-
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/6/2006 15:53'!
-basedon: bo
-	basedon := bo! !
-
-!RTFParserDestination methodsFor: 'accessing' stamp: 'tat 11/1/2006 15:03'!
-block
-	^block! !
-
-!RTFParserDestination methodsFor: 'accessing' stamp: 'tat 11/1/2006 15:05'!
-block: aBlock type: aSymbol
-	block := aBlock.
-	type := aSymbol! !
-
 !RTFChunkScanner methodsFor: 'stop conditions' stamp: 'mir 8/12/2006 15:44'!
 blockCloseAt: index
 	self addScannedString.
@@ -420,6 +327,102 @@ blockOpenAt: index
 	lastIndex := lastIndex  + 1.
 	prevIndex := lastIndex! !
 
+!RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/12/2006 14:59'!
+bufferStream
+	^BufferStream! !
+
+!RTFChunkScanner methodsFor: 'stop conditions' stamp: 'mir 8/12/2006 15:46'!
+crAt: index
+	self addScannedStringToBuffer.
+	lastIndex := lastIndex  + 1.
+	prevIndex := lastIndex! !
+
+!RTFChunkScanner methodsFor: 'stop conditions' stamp: 'mir 8/12/2006 15:50'!
+lfAt: index
+	self addScannedStringToBuffer.
+	lastIndex := lastIndex  + 1.
+	prevIndex := lastIndex! !
+
+!RTFChunkScanner methodsFor: 'initialize' stamp: 'mir 8/12/2006 16:05'!
+scan: chunkString into: aBuffer startingAt: index
+	chunk := chunkString.
+	buffer := aBuffer.
+	self scanStartingAt: index! !
+
+!RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/12/2006 15:59'!
+scanCharactersFrom: startIndex to: stopIndex in: sourceString rightX: rightX stopConditions: stops kern: kernDelta
+	"Primitive. This is the inner loop of text display--but see 
+	scanCharactersFrom: to:rightX: which would get the string, 
+	stopConditions and displaying from the instance. March through source 
+	String from startIndex to stopIndex. If any character is flagged with a 
+	non-nil entry in stops, then return the corresponding value. Determine 
+	width of each character from xTable, indexed by map. 
+	If dextX would exceed rightX, then return stops at: 258. 
+	Advance destX by the width of the character. If stopIndex has been
+	reached, then return stops at: 257. Optional. 
+	See Object documentation whatIsAPrimitive."
+	| ascii char |
+	<primitive: 103>
+
+	lastIndex _ startIndex.
+	[lastIndex <= stopIndex]
+		whileTrue: 
+			[char _ (sourceString at: lastIndex).
+			ascii _ char asciiValue + 1.
+			(stops at: ascii) == nil ifFalse: [^stops at: ascii].
+			lastIndex _ lastIndex + 1].
+	lastIndex _ stopIndex.
+	^stops at: CharacterScanner endOfRunCode! !
+
+!RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/12/2006 15:16'!
+scanFrom: startIndex to: stopIndex
+	| stopCondition |
+	stopCondition := self scanCharactersFrom: startIndex to: stopIndex in: chunk rightX: SmallInteger maxVal stopConditions: stopConditions kern: 0.
+	stopCondition
+		ifNil: [^nil]
+		ifNotNil: [stopCondition == #scanFinished
+			ifTrue: [^nil]
+			ifFalse: [self perform: stopCondition with: lastIndex]]! !
+
+!RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/14/2006 16:32'!
+scanStartingAt: index
+	| chunkSize |
+	self bufferStream reset.
+	stopConditions := ScannerTable.
+	xTable := XTable.
+	destX := 0.
+	lastIndex := index.
+	prevIndex := index.
+	rightEdge := SmallInteger maxVal.
+	chunkSize := chunk size.
+	[(self scanFrom: lastIndex to: chunkSize) isNil]
+		whileFalse.
+	prevIndex <= lastIndex
+		ifTrue: [lastIndex := lastIndex + 1].
+	self addScannedString! !
+
+!RTFChunkScanner class methodsFor: 'class initialization' stamp: 'mir 8/12/2006 15:51'!
+initialize
+	"RTFChunkScanner initialize"
+
+	BufferStream := (String new: 4096) writeStream.
+	XTable := Array new: 258 withAll: 0.
+
+	ScannerTable := Array new: 258.
+	ScannerTable atAllPut: nil.
+	ScannerTable at: CharacterScanner endOfRunCode put: #scanFinished.
+	ScannerTable at: CharacterScanner crossedXCode put: #scanFinished.
+
+	ScannerTable at: ${ asciiValue + 1 put: #blockOpenAt:.
+	ScannerTable at: $} asciiValue + 1 put: #blockCloseAt:.
+	ScannerTable at: Character lfCharacter asciiValue + 1 put: #lfAt:.
+	ScannerTable at: Character crCharacter asciiValue + 1 put: #crAt:.
+! !
+
+!RTFChunkScanner class methodsFor: 'instance creation' stamp: 'mir 8/12/2006 16:04'!
+scan: chunk into: buffer startingAt: index
+	^self new scan: chunk into: buffer startingAt: index! !
+
 !RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:49'!
 blue
 	^blue! !
@@ -428,270 +431,21 @@ blue
 blue: b
 	blue := b! !
 
-!RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/12/2006 14:59'!
-bufferStream
-	^BufferStream! !
+!RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:48'!
+green
+	^green! !
 
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddBullet
-	self addUnicodeContents: (RTFUnicode value: 16r2022 or: $°) asString! !
+!RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:48'!
+green: g
+	green := g! !
 
-!RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/29/2011 22:26'!
-buildAddColorDef: coldef
-	"adds an entry to the color table"
-	(coldef red isNil or: [coldef green isNil or: [coldef blue isNil]])
-		ifTrue: [colorTable addLast: nil]
-		ifFalse: [colorTable addLast: (Color r: (coldef red) / 255 g: (coldef green) / 255 b: (coldef blue) / 255)]! !
+!RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:48'!
+red
+	^red! !
 
-!RTFTextBuilder methodsFor: 'building' stamp: 'jmv 3/30/2011 15:42'!
-buildAddContents: string
-	| possibleString |
-	possibleString _ self convertAndSkip: string.
-	possibleString ifNil: [^self].
-
-	self addToText: possibleString! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddDoubleLeftQuote
-	self addUnicodeContents: (RTFUnicode value: 16r201C or: $") asString! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddDoubleRightQuote
-	self addUnicodeContents: (RTFUnicode value: 16r201D or: $") asString! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddEmDash
-	self addUnicodeContents: (RTFUnicode value: 16r2014 or: '--') asString! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddEmSpace
-	self addUnicodeContents: (RTFUnicode value: 16r2003 or: '  ') asString! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddEnDash
-	self addUnicodeContents: (RTFUnicode value: 16r2013 or: $-) asString! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddEnSpace
-	self addUnicodeContents: (RTFUnicode value: 16r2002 or: ' ') asString! !
-
-!RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/30/2011 16:38'!
-buildAddFontInfo: fontInfo
-	"add font information to the table"
-	"fontTable atProperty: (fontInfo num) put: fontInfo"
-	fontTable at: (fontInfo num) put: fontInfo! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddLeftQuote
-	self addUnicodeContents: (RTFUnicode value: 16r2018 or: $') asString! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddNonBreakingHyphen
-	self addUnicodeContents: (RTFUnicode value: 16r2011 or: '-') asString! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddNonBreakingSpace
-	"This character is supported by ISO-8859-15"
-	self addUnicodeContents: (RTFUnicode value: 16r00A0) asString! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddOptionalHyphen
-	"This character is supported by ISO-8859-15"
-	self addUnicodeContents: (RTFUnicode value: 16r00AD) asString! !
-
-!RTFTextBuilder methodsFor: 'building-pictures' stamp: 'jmv 3/30/2011 17:18'!
-buildAddPicture: picInfo from: aStream
-
-	(ImageReadWriter formFromStream: aStream)
-		ifNotNil: [ :form |
-			self addToText: '*' specialAttributes: {TextAnchor new anchoredFormOrMorph: form} ]! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddQmSpace
-	self addUnicodeContents: (RTFUnicode value: 16r2005 or: ' ') asString! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddRightQuote
-	self addUnicodeContents: (RTFUnicode value: 16r2019 or: $') asString! !
-
-!RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/30/2011 16:38'!
-buildAddStylesheet: pp! !
-
-!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
-buildAddTab
-	"This character is supported by ISO-8859-15"
-	self addUnicodeContents: (RTFUnicode value: 16r0009) asString! !
-
-!RTFTextBuilder methodsFor: 'building' stamp: 'jmv 3/30/2011 15:55'!
-buildAddURI: uriString alternate: string
-	| possibleString |
-	possibleString _ self convertAndSkip: string.
-	possibleString ifNil: [^self].
-	
-	self addToText: possibleString specialAttributes: { TextURL new url: uriString }! !
-
-!RTFTextBuilder methodsFor: 'building' stamp: 'jmv 3/30/2011 15:57'!
-buildAddUnicodeContents: string
-
-	self addToText: string! !
-
-!RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 4/6/2011 10:44'!
-buildAnsiCharacterSet
-	self textConverter: RTFLatin1TextConverter new! !
-
-!RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 3/30/2011 16:39'!
-buildApplyStylesheet:pp! !
-
-!RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 3/30/2011 16:39'!
-buildCodePage: cp
-	self textConverter: (CodePageConverterTable at: cp ifAbsent: [^nil]) new! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
-buildFirstLineIndent: aNumber
-	"Guardar en una ivar, como todo lo demas.
-	meter en el stack tambien.
-	Quizas cambiar el stack... meter self copy????? no se.
-	
-	Despues usar al construir el parastyle
-	
-	"
-	firstIndent _ (aNumber / 20.0) rounded! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:27'!
-buildFirstLineIndentPercentage: i! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
-buildLeftIndent: aNumber
-
-	leftIndent _ (aNumber / 20.0) rounded! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
-buildLeftIndentPercentage: i! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
-buildLineSpacing:pp! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
-buildLineSpacingType:pp! !
-
-!RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 3/30/2011 16:40'!
-buildMacCharacterSet! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
-buildParagraphAlignCenter
-	align _ 2! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/7/2011 09:06'!
-buildParagraphAlignJustified
-"Atencion. Este, y cualquier otro de parrafo, falla si la ultima linea NO termina en enter... atrapar el final, y hacer algo como #buildStartParagraph..."
-align _ 3! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/11/2011 09:58'!
-buildParagraphAlignLeft
-
-	align _ 0! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
-buildParagraphAlignRight
-align _ 1! !
-
-!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:20'!
-buildResetCharFormat! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/11/2011 21:39'!
-buildResetParagraphSettings
-	"resets the paragraph settings to the default paragraph 
-	settings"
-	
-	bold _ italic _ underline _ false.
-	align _ 0. "left"
-	
-	firstIndent _ leftIndent _ spaceBefore _ spaceAfter _ 0.
-	rightIndent _ nil! !
-
-!RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 3/30/2011 16:40'!
-buildResetSectionSettings! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
-buildRightIndent: aNumber
-	rightIndent _ (aNumber / 20.0) rounded! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:29'!
-buildRightIndentPercentage: i! !
-
-!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:19'!
-buildSetBaselineOffset: s
-	"sets the font size in half points"! !
-
-!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:21'!
-buildSetBkColor: index
-	"Ignored in Sophie"! !
-
-!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:19'!
-buildSetBold: aBoolean
-	bold _ aBoolean! !
-
-!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:21'!
-buildSetCaps
-	"Ignored in Sophie"! !
-
-!RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/30/2011 16:38'!
-buildSetDefaultFont: pp! !
-
-!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:19'!
-buildSetFgColor: zindex
-		"sets the current foreground color to
-		color with the given index in the
-		color table"
-| index |
-index _ zindex + 1.
-currentFgColor _ colorTable at: index! !
-
-!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/31/2011 15:36'!
-buildSetFont: i
-	"en Sophie, pone el textConverter... ver!!"
-	"Hasta donde entiendo, el font NO incluye emphasis ni pointSize, solo la familia, charset y code page"! !
-
-!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 4/12/2011 09:16'!
-buildSetFontSize: s
-	"sets the font size in half points"
-
-	"Note font shoudl always be a baseFont, any emphasis should be done by emphasis attributes"
-	fontPointSize _ (s / 2.0 / Text pointSizeConversionFactor) rounded.
-	fontPointSize = 0
-		ifTrue: [
-			fontFamilyName _ nil.
-			fontPointSize _ nil ]
-		ifFalse: [ fontFamilyName _ 'DejaVu' ]! !
-
-!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:20'!
-buildSetItalic: aBoolean
-	italic _ aBoolean! !
-
-!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 4/8/2011 09:43'!
-buildSetKerning: popo! !
-
-!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:20'!
-buildSetUnderline: aBoolean
-	underline _ aBoolean! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
-buildSpaceAbove: aNumber
-	spaceBefore _ (aNumber / 20.0) rounded! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
-buildSpaceBelow: aNumber
-	spaceAfter _ (aNumber / 20.0) rounded! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 11:36'!
-buildStartParagraph
-
-	self finishParagraph! !
-
-!RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/30/2011 16:38'!
-buildStartStylesheet
-	"?????"
-	^RTFStylesheet new! !
+!RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:48'!
+red: r
+	red := r! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:40'!
 charset
@@ -701,57 +455,6 @@ charset
 charset: c
 	charset := c! !
 
-!RTFTokenizer methodsFor: 'private' stamp: 'mir 8/12/2006 14:24'!
-chunkBuffer
-	^chunkBuffer ifNil: [chunkBuffer := String new: 2048]! !
-
-!RTFParserState methodsFor: 'accessing' stamp: 'tat 5/4/2006 23:39'!
-context
-	^context! !
-
-!RTFParserState methodsFor: 'accessing' stamp: 'tat 5/4/2006 23:39'!
-context: anObject
-	context := anObject! !
-
-!RTFTokenizer methodsFor: 'private' stamp: 'mir 8/11/2006 20:54'!
-controlSymbolSet
-	^ControlSymbolSet! !
-
-!RTFTextBuilder methodsFor: 'private' stamp: 'jmv 11/22/2011 15:26'!
-convert: string startingAt: startIndex withConverter: converter
-
-	| writeStream |
-	converter ifNil: [^string copyFrom: startIndex to: string size].
-	writeStream _ (String new: string size) writeStream.
-	startIndex to: string size do: [:index |
-		writeStream nextPut: (converter toSqueak: (string at: index))].
-	^writeStream contents! !
-
-!RTFTextBuilder methodsFor: 'building' stamp: 'jmv 11/22/2011 15:26'!
-convertAndSkip: string
-
-	"Convert non-Unicode string using the specified encoder.
-	Skip characters if prescribed by the \uc command (see doSkipNextCharacters)."
-
-	| convertedString |
-	
-	"Check if some characters need to be skipped and do the math"
-	(string size <= skipNextCharacters and: [string size > 0])
-		ifTrue: [
-			self skipNextCharacters: skipNextCharacters - (string size).
-			^nil].
-
-	"convert the string using the specified encoder"
-	convertedString := self
-		convert: string
-		startingAt: skipNextCharacters+1
-		withConverter: self textConverter.
-
-	"don't skip characters anymore"
-	self skipNextCharacters: 0.
-
-	^convertedString! !
-
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:44'!
 cpg
 	^cpg! !
@@ -760,37 +463,76 @@ cpg
 cpg: n
 	cpg := n! !
 
-!RTFChunkScanner methodsFor: 'stop conditions' stamp: 'mir 8/12/2006 15:46'!
-crAt: index
-	self addScannedStringToBuffer.
-	lastIndex := lastIndex  + 1.
-	prevIndex := lastIndex! !
+!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:31'!
+family
+	^family! !
+
+!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:31'!
+family: f
+	family := f! !
+
+!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:21'!
+name
+	^name! !
+
+!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:21'!
+name: fn
+	name := fn! !
+
+!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:22'!
+num
+	^num! !
+
+!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:22'!
+num: n
+	num := n! !
+
+!RTFLatin1TextConverter methodsFor: 'conversion' stamp: 'mir 8/13/2006 17:36'!
+toSqueak: aChar
+	^aChar! !
+
+!RTFMacRomanUnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:13'!
+toSqueak: char
+	^self toSqueak: char withTable: #(
+		196 197 199 201 209 214 220 225 224 226 228 227 229 231 233 232
+		234 235 237 236 238 239 241 243 242 244 246 245 250 249 251 252
+		8224 176 162 163 167 8226 182 223 174 169 8482 180 168 8800 198 216
+		8734 177 8804 8805 165 181 8706 8721 8719 960 8747 170 186 937 230 248
+		191 161 172 8730 402 8776 8710 171 187 8230 160 192 195 213 338 339
+		8211 8212 8220 8221 8216 8217 247 9674 255 376 8260 8364 8249 8250 64257 64258
+		8225 183 8218 8222 8240 194 202 193 203 200 205 206 207 204 211 212
+		63743 210 218 219 217 305 710 732 175 728 729 730 184 733 731 711 256)! !
+
+!RTFMappingUnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:15'!
+toSqueak: char
+	^self subclassResponsibility! !
+
+!RTFMappingUnicodeTextConverter methodsFor: 'conversion' stamp: 'jmv 4/6/2011 10:40'!
+toSqueak: char withTable: table
+
+	| value |
+	value _ char asciiValue.
+	value < 128 ifTrue: [^ char].
+	value > 255 ifTrue: [^ char].
+	^ RTFUnicode value: (table at: (value - 128 + 1)).
+! !
+
+!RTFParser methodsFor: 'handlers' stamp: 'tat 11/1/2006 15:00'!
+addContents
+	"assuming that the next RTF token is a string - add the string to the content tree
+	using current style settings"
+
+	|token|
+	"self break."
+
+	token := tokenizer getToken.
+	state destination value: (token string)
+! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'mir 8/12/2006 16:56'!
 createHandleMessage: token
 	"builds a handle message from a keyword token"
 	^HandleMessages at: token word ifAbsent: [('handle' , token word , ':') asSymbol]! !
-
-!RTFTextBuilder class methodsFor: 'instance creation' stamp: 'jmv 4/11/2011 18:10'!
-currentClass
-	^Smalltalk at: #RTFStyledTextBuilder ifAbsent: [ self ]! !
-
-!RTFTextConverter class methodsFor: 'instance creation' stamp: 'jmv 3/29/2011 08:43'!
-default
-	"add if neeced"
-	^ "UTF8TextConverter new." nil! !
-
-!RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/29/2011 10:15'!
-defaultSkipNextCharacters: anInteger
-	defaultSkipNextCharacters := anInteger! !
-
-!RTFParserState methodsFor: 'accessing' stamp: 'tat 5/4/2006 23:39'!
-destination
-	^destination! !
-
-!RTFParserState methodsFor: 'accessing' stamp: 'tat 5/4/2006 23:38'!
-destination: aBlock
-	destination := aBlock! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'jmv 4/4/2011 16:28'!
 digitValue: char
@@ -805,64 +547,10 @@ digitValue: char
 		ifTrue: [value <= $Z asciiValue ifTrue: [^value - $A asciiValue + 10]].
 ! !
 
-!RTFTextConverter class methodsFor: 'services' stamp: 'jmv 4/4/2011 16:28'!
-digitValue: char
-
-	| value |
-	value _ char asciiValue.
-	value <= $9 asciiValue 
-		ifTrue: [^value - $0 asciiValue].
-	value >= $A asciiValue 
-		ifTrue: [value <= $Z asciiValue ifTrue: [^value - $A asciiValue + 10]].
-	value >= $a asciiValue 
-		ifTrue: [value <= $z asciiValue ifTrue: [^value - $a asciiValue + 10]].
-! !
-
-!RTFParserState methodsFor: 'private' stamp: 'tat 5/4/2006 23:48'!
-empty
-	^stack size = 0! !
-
 !RTFParser methodsFor: 'utilities' stamp: 'tat 5/3/2006 02:18'!
 emptyToken
 	^tokenizer tokenClass emptyToken
 	! !
-
-!RTFToken class methodsFor: 'instance creation' stamp: 'tat 5/4/2006 00:25'!
-emptyToken
-	^self new type: #empty; word: #empty! !
-
-!RTFTokenizer methodsFor: 'private' stamp: 'mir 8/11/2006 20:53'!
-endOfArgumentSet
-	^EndOfArgumentSet! !
-
-!RTFTokenizer methodsFor: 'private' stamp: 'mir 8/11/2006 21:01'!
-endOfKeywordSet
-	^EndOfKeywordSet! !
-
-!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:31'!
-family
-	^family! !
-
-!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:31'!
-family: f
-	family := f! !
-
-!RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 4/11/2011 10:18'!
-finishBuild
-	"Don't do this. It looks like it would help, include the paragraphstyle of the last paragraph, but it will hurt when, for example, we are pasting one or a few words, not an entire paragraph."
-"	self finishParagraph"! !
-
-!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/13/2012 16:57'!
-finishParagraph
-
-	| attrs |
-	"Don't include attributes for left alignment. No need to."
-	attrs _ align = 0
-		ifTrue: [ #() ]
-		ifFalse: [ { TextAlignment new alignment: align } ].
-	textStream
-		nextPutAllString: String newLineString
-		withAttributes: attrs! !
 
 !RTFParser methodsFor: 'utilities' stamp: 'jmv 4/4/2011 16:26'!
 getAddress: string
@@ -890,55 +578,6 @@ getAddress: string
 	last _ countEnd-1 min: string size.
 	(first > string size or: [first > last ]) ifTrue: [ ^''].
 	^string copyFrom: first to: last! !
-
-!RTFToken methodsFor: 'deprecated' stamp: 'kalin 5/7/2006 19:14'!
-getArg
-
-	self isKeyword ifTrue: [^arg].
-	^nil! !
-
-!RTFToken methodsFor: 'deprecated' stamp: 'kalin 5/7/2006 19:14'!
-getString
-
-	self isString ifTrue: [^content].
-	^nil! !
-
-!RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 5/6/2006 17:05'!
-getStyleFrom: builder
-	type = #paragraph ifTrue: [^builder activeParagraphStyle].
-	type = #character ifTrue: [^builder activeCharacterStyle]! !
-
-!RTFTokenizer methodsFor: 'tokenizing' stamp: 'MR 5/5/2006 14:30'!
-getToken
-
-	self readNext.
-	^self peekLast! !
-
-!RTFToken methodsFor: 'deprecated' stamp: 'MR 5/1/2006 16:23'!
-getType
-	self isBlockOpen ifTrue: [^#blockOpen].
-	self isBlockClose ifTrue: [^#blockClose].
-	self isKeyword ifTrue: [^#keyword].
-	self isStringToken ifTrue: [^#string].
-	^nil
-! !
-
-!RTFToken methodsFor: 'deprecated' stamp: 'kalin 5/7/2006 19:14'!
-getWord
-    
-    "if this token is a command, returns the command's keyword.
-     For example:   \kw0102  getWord -> kw"
-
-	self isKeyword ifTrue: [^content].
-	^nil! !
-
-!RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:48'!
-green
-	^green! !
-
-!RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:48'!
-green: g
-	green := g! !
 
 !RTFParser methodsFor: 'handlers-general' stamp: 'tat 5/5/2006 13:53'!
 handleAll: token! !
@@ -1666,28 +1305,156 @@ handlewmetafile: token
 	"state context atProperty: #type put: #wmf"
 	state context at: #type put: #wmf! !
 
-!RTFChunkScanner class methodsFor: 'class initialization' stamp: 'mir 8/12/2006 15:51'!
-initialize
-	"RTFChunkScanner initialize"
-
-	BufferStream := (String new: 4096) writeStream.
-	XTable := Array new: 258 withAll: 0.
-
-	ScannerTable := Array new: 258.
-	ScannerTable atAllPut: nil.
-	ScannerTable at: CharacterScanner endOfRunCode put: #scanFinished.
-	ScannerTable at: CharacterScanner crossedXCode put: #scanFinished.
-
-	ScannerTable at: ${ asciiValue + 1 put: #blockOpenAt:.
-	ScannerTable at: $} asciiValue + 1 put: #blockCloseAt:.
-	ScannerTable at: Character lfCharacter asciiValue + 1 put: #lfAt:.
-	ScannerTable at: Character crCharacter asciiValue + 1 put: #crAt:.
-! !
-
 !RTFParser methodsFor: 'initialization' stamp: 'kalin 5/7/2006 19:25'!
 initialize
 
 	RTFToken initialize! !
+
+!RTFParser methodsFor: 'parsing' stamp: 'tat 5/4/2006 18:52'!
+parse
+	self parseBlock.
+! !
+
+!RTFParser methodsFor: 'parsing' stamp: 'tat 5/4/2006 00:50'!
+parse: string buildWith: b
+	"parse the string with the specified builder"
+	self parseWithTokenizer: (RTFTokenizer newFromString: string) buildWith: b! !
+
+!RTFParser methodsFor: 'utilities' stamp: 'tat 8/13/2007 10:41'!
+parseBlock
+	| token |
+	"parses a complete {..} block"
+
+	"is there a block to parse?"
+	token := (tokenizer lookAhead: 1).
+	((token isNil not) and: [token type == #blockOpen]) ifFalse: [^self].
+	
+	"skip the { character"
+	tokenizer getToken.
+
+	"save the state"
+	self saveState.
+
+	"parse all words until the end of the block is reached"
+	self parseUntilBlockClose.
+
+	"skip the } character"
+	tokenizer getToken.
+
+	"restore the state"
+	self restoreState! !
+
+!RTFParser methodsFor: 'utilities' stamp: 'kalin 5/1/2006 14:08'!
+parseCommand
+
+	"parse a command, string or a block of commands
+	disregarding their inner sctructure"
+
+	|peeked|
+	
+	peeked := (tokenizer lookAhead: 1) type.
+	
+	(peeked == #blockOpen) 
+		ifTrue: [self parseBlock].
+	(peeked == #string) 
+		ifTrue: [self addContents].
+	(peeked == #keyword) 
+		ifTrue: [self parseKeyWord].
+! !
+
+!RTFParser methodsFor: 'utilities' stamp: 'kalin 5/16/2006 12:04'!
+parseKeyWord
+	"assuming that the next RTF token is a keyword,
+	 find appropriate keyword handler and execute it"
+
+	| token message |
+
+	token := tokenizer getToken.
+
+	"build the message name for the RTF keyword"
+	message := self createHandleMessage: token.
+
+	(self respondsTo: message) ifTrue: [
+		"Transcript show: 'Handling keyword: '; show: (token word); cr."
+		self perform: message with: token
+	] ifFalse: [
+		"run a general handler"
+		self handleAll: token
+	]
+
+
+
+
+	! !
+
+!RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:09'!
+parseUntilBlockClose
+	"reads until a not parsed #blockClose token"
+
+	[(tokenizer lookAhead: 1) type = #blockClose] whileFalse: 
+		[self parseCommand]
+
+! !
+
+!RTFParser methodsFor: 'parsing' stamp: 'jmv 4/8/2011 11:29'!
+parseWithTokenizer: t buildWith: b
+	tokenizer := t.
+	builder := b.
+	state := RTFParserState new.
+	"set default destination to builder's method to add contents"
+	state destination block: [:string | builder buildAddContents: string] type: #default.
+	self parse.
+	builder finishBuild! !
+
+!RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:59'!
+restoreState
+	"restores the state of the parser on exiting a block"
+	state restoreState.
+	builder restoreState! !
+
+!RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:59'!
+saveState
+	"saves the state of the parser on entering a block"
+	state saveState.
+	builder saveState! !
+
+!RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:11'!
+skipBlock
+
+	"skips a complete {..} block"
+
+	"is there a block to skip?"
+	((tokenizer lookAhead: 1) type = #blockOpen) ifFalse: [^self].
+	
+	"skip the { character"
+	tokenizer getToken.
+
+	"skip until }"
+	self skipUntilBlockClose.
+
+	"skip the } character"
+	tokenizer getToken! !
+
+!RTFParser methodsFor: 'utilities' stamp: 'kalin 4/30/2006 23:12'!
+skipCommand
+
+	"skips a command. skips the whole block if the next token
+	is a #blockOpen"
+	
+	((tokenizer lookAhead: 1) type == #blockOpen) 
+	   ifTrue: [self skipBlock]
+	   ifFalse: [tokenizer getToken]
+	
+	! !
+
+!RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:13'!
+skipUntilBlockClose
+	"skips until a not parsed #blockClose token"
+
+	[(tokenizer lookAhead: 1) type = #blockClose] whileFalse: 
+		[self skipCommand]
+
+! !
 
 !RTFParser class methodsFor: 'class initialization' stamp: 'tat 4/11/2007 14:28'!
 initialize
@@ -1706,6 +1473,43 @@ initialize
 		yourself.
 ! !
 
+!RTFParserDestination methodsFor: 'accessing' stamp: 'tat 11/1/2006 15:03'!
+block
+	^block! !
+
+!RTFParserDestination methodsFor: 'accessing' stamp: 'tat 11/1/2006 15:05'!
+block: aBlock type: aSymbol
+	block := aBlock.
+	type := aSymbol! !
+
+!RTFParserDestination methodsFor: 'accessing' stamp: 'tat 11/1/2006 15:03'!
+type
+	^type! !
+
+!RTFParserDestination methodsFor: 'accessing' stamp: 'tat 11/1/2006 15:03'!
+value: arg
+	block ifNotNil: [^block value: arg]! !
+
+!RTFParserState methodsFor: 'accessing' stamp: 'tat 5/4/2006 23:39'!
+context
+	^context! !
+
+!RTFParserState methodsFor: 'accessing' stamp: 'tat 5/4/2006 23:39'!
+context: anObject
+	context := anObject! !
+
+!RTFParserState methodsFor: 'accessing' stamp: 'tat 5/4/2006 23:39'!
+destination
+	^destination! !
+
+!RTFParserState methodsFor: 'accessing' stamp: 'tat 5/4/2006 23:38'!
+destination: aBlock
+	destination := aBlock! !
+
+!RTFParserState methodsFor: 'private' stamp: 'tat 5/4/2006 23:48'!
+empty
+	^stack size = 0! !
+
 !RTFParserState methodsFor: 'initialization' stamp: 'tat 11/1/2006 15:06'!
 initialize
 	super initialize.
@@ -1713,11 +1517,450 @@ initialize
 	context := nil.
 	stack := OrderedCollection new! !
 
+!RTFParserState methodsFor: 'private' stamp: 'tat 5/5/2006 00:25'!
+pop
+	self empty ifTrue: [^nil] ifFalse: [^stack removeLast]! !
+
+!RTFParserState methodsFor: 'private' stamp: 'tat 5/5/2006 00:25'!
+push: anObject
+	stack addLast: anObject! !
+
+!RTFParserState methodsFor: 'stack' stamp: 'tat 5/4/2006 23:42'!
+restoreState
+	context := self pop.
+	destination := self pop! !
+
+!RTFParserState methodsFor: 'stack' stamp: 'tat 11/1/2006 15:00'!
+saveState
+	self push: (destination copy).
+	self push: (context copy)! !
+
+!RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 3/11/2007 22:15'!
+applyTo: builder
+	"applies the stylesheet to the builder"
+	basedon isNil ifFalse: [ builder buildApplyStylesheet: basedon].
+	additive ifFalse: [ self resetStyle: builder ].
+	style do: [:aBlock | aBlock value: builder state]
+	! !
+
+!RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 5/6/2006 17:05'!
+getStyleFrom: builder
+	type = #paragraph ifTrue: [^builder activeParagraphStyle].
+	type = #character ifTrue: [^builder activeCharacterStyle]! !
+
+!RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 5/6/2006 17:40'!
+resetStyle: builder
+	type = #paragraph ifTrue: [builder buildResetParagraphSettings. builder buildResetCharFormat].
+	type = #character ifTrue: [builder buildResetCharFormat ]! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:50'!
+additive
+	additive := true! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/6/2006 15:53'!
+basedon
+	^basedon! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/6/2006 15:53'!
+basedon: bo
+	basedon := bo! !
+
 !RTFStylesheet methodsFor: 'initializing' stamp: 'tat 5/6/2006 16:50'!
 initialize
 	additive := false.
 	type := #paragraph.
 	num := 0! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
+name
+	^name! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
+name: n
+	name := n! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 15:02'!
+num
+	^num! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 15:01'!
+num: n
+	num := n! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 15:33'!
+style
+	^style! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 15:32'!
+style: s
+	style := s! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
+type
+	^type! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
+type: t
+	type := t! !
+
+!RTFTextBuilder methodsFor: 'private' stamp: 'jmv 3/30/2011 15:53'!
+addToText: aString
+	self addToText: aString specialAttributes: nil! !
+
+!RTFTextBuilder methodsFor: 'private' stamp: 'jmv 4/11/2011 21:58'!
+addToText: aString specialAttributes: nonFormattingAttributesOrNil
+	"nonFormattingAttributesOrNil should only contains attributes that answer false to #isForFormatting"
+	| attributes emphasis |
+
+	attributes _ Array streamContents: [ :strm |
+		fontFamilyName ifNotNil: [
+			fontPointSize ifNotNil: [
+				strm nextPut: (TextFontFamilyAndSize
+					familyName: fontFamilyName pointSize: fontPointSize) ]].
+		emphasis _ 0.
+		bold ifTrue: [ emphasis _ emphasis + 1 ].
+		italic ifTrue: [ emphasis _ emphasis + 2 ].
+		underline ifTrue: [ emphasis _ emphasis + 4 ].
+		emphasis > 0 ifTrue: [
+			strm nextPut: (TextEmphasis new emphasisCode: emphasis) ].
+		currentFgColor ifNotNil: [
+			strm nextPut: (TextColor color: currentFgColor) ].
+		nonFormattingAttributesOrNil ifNotNil: [ strm nextPutAll: nonFormattingAttributesOrNil ]].
+	textStream nextPutAllString: aString withAttributes: attributes! !
+
+!RTFTextBuilder methodsFor: 'building' stamp: 'jmv 11/22/2011 15:21'!
+addUnicodeContents: string
+
+	"Add Unicode strings to the content tree. Skip characters if prescribed by the \uc command (see doSkipNextCharacters)"	
+
+	string size <= skipNextCharacters ifTrue: [
+		self skipNextCharacters: skipNextCharacters - (string size). ^self].
+
+	"For unicode characters do not use converter"
+	self addToText: (string allButFirst: skipNextCharacters).
+
+	self skipNextCharacters: 0! !
+
+!RTFTextBuilder methodsFor: 'private' stamp: 'jmv 3/30/2011 16:36'!
+attachCharacterStyleToParagraph
+	"Ver si hace falta algo como lo que hace Sophie..."! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddBullet
+	self addUnicodeContents: (RTFUnicode value: 16r2022 or: $°) asString! !
+
+!RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/29/2011 22:26'!
+buildAddColorDef: coldef
+	"adds an entry to the color table"
+	(coldef red isNil or: [coldef green isNil or: [coldef blue isNil]])
+		ifTrue: [colorTable addLast: nil]
+		ifFalse: [colorTable addLast: (Color r: (coldef red) / 255 g: (coldef green) / 255 b: (coldef blue) / 255)]! !
+
+!RTFTextBuilder methodsFor: 'building' stamp: 'jmv 3/30/2011 15:42'!
+buildAddContents: string
+	| possibleString |
+	possibleString _ self convertAndSkip: string.
+	possibleString ifNil: [^self].
+
+	self addToText: possibleString! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddDoubleLeftQuote
+	self addUnicodeContents: (RTFUnicode value: 16r201C or: $") asString! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddDoubleRightQuote
+	self addUnicodeContents: (RTFUnicode value: 16r201D or: $") asString! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddEmDash
+	self addUnicodeContents: (RTFUnicode value: 16r2014 or: '--') asString! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddEmSpace
+	self addUnicodeContents: (RTFUnicode value: 16r2003 or: '  ') asString! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddEnDash
+	self addUnicodeContents: (RTFUnicode value: 16r2013 or: $-) asString! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddEnSpace
+	self addUnicodeContents: (RTFUnicode value: 16r2002 or: ' ') asString! !
+
+!RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/30/2011 16:38'!
+buildAddFontInfo: fontInfo
+	"add font information to the table"
+	"fontTable atProperty: (fontInfo num) put: fontInfo"
+	fontTable at: (fontInfo num) put: fontInfo! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddLeftQuote
+	self addUnicodeContents: (RTFUnicode value: 16r2018 or: $') asString! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddNonBreakingHyphen
+	self addUnicodeContents: (RTFUnicode value: 16r2011 or: '-') asString! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddNonBreakingSpace
+	"This character is supported by ISO-8859-15"
+	self addUnicodeContents: (RTFUnicode value: 16r00A0) asString! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddOptionalHyphen
+	"This character is supported by ISO-8859-15"
+	self addUnicodeContents: (RTFUnicode value: 16r00AD) asString! !
+
+!RTFTextBuilder methodsFor: 'building-pictures' stamp: 'jmv 3/30/2011 17:18'!
+buildAddPicture: picInfo from: aStream
+
+	(ImageReadWriter formFromStream: aStream)
+		ifNotNil: [ :form |
+			self addToText: '*' specialAttributes: {TextAnchor new anchoredFormOrMorph: form} ]! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddQmSpace
+	self addUnicodeContents: (RTFUnicode value: 16r2005 or: ' ') asString! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddRightQuote
+	self addUnicodeContents: (RTFUnicode value: 16r2019 or: $') asString! !
+
+!RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/30/2011 16:38'!
+buildAddStylesheet: pp! !
+
+!RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 4/6/2011 10:39'!
+buildAddTab
+	"This character is supported by ISO-8859-15"
+	self addUnicodeContents: (RTFUnicode value: 16r0009) asString! !
+
+!RTFTextBuilder methodsFor: 'building' stamp: 'jmv 3/30/2011 15:55'!
+buildAddURI: uriString alternate: string
+	| possibleString |
+	possibleString _ self convertAndSkip: string.
+	possibleString ifNil: [^self].
+	
+	self addToText: possibleString specialAttributes: { TextURL new url: uriString }! !
+
+!RTFTextBuilder methodsFor: 'building' stamp: 'jmv 3/30/2011 15:57'!
+buildAddUnicodeContents: string
+
+	self addToText: string! !
+
+!RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 4/6/2011 10:44'!
+buildAnsiCharacterSet
+	self textConverter: RTFLatin1TextConverter new! !
+
+!RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 3/30/2011 16:39'!
+buildApplyStylesheet:pp! !
+
+!RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 3/30/2011 16:39'!
+buildCodePage: cp
+	self textConverter: (CodePageConverterTable at: cp ifAbsent: [^nil]) new! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
+buildFirstLineIndent: aNumber
+	"Guardar en una ivar, como todo lo demas.
+	meter en el stack tambien.
+	Quizas cambiar el stack... meter self copy????? no se.
+	
+	Despues usar al construir el parastyle
+	
+	"
+	firstIndent _ (aNumber / 20.0) rounded! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:27'!
+buildFirstLineIndentPercentage: i! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
+buildLeftIndent: aNumber
+
+	leftIndent _ (aNumber / 20.0) rounded! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
+buildLeftIndentPercentage: i! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
+buildLineSpacing:pp! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
+buildLineSpacingType:pp! !
+
+!RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 3/30/2011 16:40'!
+buildMacCharacterSet! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
+buildParagraphAlignCenter
+	align _ 2! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/7/2011 09:06'!
+buildParagraphAlignJustified
+"Atencion. Este, y cualquier otro de parrafo, falla si la ultima linea NO termina en enter... atrapar el final, y hacer algo como #buildStartParagraph..."
+align _ 3! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/11/2011 09:58'!
+buildParagraphAlignLeft
+
+	align _ 0! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:28'!
+buildParagraphAlignRight
+align _ 1! !
+
+!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:20'!
+buildResetCharFormat! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/11/2011 21:39'!
+buildResetParagraphSettings
+	"resets the paragraph settings to the default paragraph 
+	settings"
+	
+	bold _ italic _ underline _ false.
+	align _ 0. "left"
+	
+	firstIndent _ leftIndent _ spaceBefore _ spaceAfter _ 0.
+	rightIndent _ nil! !
+
+!RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 3/30/2011 16:40'!
+buildResetSectionSettings! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
+buildRightIndent: aNumber
+	rightIndent _ (aNumber / 20.0) rounded! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/30/2011 16:29'!
+buildRightIndentPercentage: i! !
+
+!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:19'!
+buildSetBaselineOffset: s
+	"sets the font size in half points"! !
+
+!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:21'!
+buildSetBkColor: index
+	"Ignored in Sophie"! !
+
+!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:19'!
+buildSetBold: aBoolean
+	bold _ aBoolean! !
+
+!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:21'!
+buildSetCaps
+	"Ignored in Sophie"! !
+
+!RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/30/2011 16:38'!
+buildSetDefaultFont: pp! !
+
+!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:19'!
+buildSetFgColor: zindex
+		"sets the current foreground color to
+		color with the given index in the
+		color table"
+| index |
+index _ zindex + 1.
+currentFgColor _ colorTable at: index! !
+
+!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/31/2011 15:36'!
+buildSetFont: i
+	"en Sophie, pone el textConverter... ver!!"
+	"Hasta donde entiendo, el font NO incluye emphasis ni pointSize, solo la familia, charset y code page"! !
+
+!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 4/12/2011 09:16'!
+buildSetFontSize: s
+	"sets the font size in half points"
+
+	"Note font shoudl always be a baseFont, any emphasis should be done by emphasis attributes"
+	fontPointSize _ (s / 2.0 / Text pointSizeConversionFactor) rounded.
+	fontPointSize = 0
+		ifTrue: [
+			fontFamilyName _ nil.
+			fontPointSize _ nil ]
+		ifFalse: [ fontFamilyName _ 'DejaVu' ]! !
+
+!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:20'!
+buildSetItalic: aBoolean
+	italic _ aBoolean! !
+
+!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 4/8/2011 09:43'!
+buildSetKerning: popo! !
+
+!RTFTextBuilder methodsFor: 'building-charformat' stamp: 'jmv 3/30/2011 16:20'!
+buildSetUnderline: aBoolean
+	underline _ aBoolean! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
+buildSpaceAbove: aNumber
+	spaceBefore _ (aNumber / 20.0) rounded! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 15:06'!
+buildSpaceBelow: aNumber
+	spaceAfter _ (aNumber / 20.0) rounded! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 4/8/2011 11:36'!
+buildStartParagraph
+
+	self finishParagraph! !
+
+!RTFTextBuilder methodsFor: 'building-header' stamp: 'jmv 3/30/2011 16:38'!
+buildStartStylesheet
+	"?????"
+	^RTFStylesheet new! !
+
+!RTFTextBuilder methodsFor: 'private' stamp: 'jmv 11/22/2011 15:26'!
+convert: string startingAt: startIndex withConverter: converter
+
+	| writeStream |
+	converter ifNil: [^string copyFrom: startIndex to: string size].
+	writeStream _ (String new: string size) writeStream.
+	startIndex to: string size do: [:index |
+		writeStream nextPut: (converter toSqueak: (string at: index))].
+	^writeStream contents! !
+
+!RTFTextBuilder methodsFor: 'building' stamp: 'jmv 11/22/2011 15:26'!
+convertAndSkip: string
+
+	"Convert non-Unicode string using the specified encoder.
+	Skip characters if prescribed by the \uc command (see doSkipNextCharacters)."
+
+	| convertedString |
+	
+	"Check if some characters need to be skipped and do the math"
+	(string size <= skipNextCharacters and: [string size > 0])
+		ifTrue: [
+			self skipNextCharacters: skipNextCharacters - (string size).
+			^nil].
+
+	"convert the string using the specified encoder"
+	convertedString := self
+		convert: string
+		startingAt: skipNextCharacters+1
+		withConverter: self textConverter.
+
+	"don't skip characters anymore"
+	self skipNextCharacters: 0.
+
+	^convertedString! !
+
+!RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/29/2011 10:15'!
+defaultSkipNextCharacters: anInteger
+	defaultSkipNextCharacters := anInteger! !
+
+!RTFTextBuilder methodsFor: 'building-general' stamp: 'jmv 4/11/2011 10:18'!
+finishBuild
+	"Don't do this. It looks like it would help, include the paragraphstyle of the last paragraph, but it will hurt when, for example, we are pasting one or a few words, not an entire paragraph."
+"	self finishParagraph"! !
+
+!RTFTextBuilder methodsFor: 'building-paragraph' stamp: 'jmv 3/13/2012 16:57'!
+finishParagraph
+
+	| attrs |
+	"Don't include attributes for left alignment. No need to."
+	attrs _ align = 0
+		ifTrue: [ #() ]
+		ifFalse: [ { TextAlignment new alignment: align } ].
+	textStream
+		nextPutAllString: String newLineString
+		withAttributes: attrs! !
 
 !RTFTextBuilder methodsFor: 'initialize' stamp: 'jmv 4/11/2011 21:39'!
 initialize
@@ -1756,6 +1999,79 @@ initialize
 	self skipNextCharacters: 0.
 ! !
 
+!RTFTextBuilder methodsFor: 'state' stamp: 'jmv 4/8/2011 15:07'!
+restoreState
+
+	spaceAfter _ stateStack removeLast.
+	spaceBefore _ stateStack removeLast.
+	rightIndent _ stateStack removeLast.
+	leftIndent _ stateStack removeLast.
+	firstIndent _ stateStack removeLast.
+	align _ stateStack removeLast.
+	underline _ stateStack removeLast.
+	italic _ stateStack removeLast.
+	bold _ stateStack removeLast.
+	fontPointSize _ stateStack removeLast.
+	fontFamilyName _ stateStack removeLast.
+	currentFgColor _ stateStack removeLast.
+	defaultSkipNextCharacters _ stateStack removeLast.
+	textConverter _ stateStack removeLast! !
+
+!RTFTextBuilder methodsFor: 'state' stamp: 'jmv 4/8/2011 15:08'!
+saveState
+	
+	stateStack
+		addLast: textConverter;
+		addLast: defaultSkipNextCharacters;
+		addLast: currentFgColor;
+		addLast: fontFamilyName;
+		addLast: fontPointSize;
+		addLast: bold;
+		addLast: italic;
+		addLast: underline;
+		addLast: align;
+		addLast: firstIndent;
+		addLast: leftIndent;
+		addLast: rightIndent;
+		addLast: spaceBefore;
+		addLast: spaceAfter! !
+
+!RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/29/2011 10:14'!
+skipNextCharacters: value
+	"sets a count to skip the next character added with simplyAddContents:"
+	skipNextCharacters := value! !
+
+!RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/30/2011 16:34'!
+text
+	"viene a ser equivalente a #contentTree, no?
+	En ese caso, llamara #finishBuild, PERO SOLO UNA VEZ!!
+	"
+	"
+	solo una vez ifTrue: [
+		self finishBuild ].
+	"
+	^textStream contents! !
+
+!RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/29/2011 10:16'!
+textConverter
+	^textConverter! !
+
+!RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/29/2011 10:24'!
+textConverter: aTextConverter
+	textConverter := aTextConverter! !
+
+!RTFTextBuilder methodsFor: 'private' stamp: 'jmv 4/6/2011 10:38'!
+textConverterFromCharset: n
+	"returns a new text converter from a given font charset"
+	n = 77 ifTrue: [^RTFMacRomanUnicodeTextConverter new].
+	n = 204 ifTrue: [^RTFCP1251UnicodeTextConverter new].
+	n = 0 ifTrue: [^RTFCP1252UnicodeTextConverter new].
+	^self textConverter! !
+
+!RTFTextBuilder class methodsFor: 'instance creation' stamp: 'jmv 4/11/2011 18:10'!
+currentClass
+	^Smalltalk at: #RTFStyledTextBuilder ifAbsent: [ self ]! !
+
 !RTFTextBuilder class methodsFor: 'class initialization' stamp: 'jmv 4/6/2011 10:37'!
 initialize
 	"
@@ -1771,38 +2087,73 @@ initialize
 	at: 1251 put: RTFCP1251UnicodeTextConverter;
 	at: 1252 put: RTFCP1252UnicodeTextConverter! !
 
-!RTFToken class methodsFor: 'class initialization' stamp: 'kalin 5/7/2006 19:23'!
-initialize
+!RTFTextConverter class methodsFor: 'instance creation' stamp: 'jmv 3/29/2011 08:43'!
+default
+	"add if neeced"
+	^ "UTF8TextConverter new." nil! !
 
-	self initializeDefaultArgs.! !
+!RTFTextConverter class methodsFor: 'services' stamp: 'jmv 4/4/2011 16:28'!
+digitValue: char
 
-!RTFTokenizer class methodsFor: 'class initialization' stamp: 'tat 4/11/2007 15:10'!
-initialize
-	"RTFTokenizer initialize"
-
-	EndOfKeywordSet := CharacterSet new.
-	(0 to: ($A asInteger - 1)) do:
-		[:v | EndOfKeywordSet add: (Character value: v)].
-	(($Z asInteger + 1) to: ($a asInteger - 1)) do:
-		[:v | EndOfKeywordSet add: (Character value: v)]. 
-	(($z asInteger + 1) to: 255) do:
-		[:v | EndOfKeywordSet add: (Character value: v)].
-
-	" \'hh is handled separately. it is converted to \sophieUtfHexDDD"
-	ControlSymbolSet _ CharacterSet newFrom: '|~-_:*{}'.
-
-	EndOfArgumentSet := CharacterSet newFrom: (Character allCharacters reject: [ :c | c isDigit or: [ #($- $.) includes: c ]]).
-	EndOfArgumentSet add: $.
+	| value |
+	value _ char asciiValue.
+	value <= $9 asciiValue 
+		ifTrue: [^value - $0 asciiValue].
+	value >= $A asciiValue 
+		ifTrue: [value <= $Z asciiValue ifTrue: [^value - $A asciiValue + 10]].
+	value >= $a asciiValue 
+		ifTrue: [value <= $z asciiValue ifTrue: [^value - $a asciiValue + 10]].
 ! !
 
-!RTFToken class methodsFor: 'class initialization' stamp: 'tat 7/10/2006 23:31'!
-initializeDefaultArgs
+!RTFToken methodsFor: 'accessing' stamp: 'tat 7/11/2006 00:38'!
+arg
 
-	DefaultArgs := Dictionary new.
+    "returns the argument of this keyword token"
 
-	DefaultArgs at: #i put: 1.
-	DefaultArgs at: #b put: 1.
+	self isKeyword ifFalse: [^nil].
+
+	arg isNil not ifTrue: [^arg].
+
+     (DefaultArgs includesKey: self word)
+		ifTrue: [^ DefaultArgs at: self word].
+
+	^0! !
+
+!RTFToken methodsFor: 'converting' stamp: 'MR 5/5/2006 00:24'!
+asString
+	self isKeyword ifTrue: [(arg = nil) ifTrue: [^'keyword:', content] ifFalse: [^'keyword:', content, ' ', (arg asString)]].
+	self isStringToken ifTrue: [^'string:', '!!',content,'!!'].
+	^type asString.! !
+
+!RTFToken methodsFor: 'deprecated' stamp: 'kalin 5/7/2006 19:14'!
+getArg
+
+	self isKeyword ifTrue: [^arg].
+	^nil! !
+
+!RTFToken methodsFor: 'deprecated' stamp: 'kalin 5/7/2006 19:14'!
+getString
+
+	self isString ifTrue: [^content].
+	^nil! !
+
+!RTFToken methodsFor: 'deprecated' stamp: 'MR 5/1/2006 16:23'!
+getType
+	self isBlockOpen ifTrue: [^#blockOpen].
+	self isBlockClose ifTrue: [^#blockClose].
+	self isKeyword ifTrue: [^#keyword].
+	self isStringToken ifTrue: [^#string].
+	^nil
 ! !
+
+!RTFToken methodsFor: 'deprecated' stamp: 'kalin 5/7/2006 19:14'!
+getWord
+    
+    "if this token is a command, returns the command's keyword.
+     For example:   \kw0102  getWord -> kw"
+
+	self isKeyword ifTrue: [^content].
+	^nil! !
 
 !RTFToken methodsFor: 'testing' stamp: 'MR 4/30/2006 23:10'!
 isBlockClose
@@ -1820,44 +2171,67 @@ isKeyword
 isStringToken
 	^(type = #string)! !
 
-!RTFChunkScanner methodsFor: 'stop conditions' stamp: 'mir 8/12/2006 15:50'!
-lfAt: index
-	self addScannedStringToBuffer.
-	lastIndex := lastIndex  + 1.
-	prevIndex := lastIndex! !
+!RTFToken methodsFor: 'accessing' stamp: 'kalin 5/7/2006 19:15'!
+string
+    "returns the contents of this string token"
 
-!RTFTokenizer methodsFor: 'tokenizing' stamp: 'kalin 5/6/2006 01:04'!
-lookAhead: n     
-     "peeks n tokens ahead where n is less or equal to 3"
+	self isStringToken ifTrue: [^content].
+	^nil! !
 
-	n = 0 ifTrue: [^self peekLast].
-	n = 1 ifTrue: [^self peekNext].
-	n = 2 ifTrue: [^self peekAfterNext].
-	n = 3 ifTrue: [^self peekAfterAfter].
+!RTFToken methodsFor: 'private' stamp: 'MR 7/4/2006 10:50'!
+string: aContent
+	content := aContent.
+	type := #string! !
+
+!RTFToken methodsFor: 'accessing' stamp: 'MR 5/2/2006 13:48'!
+type
+	self isBlockOpen ifTrue: [^#blockOpen].
+	self isBlockClose ifTrue: [^#blockClose].
+	self isKeyword ifTrue: [^#keyword].
+	self isStringToken ifTrue: [^#string].
+	^nil
 ! !
 
-!RTFTokenizer methodsFor: 'tokenizing' stamp: 'kalin 5/6/2006 01:05'!
-moreTokens
-    "are there any tokens left?"
+!RTFToken methodsFor: 'private' stamp: 'MR 7/4/2006 10:50'!
+type: aType
+	type := aType.! !
 
-	^next notNil
+!RTFToken methodsFor: 'accessing' stamp: 'kalin 5/7/2006 19:14'!
+word
+    
+    "if this token is a command, returns the command's keyword.
+     For example:   \kw0102  getWord -> kw"
+
+	self isKeyword ifTrue: [^content].
+	^nil! !
+
+!RTFToken methodsFor: 'private' stamp: 'MR 4/30/2006 23:16'!
+word: aWord
+	self word: aWord withArg: nil! !
+
+!RTFToken methodsFor: 'private' stamp: 'MR 7/4/2006 10:50'!
+word: aWord withArg: anArg
+	content := aWord.
+	arg := anArg.
+	type := #keyword! !
+
+!RTFToken class methodsFor: 'instance creation' stamp: 'tat 5/4/2006 00:25'!
+emptyToken
+	^self new type: #empty; word: #empty! !
+
+!RTFToken class methodsFor: 'class initialization' stamp: 'kalin 5/7/2006 19:23'!
+initialize
+
+	self initializeDefaultArgs.! !
+
+!RTFToken class methodsFor: 'class initialization' stamp: 'tat 7/10/2006 23:31'!
+initializeDefaultArgs
+
+	DefaultArgs := Dictionary new.
+
+	DefaultArgs at: #i put: 1.
+	DefaultArgs at: #b put: 1.
 ! !
-
-!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:21'!
-name
-	^name! !
-
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
-name
-	^name! !
-
-!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:21'!
-name: fn
-	name := fn! !
-
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
-name: n
-	name := n! !
 
 !RTFToken class methodsFor: 'instance creation' stamp: 'MR 7/4/2006 10:51'!
 newBlockClose
@@ -1872,10 +2246,6 @@ newBlockOpen
 	instance := self new.
 	instance type: #blockOpen.
 	^instance! !
-
-!RTFTokenizer class methodsFor: 'instance creation' stamp: 'mir 8/11/2006 20:57'!
-newFromString: aString
-	^self on: aString readStream! !
 
 !RTFToken class methodsFor: 'instance creation' stamp: 'MR 4/30/2006 23:24'!
 newKeyword: aWord
@@ -1895,25 +2265,49 @@ newString: aString
 	instance string: aString.
 	^instance! !
 
-!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:22'!
-num
-	^num! !
+!RTFTokenizer methodsFor: 'private' stamp: 'MR 5/3/2006 13:26'!
+addStringToken: aString to: aBuffer
+	"puts the new token to the buffer only if it is not empty"
+	aString ifNotEmpty: [aBuffer add: (RTFToken newString: aString)]! !
 
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 15:02'!
-num
-	^num! !
+!RTFTokenizer methodsFor: 'private' stamp: 'mir 8/12/2006 14:24'!
+chunkBuffer
+	^chunkBuffer ifNil: [chunkBuffer := String new: 2048]! !
 
-!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:22'!
-num: n
-	num := n! !
+!RTFTokenizer methodsFor: 'private' stamp: 'mir 8/11/2006 20:54'!
+controlSymbolSet
+	^ControlSymbolSet! !
 
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 15:01'!
-num: n
-	num := n! !
+!RTFTokenizer methodsFor: 'private' stamp: 'mir 8/11/2006 20:53'!
+endOfArgumentSet
+	^EndOfArgumentSet! !
 
-!RTFTokenizer class methodsFor: 'instance creation' stamp: 'mir 8/11/2006 20:57'!
-on: aStream
-	^self new on: aStream! !
+!RTFTokenizer methodsFor: 'private' stamp: 'mir 8/11/2006 21:01'!
+endOfKeywordSet
+	^EndOfKeywordSet! !
+
+!RTFTokenizer methodsFor: 'tokenizing' stamp: 'MR 5/5/2006 14:30'!
+getToken
+
+	self readNext.
+	^self peekLast! !
+
+!RTFTokenizer methodsFor: 'tokenizing' stamp: 'kalin 5/6/2006 01:04'!
+lookAhead: n     
+     "peeks n tokens ahead where n is less or equal to 3"
+
+	n = 0 ifTrue: [^self peekLast].
+	n = 1 ifTrue: [^self peekNext].
+	n = 2 ifTrue: [^self peekAfterNext].
+	n = 3 ifTrue: [^self peekAfterAfter].
+! !
+
+!RTFTokenizer methodsFor: 'tokenizing' stamp: 'kalin 5/6/2006 01:05'!
+moreTokens
+    "are there any tokens left?"
+
+	^next notNil
+! !
 
 !RTFTokenizer methodsFor: 'private' stamp: 'tat 8/13/2007 11:00'!
 on: aStream
@@ -1935,40 +2329,6 @@ on: aStream
 	
 	
 ! !
-
-!RTFParser methodsFor: 'parsing' stamp: 'tat 5/4/2006 18:52'!
-parse
-	self parseBlock.
-! !
-
-!RTFParser methodsFor: 'parsing' stamp: 'tat 5/4/2006 00:50'!
-parse: string buildWith: b
-	"parse the string with the specified builder"
-	self parseWithTokenizer: (RTFTokenizer newFromString: string) buildWith: b! !
-
-!RTFParser methodsFor: 'utilities' stamp: 'tat 8/13/2007 10:41'!
-parseBlock
-	| token |
-	"parses a complete {..} block"
-
-	"is there a block to parse?"
-	token := (tokenizer lookAhead: 1).
-	((token isNil not) and: [token type == #blockOpen]) ifFalse: [^self].
-	
-	"skip the { character"
-	tokenizer getToken.
-
-	"save the state"
-	self saveState.
-
-	"parse all words until the end of the block is reached"
-	self parseUntilBlockClose.
-
-	"skip the } character"
-	tokenizer getToken.
-
-	"restore the state"
-	self restoreState! !
 
 !RTFTokenizer methodsFor: 'private' stamp: 'mir 8/31/2006 12:27'!
 parseChunk
@@ -2027,49 +2387,6 @@ parseChunk
 
 	^buffer! !
 
-!RTFParser methodsFor: 'utilities' stamp: 'kalin 5/1/2006 14:08'!
-parseCommand
-
-	"parse a command, string or a block of commands
-	disregarding their inner sctructure"
-
-	|peeked|
-	
-	peeked := (tokenizer lookAhead: 1) type.
-	
-	(peeked == #blockOpen) 
-		ifTrue: [self parseBlock].
-	(peeked == #string) 
-		ifTrue: [self addContents].
-	(peeked == #keyword) 
-		ifTrue: [self parseKeyWord].
-! !
-
-!RTFParser methodsFor: 'utilities' stamp: 'kalin 5/16/2006 12:04'!
-parseKeyWord
-	"assuming that the next RTF token is a keyword,
-	 find appropriate keyword handler and execute it"
-
-	| token message |
-
-	token := tokenizer getToken.
-
-	"build the message name for the RTF keyword"
-	message := self createHandleMessage: token.
-
-	(self respondsTo: message) ifTrue: [
-		"Transcript show: 'Handling keyword: '; show: (token word); cr."
-		self perform: message with: token
-	] ifFalse: [
-		"run a general handler"
-		self handleAll: token
-	]
-
-
-
-
-	! !
-
 !RTFTokenizer methodsFor: 'private' stamp: 'mir 8/12/2006 16:04'!
 parseNoKeywordChunk: aString startingAt: index
 	"reads a string without \ into buffer"
@@ -2102,25 +2419,6 @@ parseNoKeywordChunk: aString startingAt: index
 	self addStringToken: bufferStream contents
 "! !
 
-!RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:09'!
-parseUntilBlockClose
-	"reads until a not parsed #blockClose token"
-
-	[(tokenizer lookAhead: 1) type = #blockClose] whileFalse: 
-		[self parseCommand]
-
-! !
-
-!RTFParser methodsFor: 'parsing' stamp: 'jmv 4/8/2011 11:29'!
-parseWithTokenizer: t buildWith: b
-	tokenizer := t.
-	builder := b.
-	state := RTFParserState new.
-	"set default destination to builder's method to add contents"
-	state destination block: [:string | builder buildAddContents: string] type: #default.
-	self parse.
-	builder finishBuild! !
-
 !RTFTokenizer methodsFor: 'accesing' stamp: 'MR 5/3/2006 10:51'!
 peekAfterAfter
 	^afterAfter! !
@@ -2136,14 +2434,6 @@ peekLast
 !RTFTokenizer methodsFor: 'accesing' stamp: 'MR 4/30/2006 23:40'!
 peekNext
 	^next! !
-
-!RTFParserState methodsFor: 'private' stamp: 'tat 5/5/2006 00:25'!
-pop
-	self empty ifTrue: [^nil] ifFalse: [^stack removeLast]! !
-
-!RTFParserState methodsFor: 'private' stamp: 'tat 5/5/2006 00:25'!
-push: anObject
-	stack addLast: anObject! !
 
 !RTFTokenizer methodsFor: 'accesing' stamp: 'MR 7/4/2006 10:54'!
 readNext
@@ -2212,308 +2502,37 @@ readStreamUpToNoEscapeInto: tokenStream
 			self readStreamUpToNoEscapeInto: tokenStream]
 ! !
 
-!RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:48'!
-red
-	^red! !
-
-!RTFColorDef methodsFor: 'accessing' stamp: 'tat 5/5/2006 13:48'!
-red: r
-	red := r! !
-
-!RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 5/6/2006 17:40'!
-resetStyle: builder
-	type = #paragraph ifTrue: [builder buildResetParagraphSettings. builder buildResetCharFormat].
-	type = #character ifTrue: [builder buildResetCharFormat ]! !
-
-!RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:59'!
-restoreState
-	"restores the state of the parser on exiting a block"
-	state restoreState.
-	builder restoreState! !
-
-!RTFParserState methodsFor: 'stack' stamp: 'tat 5/4/2006 23:42'!
-restoreState
-	context := self pop.
-	destination := self pop! !
-
-!RTFTextBuilder methodsFor: 'state' stamp: 'jmv 4/8/2011 15:07'!
-restoreState
-
-	spaceAfter _ stateStack removeLast.
-	spaceBefore _ stateStack removeLast.
-	rightIndent _ stateStack removeLast.
-	leftIndent _ stateStack removeLast.
-	firstIndent _ stateStack removeLast.
-	align _ stateStack removeLast.
-	underline _ stateStack removeLast.
-	italic _ stateStack removeLast.
-	bold _ stateStack removeLast.
-	fontPointSize _ stateStack removeLast.
-	fontFamilyName _ stateStack removeLast.
-	currentFgColor _ stateStack removeLast.
-	defaultSkipNextCharacters _ stateStack removeLast.
-	textConverter _ stateStack removeLast! !
-
-!RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:59'!
-saveState
-	"saves the state of the parser on entering a block"
-	state saveState.
-	builder saveState! !
-
-!RTFParserState methodsFor: 'stack' stamp: 'tat 11/1/2006 15:00'!
-saveState
-	self push: (destination copy).
-	self push: (context copy)! !
-
-!RTFTextBuilder methodsFor: 'state' stamp: 'jmv 4/8/2011 15:08'!
-saveState
-	
-	stateStack
-		addLast: textConverter;
-		addLast: defaultSkipNextCharacters;
-		addLast: currentFgColor;
-		addLast: fontFamilyName;
-		addLast: fontPointSize;
-		addLast: bold;
-		addLast: italic;
-		addLast: underline;
-		addLast: align;
-		addLast: firstIndent;
-		addLast: leftIndent;
-		addLast: rightIndent;
-		addLast: spaceBefore;
-		addLast: spaceAfter! !
-
-!RTFChunkScanner class methodsFor: 'instance creation' stamp: 'mir 8/12/2006 16:04'!
-scan: chunk into: buffer startingAt: index
-	^self new scan: chunk into: buffer startingAt: index! !
-
-!RTFChunkScanner methodsFor: 'initialize' stamp: 'mir 8/12/2006 16:05'!
-scan: chunkString into: aBuffer startingAt: index
-	chunk := chunkString.
-	buffer := aBuffer.
-	self scanStartingAt: index! !
-
-!RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/12/2006 15:59'!
-scanCharactersFrom: startIndex to: stopIndex in: sourceString rightX: rightX stopConditions: stops kern: kernDelta
-	"Primitive. This is the inner loop of text display--but see 
-	scanCharactersFrom: to:rightX: which would get the string, 
-	stopConditions and displaying from the instance. March through source 
-	String from startIndex to stopIndex. If any character is flagged with a 
-	non-nil entry in stops, then return the corresponding value. Determine 
-	width of each character from xTable, indexed by map. 
-	If dextX would exceed rightX, then return stops at: 258. 
-	Advance destX by the width of the character. If stopIndex has been
-	reached, then return stops at: 257. Optional. 
-	See Object documentation whatIsAPrimitive."
-	| ascii char |
-	<primitive: 103>
-
-	lastIndex _ startIndex.
-	[lastIndex <= stopIndex]
-		whileTrue: 
-			[char _ (sourceString at: lastIndex).
-			ascii _ char asciiValue + 1.
-			(stops at: ascii) == nil ifFalse: [^stops at: ascii].
-			lastIndex _ lastIndex + 1].
-	lastIndex _ stopIndex.
-	^stops at: CharacterScanner endOfRunCode! !
-
-!RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/12/2006 15:16'!
-scanFrom: startIndex to: stopIndex
-	| stopCondition |
-	stopCondition := self scanCharactersFrom: startIndex to: stopIndex in: chunk rightX: SmallInteger maxVal stopConditions: stopConditions kern: 0.
-	stopCondition
-		ifNil: [^nil]
-		ifNotNil: [stopCondition == #scanFinished
-			ifTrue: [^nil]
-			ifFalse: [self perform: stopCondition with: lastIndex]]! !
-
-!RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/14/2006 16:32'!
-scanStartingAt: index
-	| chunkSize |
-	self bufferStream reset.
-	stopConditions := ScannerTable.
-	xTable := XTable.
-	destX := 0.
-	lastIndex := index.
-	prevIndex := index.
-	rightEdge := SmallInteger maxVal.
-	chunkSize := chunk size.
-	[(self scanFrom: lastIndex to: chunkSize) isNil]
-		whileFalse.
-	prevIndex <= lastIndex
-		ifTrue: [lastIndex := lastIndex + 1].
-	self addScannedString! !
-
-!RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:11'!
-skipBlock
-
-	"skips a complete {..} block"
-
-	"is there a block to skip?"
-	((tokenizer lookAhead: 1) type = #blockOpen) ifFalse: [^self].
-	
-	"skip the { character"
-	tokenizer getToken.
-
-	"skip until }"
-	self skipUntilBlockClose.
-
-	"skip the } character"
-	tokenizer getToken! !
-
-!RTFParser methodsFor: 'utilities' stamp: 'kalin 4/30/2006 23:12'!
-skipCommand
-
-	"skips a command. skips the whole block if the next token
-	is a #blockOpen"
-	
-	((tokenizer lookAhead: 1) type == #blockOpen) 
-	   ifTrue: [self skipBlock]
-	   ifFalse: [tokenizer getToken]
-	
-	! !
-
-!RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/29/2011 10:14'!
-skipNextCharacters: value
-	"sets a count to skip the next character added with simplyAddContents:"
-	skipNextCharacters := value! !
-
-!RTFParser methodsFor: 'utilities' stamp: 'tat 5/4/2006 23:13'!
-skipUntilBlockClose
-	"skips until a not parsed #blockClose token"
-
-	[(tokenizer lookAhead: 1) type = #blockClose] whileFalse: 
-		[self skipCommand]
-
-! !
-
-!RTFToken methodsFor: 'accessing' stamp: 'kalin 5/7/2006 19:15'!
-string
-    "returns the contents of this string token"
-
-	self isStringToken ifTrue: [^content].
-	^nil! !
-
-!RTFToken methodsFor: 'private' stamp: 'MR 7/4/2006 10:50'!
-string: aContent
-	content := aContent.
-	type := #string! !
-
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 15:33'!
-style
-	^style! !
-
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 15:32'!
-style: s
-	style := s! !
-
-!RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/30/2011 16:34'!
-text
-	"viene a ser equivalente a #contentTree, no?
-	En ese caso, llamara #finishBuild, PERO SOLO UNA VEZ!!
-	"
-	"
-	solo una vez ifTrue: [
-		self finishBuild ].
-	"
-	^textStream contents! !
-
-!RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/29/2011 10:16'!
-textConverter
-	^textConverter! !
-
-!RTFTextBuilder methodsFor: 'accessing' stamp: 'jmv 3/29/2011 10:24'!
-textConverter: aTextConverter
-	textConverter := aTextConverter! !
-
-!RTFTextBuilder methodsFor: 'private' stamp: 'jmv 4/6/2011 10:38'!
-textConverterFromCharset: n
-	"returns a new text converter from a given font charset"
-	n = 77 ifTrue: [^RTFMacRomanUnicodeTextConverter new].
-	n = 204 ifTrue: [^RTFCP1251UnicodeTextConverter new].
-	n = 0 ifTrue: [^RTFCP1252UnicodeTextConverter new].
-	^self textConverter! !
-
-!RTFCP1250UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
-toSqueak: char
-	^self toSqueak: char withTable: #(8364 129 8218 131 8222 8230 8224 8225 136 8240 352 8249 346 356 381 377 144 8216 8217 8220 8221 8226 8211 8212 152 8482 353 8250 347 357 382 378 160 711 728 321 164 260 166 167 168 169 350 171 172 173 174 379 176 177 731 322 180 181 182 183 184 261 351 187 317 733 318 380 340 193 194 258 196 313 262 199 268 201 280 203 282 205 206 270 272 323 327 211 212 336 214 215 344 366 218 368 220 221 354 223 341 225 226 259 228 314 263 231 269 233 281 235 283 237 238 271 273 324 328 243 244 337 246 247 345 367 250 369 252 253 355 729)
-! !
-
-!RTFCP1251UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
-toSqueak: char
-	^self toSqueak: char withTable: #(1026 1027 8218 1107 8222 8230 8224 8225 8364 8240 1033 8249 1034 1036 1035 1039 1106 8216 8217 8220 8221 8226 8211 8212 152 8482 1113 8250 1114 1116 1115 1119 160 1038 1118 1032 164 1168 166 167 1025 169 1028 171 172 173 174 1031 176 177 1030 1110 1169 181 182 183 1105 8470 1108 187 1112 1029 1109 1111 1040 1041 1042 1043 1044 1045 1046 1047 1048 1049 1050 1051 1052 1053 1054 1055 1056 1057 1058 1059 1060 1061 1062 1063 1064 1065 1066 1067 1068 1069 1070 1071 1072 1073 1074 1075 1076 1077 1078 1079 1080 1081 1082 1083 1084 1085 1086 1087 1088 1089 1090 1091 1092 1093 1094 1095 1096 1097 1098 1099 1100 1101 1102 1103)
-! !
-
-!RTFCP1252UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
-toSqueak: char
-	^self toSqueak: char withTable: #(8364 129 8218 402 8222 8230 8224 8225 710 8240 352 8249 338 141 381 143 144 8216 8217 8220 8221 8226 8211 8212 732 8482 353 8250 339 157 382 376 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255)
-! !
-
-!RTFLatin1TextConverter methodsFor: 'conversion' stamp: 'mir 8/13/2006 17:36'!
-toSqueak: aChar
-	^aChar! !
-
-!RTFMacRomanUnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:13'!
-toSqueak: char
-	^self toSqueak: char withTable: #(
-		196 197 199 201 209 214 220 225 224 226 228 227 229 231 233 232
-		234 235 237 236 238 239 241 243 242 244 246 245 250 249 251 252
-		8224 176 162 163 167 8226 182 223 174 169 8482 180 168 8800 198 216
-		8734 177 8804 8805 165 181 8706 8721 8719 960 8747 170 186 937 230 248
-		191 161 172 8730 402 8776 8710 171 187 8230 160 192 195 213 338 339
-		8211 8212 8220 8221 8216 8217 247 9674 255 376 8260 8364 8249 8250 64257 64258
-		8225 183 8218 8222 8240 194 202 193 203 200 205 206 207 204 211 212
-		63743 210 218 219 217 305 710 732 175 728 729 730 184 733 731 711 256)! !
-
-!RTFMappingUnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:15'!
-toSqueak: char
-	^self subclassResponsibility! !
-
-!RTFMappingUnicodeTextConverter methodsFor: 'conversion' stamp: 'jmv 4/6/2011 10:40'!
-toSqueak: char withTable: table
-
-	| value |
-	value _ char asciiValue.
-	value < 128 ifTrue: [^ char].
-	value > 255 ifTrue: [^ char].
-	^ RTFUnicode value: (table at: (value - 128 + 1)).
-! !
-
 !RTFTokenizer methodsFor: 'accesing' stamp: 'tat 5/4/2006 00:46'!
 tokenClass
 	"the token class used by this tokenizer"
 	^RTFToken! !
 
-!RTFParserDestination methodsFor: 'accessing' stamp: 'tat 11/1/2006 15:03'!
-type
-	^type! !
+!RTFTokenizer class methodsFor: 'class initialization' stamp: 'tat 4/11/2007 15:10'!
+initialize
+	"RTFTokenizer initialize"
 
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
-type
-	^type! !
+	EndOfKeywordSet := CharacterSet new.
+	(0 to: ($A asInteger - 1)) do:
+		[:v | EndOfKeywordSet add: (Character value: v)].
+	(($Z asInteger + 1) to: ($a asInteger - 1)) do:
+		[:v | EndOfKeywordSet add: (Character value: v)]. 
+	(($z asInteger + 1) to: 255) do:
+		[:v | EndOfKeywordSet add: (Character value: v)].
 
-!RTFToken methodsFor: 'accessing' stamp: 'MR 5/2/2006 13:48'!
-type
-	self isBlockOpen ifTrue: [^#blockOpen].
-	self isBlockClose ifTrue: [^#blockClose].
-	self isKeyword ifTrue: [^#keyword].
-	self isStringToken ifTrue: [^#string].
-	^nil
+	" \'hh is handled separately. it is converted to \sophieUtfHexDDD"
+	ControlSymbolSet _ CharacterSet newFrom: '|~-_:*{}'.
+
+	EndOfArgumentSet := CharacterSet newFrom: (Character allCharacters reject: [ :c | c isDigit or: [ #($- $.) includes: c ]]).
+	EndOfArgumentSet add: $.
 ! !
 
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
-type: t
-	type := t! !
+!RTFTokenizer class methodsFor: 'instance creation' stamp: 'mir 8/11/2006 20:57'!
+newFromString: aString
+	^self on: aString readStream! !
 
-!RTFToken methodsFor: 'private' stamp: 'MR 7/4/2006 10:50'!
-type: aType
-	type := aType.! !
-
-!RTFParserDestination methodsFor: 'accessing' stamp: 'tat 11/1/2006 15:03'!
-value: arg
-	block ifNotNil: [^block value: arg]! !
+!RTFTokenizer class methodsFor: 'instance creation' stamp: 'mir 8/11/2006 20:57'!
+on: aStream
+	^self new on: aStream! !
 
 !RTFUnicode class methodsFor: 'compatibility' stamp: 'jmv 3/30/2011 14:55'!
 value: unicodeCodePoint
@@ -2523,25 +2542,6 @@ value: unicodeCodePoint
 value: unicodeCodePoint or: aCharacter
 	"In Cuis, #unicodeCodePoint: handles those Unicode characters that are present in the ISO8859-15 char set"
 	^(Character unicodeCodePoint: unicodeCodePoint) ifNil: [ aCharacter ]! !
-
-!RTFToken methodsFor: 'accessing' stamp: 'kalin 5/7/2006 19:14'!
-word
-    
-    "if this token is a command, returns the command's keyword.
-     For example:   \kw0102  getWord -> kw"
-
-	self isKeyword ifTrue: [^content].
-	^nil! !
-
-!RTFToken methodsFor: 'private' stamp: 'MR 4/30/2006 23:16'!
-word: aWord
-	self word: aWord withArg: nil! !
-
-!RTFToken methodsFor: 'private' stamp: 'MR 7/4/2006 10:50'!
-word: aWord withArg: anArg
-	content := aWord.
-	arg := anArg.
-	type := #keyword! !
 RTFChunkScanner initialize!
 RTFParser initialize!
 RTFTextBuilder initialize!

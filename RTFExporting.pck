@@ -1,5 +1,5 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1259] on 17 April 2012 at 10:44:35 pm'!
-'Description Please enter a description for this package'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 17 April 2012 at 11:21:13 pm'!
+'Description Please enter a description for this package.'!
 
 !String methodsFor: '*rtfExporting' stamp: 'jmv 11/22/2011 14:52'!
 iso8859s15ToRTFEncoding
@@ -21,18 +21,6 @@ iso8859s15ToRTFEncoding
 						nextPut: $u.
 					cp printOn: strm.
 					strm nextPut: $? ]]]! !
-
-!Text class methodsFor: '*rtfExporting' stamp: 'jmv 11/1/2011 10:40'!
-pointSizeConversionFactor
-	"This constant is used for conversion of font point sizes ofr RTF export and import.
-	In theory, it shouldn't be needed. After all, a 72point font in RTF should be imported as a 72 point font in Cuis.
-	
-	Cuis uses 96 pixels per inch. This means that the inter baseline height for a 72 point font is (at least) 96 pixels.
-	This is also the convention used (by default) on Windows, so fonts look about the same in Cuis and in Windows native software (such as Wordpad).
-	But the Mac uses (by default) a convention of 72 pixels per inch. So, text on the Mac looks smaller.
-	If this method is modified to answer 96/72, then text on the Mac will look the same as in Cuis. This could be good to make Mac users happy, as long as we never show them the point size we believe our fonts have. The font that they happily use export and import content, and to look side by side, that is called '12 points' in Mac software, well call '9 point'"
-	"^1.33333"
-	^1! !
 
 !Text methodsFor: '*rtfExporting' stamp: 'jmv 11/22/2011 15:30'!
 rtfString
@@ -96,6 +84,18 @@ writeRTFHeaderOn: aStream colorTable: colorArray fontTable: fontNamesArray
 			nextPut: $; ].
 	aStream nextPutAll: '}'; newLine! !
 
+!Text class methodsFor: '*rtfExporting' stamp: 'jmv 11/1/2011 10:40'!
+pointSizeConversionFactor
+	"This constant is used for conversion of font point sizes ofr RTF export and import.
+	In theory, it shouldn't be needed. After all, a 72point font in RTF should be imported as a 72 point font in Cuis.
+	
+	Cuis uses 96 pixels per inch. This means that the inter baseline height for a 72 point font is (at least) 96 pixels.
+	This is also the convention used (by default) on Windows, so fonts look about the same in Cuis and in Windows native software (such as Wordpad).
+	But the Mac uses (by default) a convention of 72 pixels per inch. So, text on the Mac looks smaller.
+	If this method is modified to answer 96/72, then text on the Mac will look the same as in Cuis. This could be good to make Mac users happy, as long as we never show them the point size we believe our fonts have. The font that they happily use export and import content, and to look side by side, that is called '12 points' in Mac software, well call '9 point'"
+	"^1.33333"
+	^1! !
+
 !TextAlignment methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:52'!
 writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
@@ -105,6 +105,11 @@ writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 		[ 2 ] -> [ aStream nextPutAll: '\qc ' ].
 		[ 3 ] -> [ aStream nextPutAll: '\qj ' ] }.
 	^0! !
+
+!TextAlignment methodsFor: '*rtfExporting' stamp: 'jmv 1/21/2011 14:57'!
+writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
+	"Write the RTF code for attribute stop."
+	aStream nextPutAll: '\ql '! !
 
 !TextAnchor methodsFor: '*rtfExporting' stamp: 'jmv 4/7/2011 15:08'!
 writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
@@ -116,16 +121,29 @@ writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Skip the character holding the attribute"
 	^1! !
 
+!TextAnchor methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:12'!
+writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
+	"Write the RTF code for attribute stop."! !
+
 !TextAttribute methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:51'!
 writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 	^0! !
+
+!TextAttribute methodsFor: '*rtfExporting' stamp: 'jmv 1/21/2011 13:41'!
+writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
+	"Write the RTF code for attribute stop."! !
 
 !TextColor methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:52'!
 writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 	aStream nextPutAll: '\cf'; nextPutAll: (colorArray indexOf: color) asString; space.
 	^0! !
+
+!TextColor methodsFor: '*rtfExporting' stamp: 'jmv 1/21/2011 13:51'!
+writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
+	"Write the RTF code for attribute stop."
+	aStream nextPutAll: '\cf0 '! !
 
 !TextEmphasis methodsFor: '*rtfExporting' stamp: 'jmv 4/12/2011 09:59'!
 writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
@@ -143,43 +161,6 @@ writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 		aStream nextPutAll: '\outl\strokewidth60 ' ].
 	^0! !
 
-!TextFontFamilyAndSize methodsFor: '*rtfExporting' stamp: 'jmv 4/12/2011 09:06'!
-writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
-	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
-	"We should also reference familyName, in the table with \f# where # is the number in the table..."
-
-	aStream nextPutAll: '\fs'; nextPutAll: ((pointSize * Text pointSizeConversionFactor ) rounded * 2) asString; space.
-	^0! !
-
-!TextKern methodsFor: '*rtfExporting' stamp: 'jmv 4/7/2011 15:21'!
-writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
-	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
-	| quarterPoints twips |
-	quarterPoints _ kern * 4.	"This maybe needs tweaking!!"
-	twips _ kern * 12.
-	aStream nextPutAll:
-		'\kerning1\expnd', quarterPoints asString,
-		'\expndtw', twips asString; space.
-	^0! !
-
-!TextAlignment methodsFor: '*rtfExporting' stamp: 'jmv 1/21/2011 14:57'!
-writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
-	"Write the RTF code for attribute stop."
-	aStream nextPutAll: '\ql '! !
-
-!TextAnchor methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:12'!
-writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
-	"Write the RTF code for attribute stop."! !
-
-!TextAttribute methodsFor: '*rtfExporting' stamp: 'jmv 1/21/2011 13:41'!
-writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
-	"Write the RTF code for attribute stop."! !
-
-!TextColor methodsFor: '*rtfExporting' stamp: 'jmv 1/21/2011 13:51'!
-writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
-	"Write the RTF code for attribute stop."
-	aStream nextPutAll: '\cf0 '! !
-
 !TextEmphasis methodsFor: '*rtfExporting' stamp: 'jmv 4/12/2011 09:59'!
 writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop.
@@ -196,10 +177,29 @@ writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	(emphasisCode allMask: AbstractFont boldCode) ifTrue: [
 		aStream nextPutAll: '\b0 ' ]! !
 
+!TextFontFamilyAndSize methodsFor: '*rtfExporting' stamp: 'jmv 4/12/2011 09:06'!
+writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
+	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
+	"We should also reference familyName, in the table with \f# where # is the number in the table..."
+
+	aStream nextPutAll: '\fs'; nextPutAll: ((pointSize * Text pointSizeConversionFactor ) rounded * 2) asString; space.
+	^0! !
+
 !TextFontFamilyAndSize methodsFor: '*rtfExporting' stamp: 'jmv 4/7/2011 15:20'!
 writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop."
 	aStream nextPutAll: '\fs0 '! !
+
+!TextKern methodsFor: '*rtfExporting' stamp: 'jmv 4/7/2011 15:21'!
+writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
+	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
+	| quarterPoints twips |
+	quarterPoints _ kern * 4.	"This maybe needs tweaking!!"
+	twips _ kern * 12.
+	aStream nextPutAll:
+		'\kerning1\expnd', quarterPoints asString,
+		'\expndtw', twips asString; space.
+	^0! !
 
 !TextKern methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:52'!
 writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
