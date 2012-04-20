@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 17 April 2012 at 11:19:43 pm'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 20 April 2012 at 9:39:30 pm'!
 'Description A small package whose purpose is to install the rest of the packages that comprise the StyledTextEditor project.'!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
@@ -32,12 +32,12 @@ documentsDirectory
 featuresModelNames
 	^#('STE - New Features' 'STE - Open Features' 'STE - Done Features' 'Cuis Features')! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/12/2012 17:48'!
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/20/2012 21:37'!
 install
 	"
 	StyledTextInstaller new install
 	"
-	self installPackages.
+	self installPackages: self styledTextPackages.
 	STETheme beCurrent.
 	self openExamples! !
 
@@ -48,12 +48,9 @@ installPackage: packageName
 	versionName _ packageName, '.pck'.
 	CodeFileBrowser installPackage: (self repositoryDirectory readOnlyFileNamed: versionName)! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/12/2012 17:48'!
-installPackages
-	"
-	StyledTextInstaller new installPackages
-	"
-	self styledTextPackages do: [:each | self installPackage: each]! !
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/20/2012 21:31'!
+installPackages: packages
+	packages do: [:each | self installPackage: each]! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:22'!
 open: name
@@ -112,11 +109,11 @@ recreateFeaturesStyleSet
 repositoryDirectory
 	^(FileDirectory on: (CodePackage named: 'StyledTextInstaller') fullFileName) containingDirectory! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'jmv 1/6/2012 14:12'!
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/20/2012 21:19'!
 save: name
 	| model |
 	model _ self styledTextModelNamed: name.
-	model saveAs: name! !
+	model saveAs: (self documentsDirectory fullNameFor: name)! !
 
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 09:40'!
 saveStyledTextEditorDocumentation
@@ -137,3 +134,10 @@ styledTextModelNamed: name
 !StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 19:50'!
 styledTextPackages
 	^#('RTFImporting' 'RTFExporting' 'RTFTests' 'FFI' 'ExtendedClipboard' 'CrappyOSProcess' 'StyledText' 'StyledTextNotebook' 'StyledTextWiki')! !
+
+!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/20/2012 21:34'!
+update
+	"
+	StyledTextInstaller new update
+	"
+	self installPackages: (self styledTextPackages add: self class name; yourself)! !
