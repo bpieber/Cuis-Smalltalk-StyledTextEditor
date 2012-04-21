@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 17 April 2012 at 11:21:20 pm'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 21 April 2012 at 2:49:53 pm'!
 'Description Please enter a description for this package.'!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
@@ -3544,15 +3544,15 @@ replaceReferencesToStyle: oldParagraphOrCharacterStyle with: newParagraphOrChara
 
 	actualContents replaceReferencesToStyle: oldParagraphOrCharacterStyle with: newParagraphOrCharacterStyle! !
 
-!StyledTextModel methodsFor: 'file save' stamp: 'jmv 1/6/2012 14:28'!
+!StyledTextModel methodsFor: 'file save' stamp: 'bp 4/21/2012 14:47'!
 save
 	"Answer wether save was successful."
 	"Note: to enable the use of StyledText in applications, where 'accept' or 'save' have other meanings than 'save to file', we need to merge this class with PluggableTextModel, and have the textProvider be the application."
 	| refStream |
 	fileName ifNil: [
 		fileName _ FillInTheBlank
-			request: 'Host name or address?'
-			initialAnswer: 'default'.
+			request: 'File name?'
+			initialAnswer: ''.
 		fileName isEmpty ifTrue: [ ^false ]].
 
 	self flushUndoRedoCommands.

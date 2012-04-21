@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 20 April 2012 at 9:39:30 pm'!
+'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 21 April 2012 at 3:35:32 pm'!
 'Description A small package whose purpose is to install the rest of the packages that comprise the StyledTextEditor project.'!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
@@ -11,7 +11,7 @@ StyledTextInstaller class
 	instanceVariableNames: ''!
 
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 09:14'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'bp 12/4/2011 09:14'!
 createStyledTextEditorDocumentation
 	"self new createStyledTextEditorDocumentation"
 	| model styleSet |
@@ -24,15 +24,15 @@ createStyledTextEditorDocumentation
 		createDocumentationParagraphStyleSet;
 		createDocumentationCharacterStyleSet! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:13'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/5/2012 23:13'!
 documentsDirectory
 	^self repositoryDirectory directoryNamed: 'Documents'! !
 
-!StyledTextInstaller methodsFor: 'features' stamp: 'bp 12/21/2011 10:34'!
+!StyledTextInstaller methodsFor: 'features' stamp: 'bp 4/21/2012 14:58'!
 featuresModelNames
-	^#('STE - New Features' 'STE - Open Features' 'STE - Done Features' 'Cuis Features')! !
+	^#('STE - New Features' 'STE - Done Features' 'Cuis Features')! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/20/2012 21:37'!
+!StyledTextInstaller methodsFor: 'public' stamp: 'bp 4/20/2012 21:37'!
 install
 	"
 	StyledTextInstaller new install
@@ -41,18 +41,18 @@ install
 	STETheme beCurrent.
 	self openExamples! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:10'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/5/2012 23:10'!
 installPackage: packageName
 	| versionName |
 	versionName := self repositoryDirectory lastNameFor: packageName extension: 'pck'.
 	versionName _ packageName, '.pck'.
 	CodeFileBrowser installPackage: (self repositoryDirectory readOnlyFileNamed: versionName)! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/20/2012 21:31'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/20/2012 21:31'!
 installPackages: packages
 	packages do: [:each | self installPackage: each]! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:22'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/5/2012 23:22'!
 open: name
 	| file model |
 	file _ self documentsDirectory oldFileNamed: name, '.object'.
@@ -60,31 +60,31 @@ open: name
 	[model _ (SmartRefStream on: file) next] ensure: [file close].
 	^SystemWindow editFancierStyledText: model label: name! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 10:10'!
+!StyledTextInstaller methodsFor: 'public' stamp: 'bp 12/4/2011 10:10'!
 openExamples
 	"self new openExamples"
 	self
 		openStyledTextEditorDocumentation;
 		openMacbethExample! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:24'!
+!StyledTextInstaller methodsFor: 'public' stamp: 'bp 4/5/2012 23:24'!
 openMacbethExample
 	"self new openMacbethExample"
 	| window |
 	window _ self open: 'Macbeth Example'.
 	window ifNotNil: [window color: Color white]! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:24'!
+!StyledTextInstaller methodsFor: 'public' stamp: 'bp 4/5/2012 23:24'!
 openStyledTextEditorDocumentation
 	"self new openStyledTextEditorDocumentation"
 	self open: 'Styled Text Editor Documentation'! !
 
-!StyledTextInstaller methodsFor: 'features' stamp: 'bp 12/7/2011 02:06'!
+!StyledTextInstaller methodsFor: 'public' stamp: 'bp 12/7/2011 02:06'!
 openStyledTextEditorFeatures
 	"self new openStyledTextEditorFeatures"
 	self featuresModelNames do: [:each | self open: each]! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 10:06'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'bp 12/4/2011 10:06'!
 recreateDocumentationStyleSet
 	"self new recreateDocumentationStyleSet"
 	| model styleSet |
@@ -105,17 +105,17 @@ recreateFeaturesStyleSet
 			createFeaturesParagraphStyleSet;
 			createFeaturesCharacterStyleSet]! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/5/2012 23:10'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/5/2012 23:10'!
 repositoryDirectory
 	^(FileDirectory on: (CodePackage named: 'StyledTextInstaller') fullFileName) containingDirectory! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/20/2012 21:19'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/20/2012 21:19'!
 save: name
 	| model |
 	model _ self styledTextModelNamed: name.
 	model saveAs: (self documentsDirectory fullNameFor: name)! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 09:40'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'bp 12/4/2011 09:40'!
 saveStyledTextEditorDocumentation
 	"self new saveStyledTextEditorDocumentation"
 	self save: 'Styled Text Editor Documentation'! !
@@ -125,17 +125,17 @@ saveStyledTextEditorFeatures
 	"self new saveStyledTextEditorFeatures"
 	self featuresModelNames do: [:each | self save: each]! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 12/4/2011 09:59'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'bp 12/4/2011 09:59'!
 styledTextModelNamed: name
 	| window |
 	window _ SystemWindow allInstances detect: [:each | each label = name].
 	^window model! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/4/2012 19:50'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/4/2012 19:50'!
 styledTextPackages
 	^#('RTFImporting' 'RTFExporting' 'RTFTests' 'FFI' 'ExtendedClipboard' 'CrappyOSProcess' 'StyledText' 'StyledTextNotebook' 'StyledTextWiki')! !
 
-!StyledTextInstaller methodsFor: 'as yet unclassified' stamp: 'bp 4/20/2012 21:34'!
+!StyledTextInstaller methodsFor: 'public' stamp: 'bp 4/20/2012 21:34'!
 update
 	"
 	StyledTextInstaller new update
