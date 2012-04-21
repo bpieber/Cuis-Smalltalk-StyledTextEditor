@@ -14,3 +14,18 @@ If you already installed StyledTextEditor in an image you can update it to a new
 - Save unsaved packages if necessary so that git can merge your changes
 - Pull from the github repository of Cuis-StyledTextEditor you are using
 - Do the following: StyledTextInstaller new update
+
+The Styled Text Editor was first presented by me at last year's ESUG in Edinburgh [1]. Thanks to ESUG the presentation was recorded [2].
+
+The Styled Text Editor is a framework for rich text editing using styles as known from popular word processors like Apple Pages or Microsoft Word. It features paragraph and character styles, allowing easy text formatting using styles only. Other features are numbered and bulleted list paragraph styles, support for images, and text completion using various glossaries. It is intended for applications where users need to work with good looking rich text in a simple and fast way.
+
+The Styled Text Editor is developed in Cuis with the plan to eventually port it to Squeak and Pharo.
+
+The main goal of the framework is to enable end users to edit good looking rich texts in a simple and fast way. Rich text commonly refers to text with formatting information like different fonts, sizes, alignments, and emphasis. To make editing as simple as possible instead of individual formatting information end users apply styles to parts of the text. Editing is made fast by keyboard shortcuts for text navigation, selection, and styles selection. Where possible the feel of widely used rich text editors is supported.
+
+The idea and funding was provided Bernhard Pieber and my company Software Generation. The implementation was done by Juan Vuletich, the mastermind behind Cuis. Thanks Juan for the close cooperation. It was and still is great fun to work with you.
+
+We are looking forward to feedback from you. Fork it, create issues and send us pull requests. ;-)
+
+[1] http://www.esug.org/wiki/pier/Conferences/2011/Schedule-And-Talks/StyledTextEditor
+[2] http://www.youtube.com/watch?v=pUoVbvwspi8&list=PL813665D04A2E4C0A&index=7&feature=plpp_video
