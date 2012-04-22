@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 21 April 2012 at 2:49:53 pm'!
+'From Cuis 4.0 of 21 April 2012 [latest update: #1260] on 22 April 2012 at 10:52:19 am'!
 'Description Please enter a description for this package.'!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
@@ -1701,13 +1701,13 @@ step
 stepTime
 	^ 0  "every cycle"! !
 
-!STETheme methodsFor: 'colors' stamp: 'jmv 1/4/2012 16:18'!
+!STETheme methodsFor: 'colors' stamp: 'bp 4/22/2012 10:51'!
 textHighlight
 	"
 	^ Color r: 0.71 g: 0.835 b: 1.0
 	^ Color hue: 214 chroma: 0.29 luminance: 0.816
 	"
-	^Color r: 224 g: 255 b: 234 range: 255! !
+	^Color r: 204 g: 235 b: 214 range: 255! !
 
 !STETheme methodsFor: 'colors' stamp: 'jmv 12/30/2011 11:42'!
 unfocusedTextHighlightFrom: aColor
