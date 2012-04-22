@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 21 April 2012 [latest update: #1260] on 22 April 2012 at 10:52:19 am'!
+'From Cuis 4.0 of 21 April 2012 [latest update: #1260] on 22 April 2012 at 1:41:17 pm'!
 'Description Please enter a description for this package.'!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
@@ -208,6 +208,16 @@ TextModel subclass: #StyledTextModel
 	category: 'StyledText'!
 !classDefinition: 'StyledTextModel class' category: #StyledText!
 StyledTextModel class
+	instanceVariableNames: ''!
+
+!classDefinition: #StyledTextModelTest category: #'StyledText-Tests'!
+TestCase subclass: #StyledTextModelTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'StyledText-Tests'!
+!classDefinition: 'StyledTextModelTest class' category: #'StyledText-Tests'!
+StyledTextModelTest class
 	instanceVariableNames: ''!
 
 !classDefinition: #StyledTextTest category: #'StyledText-Tests'!
@@ -3544,30 +3554,26 @@ replaceReferencesToStyle: oldParagraphOrCharacterStyle with: newParagraphOrChara
 
 	actualContents replaceReferencesToStyle: oldParagraphOrCharacterStyle with: newParagraphOrCharacterStyle! !
 
-!StyledTextModel methodsFor: 'file save' stamp: 'bp 4/21/2012 14:47'!
+!StyledTextModel methodsFor: 'file save' stamp: 'bp 4/22/2012 13:38'!
 save
 	"Answer wether save was successful."
 	"Note: to enable the use of StyledText in applications, where 'accept' or 'save' have other meanings than 'save to file', we need to merge this class with PluggableTextModel, and have the textProvider be the application."
-	| refStream |
 	fileName ifNil: [
 		fileName _ FillInTheBlank
 			request: 'File name?'
 			initialAnswer: ''.
 		fileName isEmpty ifTrue: [ ^false ]].
 
-	self flushUndoRedoCommands.
-	refStream _ SmartRefStream forceNewFileNamed: fileName.
-	[ refStream nextPut: self ] ensure: [ refStream close ].
+	self saveAs: fileName.
 	^true! !
 
-!StyledTextModel methodsFor: 'file save' stamp: 'jmv 1/6/2012 14:15'!
+!StyledTextModel methodsFor: 'file save' stamp: 'bp 4/22/2012 13:38'!
 saveAs: aName
-	| dot |
-	dot _ FileDirectory extensionDelimiter.
-	fileName _ (aName includes: dot)
-		ifTrue: [ aName ]
-		ifFalse: [ aName, '.object' ].
-	self save! !
+	| refStream |
+	fileName _ self class withExtension: aName.
+	self flushUndoRedoCommands.
+	refStream _ SmartRefStream forceNewFileNamed: fileName.
+	[ refStream nextPut: self ] ensure: [ refStream close ]! !
 
 !StyledTextModel methodsFor: 'Shout Styling' stamp: 'jmv 12/21/2010 23:48'!
 shoutAboutToStyle: aSHTextStyler
@@ -3594,6 +3600,14 @@ styleSetChanged
 	actualContents beStyledTextWith: styleSet.
 	self triggerEvent: #stylesChanged! !
 
+!StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'bp 4/22/2012 13:21'!
+fromFileNamed: fileName
+	| file model |
+	file _ FileStream oldFileNamed: (self withExtension: fileName).
+	[model _ (SmartRefStream on: file) next] ensure: [file close].
+	^model
+	! !
+
 !StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'bp 12/21/2011 10:20'!
 new
 	^self styleSet: StyleSet sample! !
@@ -3603,6 +3617,34 @@ styleSet: aStyleSet
 	^super new
 		styleSet: aStyleSet;
 		yourself! !
+
+!StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'bp 4/22/2012 13:21'!
+withExtension: aName
+	^(aName includes: FileDirectory extensionDelimiter)
+		ifTrue: [aName]
+		ifFalse: [aName , '.object']! !
+
+!StyledTextModelTest methodsFor: 'as yet unclassified' stamp: 'bp 4/22/2012 12:14'!
+tearDown
+	FileDirectory default deleteFileNamed: 'StyledTextModelTest.object'! !
+
+!StyledTextModelTest methodsFor: 'as yet unclassified' stamp: 'bp 4/22/2012 13:15'!
+testFromFileNamed
+	| model1 model2 model3 |
+	model1 _ StyledTextModel new contents: 'Some text' asText.
+	model1 saveAs: 'StyledTextModelTest'.
+	model2 _ StyledTextModel fromFileNamed: 'StyledTextModelTest.object'.
+	self assert: model1 actualContents equals: model2 actualContents.
+	model3 _ StyledTextModel fromFileNamed: 'StyledTextModelTest'.
+	self assert: model1 actualContents equals: model3 actualContents! !
+
+!StyledTextModelTest methodsFor: 'as yet unclassified' stamp: 'bp 4/22/2012 12:19'!
+testSave
+	| model |
+	model _ StyledTextModel new.
+	self deny: (FileDirectory default fileExists: 'StyledTextModelTest.object').
+	model saveAs: 'StyledTextModelTest'.
+	self assert: (FileDirectory default fileExists: 'StyledTextModelTest.object')! !
 
 !StyledTextTest methodsFor: 'tests' stamp: 'jmv 12/20/2011 12:41'!
 testAsStyledAsNonStyledSample5

@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 21 April 2012 at 3:35:32 pm'!
+'From Cuis 4.0 of 21 April 2012 [latest update: #1260] on 22 April 2012 at 1:41:19 pm'!
 'Description A small package whose purpose is to install the rest of the packages that comprise the StyledTextEditor project.'!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
@@ -52,12 +52,11 @@ installPackage: packageName
 installPackages: packages
 	packages do: [:each | self installPackage: each]! !
 
-!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/5/2012 23:22'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/22/2012 13:23'!
 open: name
-	| file model |
-	file _ self documentsDirectory oldFileNamed: name, '.object'.
-	file ifNil: [^nil].
-	[model _ (SmartRefStream on: file) next] ensure: [file close].
+	| fileName model |
+	fileName _ self documentsDirectory fullNameFor: name.
+	model _ StyledTextModel fromFileNamed: fileName.
 	^SystemWindow editFancierStyledText: model label: name! !
 
 !StyledTextInstaller methodsFor: 'public' stamp: 'bp 12/4/2011 10:10'!
@@ -135,9 +134,9 @@ styledTextModelNamed: name
 styledTextPackages
 	^#('RTFImporting' 'RTFExporting' 'RTFTests' 'FFI' 'ExtendedClipboard' 'CrappyOSProcess' 'StyledText' 'StyledTextNotebook' 'StyledTextWiki')! !
 
-!StyledTextInstaller methodsFor: 'public' stamp: 'bp 4/20/2012 21:34'!
+!StyledTextInstaller methodsFor: 'public' stamp: 'bp 4/22/2012 11:23'!
 update
 	"
 	StyledTextInstaller new update
 	"
-	self installPackages: (self styledTextPackages add: self class name; yourself)! !
+	self installPackages: (self styledTextPackages asOrderedCollection add: self class name; yourself)! !
