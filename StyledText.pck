@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 21 April 2012 [latest update: #1260] on 22 April 2012 at 1:41:17 pm'!
+'From Cuis 4.0 of 21 April 2012 [latest update: #1260] on 28 April 2012 at 7:10:13 pm'!
 'Description Please enter a description for this package.'!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
@@ -3618,11 +3618,13 @@ styleSet: aStyleSet
 		styleSet: aStyleSet;
 		yourself! !
 
-!StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'bp 4/22/2012 13:21'!
+!StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'jmv 4/28/2012 19:10'!
 withExtension: aName
-	^(aName includes: FileDirectory extensionDelimiter)
-		ifTrue: [aName]
-		ifFalse: [aName , '.object']! !
+	| suffix |
+	suffix _ FileDirectory extensionDelimiter asString, 'object'.
+	^(aName endsWith: suffix)
+		ifTrue: [ aName ]
+		ifFalse: [ aName , suffix ]! !
 
 !StyledTextModelTest methodsFor: 'as yet unclassified' stamp: 'bp 4/22/2012 12:14'!
 tearDown
