@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 21 April 2012 [latest update: #1260] on 22 April 2012 at 1:41:19 pm'!
+'From Cuis 4.0 of 21 April 2012 [latest update: #1267] on 30 April 2012 at 12:10:46 am'!
 'Description A small package whose purpose is to install the rest of the packages that comprise the StyledTextEditor project.'!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
@@ -104,9 +104,9 @@ recreateFeaturesStyleSet
 			createFeaturesParagraphStyleSet;
 			createFeaturesCharacterStyleSet]! !
 
-!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/5/2012 23:10'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'jmv 4/30/2012 00:03'!
 repositoryDirectory
-	^(FileDirectory on: (CodePackage named: 'StyledTextInstaller') fullFileName) containingDirectory! !
+	^(FileDirectory on: (CodePackage named: 'StyledTextInstaller' createIfAbsent: false registerIfNew: false) fullFileName) containingDirectory! !
 
 !StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/20/2012 21:19'!
 save: name

@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 21 April 2012 [latest update: #1260] on 28 April 2012 at 7:10:13 pm'!
+'From Cuis 4.0 of 21 April 2012 [latest update: #1267] on 30 April 2012 at 12:10:43 am'!
 'Description Please enter a description for this package.'!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
@@ -3509,6 +3509,10 @@ basicActualContents: aTextOrString
 editorClass
 	^StyledTextEditor! !
 
+!StyledTextModel methodsFor: 'accessing' stamp: 'jmv 4/30/2012 00:08'!
+fileName: aString
+	fileName _ aString! !
+
 !StyledTextModel methodsFor: 'testing' stamp: 'jmv 12/21/2010 23:22'!
 is: aSymbol
 	^ aSymbol == #ShoutEnabled or: [ super is: aSymbol ]! !
@@ -3600,13 +3604,14 @@ styleSetChanged
 	actualContents beStyledTextWith: styleSet.
 	self triggerEvent: #stylesChanged! !
 
-!StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'bp 4/22/2012 13:21'!
-fromFileNamed: fileName
-	| file model |
-	file _ FileStream oldFileNamed: (self withExtension: fileName).
-	[model _ (SmartRefStream on: file) next] ensure: [file close].
-	^model
-	! !
+!StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'jmv 4/30/2012 00:10'!
+fromFileNamed: aFileName
+	| fileName file model |
+	fileName _ self withExtension: aFileName.
+	file _ FileStream oldFileNamed: fileName.
+	[ model _ (SmartRefStream on: file) next ] ensure: [ file close ].
+	model fileName: fileName.
+	^model! !
 
 !StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'bp 12/21/2011 10:20'!
 new
