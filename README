@@ -2,7 +2,7 @@ This is the StyledTextEditor project for Cuis, brought to you by Bernhard Pieber
 
 Steps to install:
 If you want to install StyledTextEditor in an image for the first time do the following steps:
-- Uncompress scowl-7.1.tar.gz into the directory where the Cuis image resides
+- Uncompress scowl-7.1.tar.gz into the directory where the Cuis image resides (so contents are in a subdirectory named 'scowl-7.1')
 - Start Cuis 4.0, preferably with a VM that includes support for the ExtendedClipboardPlugin (like this: http://www.squeakvm.org/mac/release/Squeak%204.2.5beta1U.zip , currently only on the Mac)
 - Install StyledTextInstaller.pck (e.g. using File List > install package)
 - Do the following: StyledTextInstaller new install
