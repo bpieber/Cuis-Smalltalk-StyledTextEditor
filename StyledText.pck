@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 21 April 2012 [latest update: #1267] on 30 April 2012 at 12:10:43 am'!
+'From Cuis 4.0 of 21 April 2012 [latest update: #1308] on 13 June 2012 at 6:47:36 pm'!
 'Description Please enter a description for this package.'!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
@@ -182,7 +182,7 @@ StyledTextBuilder class
 
 !classDefinition: #StyledTextEditor category: #StyledText!
 TextEditor subclass: #StyledTextEditor
-	instanceVariableNames: 'cmdActions'
+	instanceVariableNames: 'cmdShortcuts cmdActions'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText'!
@@ -2533,13 +2533,13 @@ addAttributesForPasting: replacement
 		ifFalse: [
 			^Text string: replacement attributes: emphasisHere ]! !
 
-!StyledTextEditor methodsFor: 'private' stamp: 'jmv 12/30/2011 10:12'!
-buildCmdActions
-	cmdActions _ self class cmdActions copy.
+!StyledTextEditor methodsFor: 'private' stamp: 'jmv 6/13/2012 18:06'!
+buildCmdShortcuts
+	cmdShortcuts _ self class cmdShortcuts copy.
 	model styleSet paragraphStyles do: [ :pair |
-		cmdActions at: pair first asciiValue + 1 put: #changeCurrentStyle: ].
+		cmdShortcuts at: pair first asciiValue + 1 put: #changeCurrentStyle: ].
 	model styleSet characterStyles do: [ :pair |
-		cmdActions at: pair first asciiValue + 1 put: #changeCharacterStyle: ]! !
+		cmdShortcuts at: pair first asciiValue + 1 put: #changeCharacterStyle: ]! !
 
 !StyledTextEditor methodsFor: 'editing keys' stamp: 'jmv 9/21/2011 10:54'!
 changeCharacterStyle: aKeyboardEvent
@@ -2573,12 +2573,38 @@ clipboardStringOrText
 			clipContents asStyledTextWith: model styleSet ]
 		ifFalse: [ clipContents]! !
 
-!StyledTextEditor methodsFor: 'typing support' stamp: 'jmv 8/3/2011 16:45'!
-cmdActions
+!StyledTextEditor methodsFor: 'typing support' stamp: 'jmv 6/13/2012 18:06'!
+cmdShortcuts
 	"We have keyboard shortcuts on a per-instance basis."
-	^cmdActions! !
+	^cmdShortcuts! !
 
-!StyledTextEditor methodsFor: 'model access' stamp: 'jmv 1/13/2012 14:04'!
+!StyledTextEditor methodsFor: 'accessing' stamp: 'jmv 6/13/2012 18:30'!
+help
+	"
+	Editor help
+	SimpleEditor help
+	CellStyleEditor help
+	TextEditor help
+	SmalltalkEditor help
+	"
+	| allSpecs |
+	allSpecs _ self class cmdShortcutsSpec", self class basicCmdShortcutsSpec".
+	^String streamContents: [ :strm |
+		model styleSet paragraphStyles do: [ :pair |
+			strm nextPutAll: ('Cmd-', pair first asString, String tab, String tab, String tab, 'Paragraph Style: ', pair second name).
+			strm newLine ].
+		model styleSet characterStyles do: [ :pair |
+			strm nextPutAll: ('Cmd-', pair first asString, String tab, String tab, String tab, 'Character Style: ', pair second name).
+			strm newLine ].
+		allSpecs do: [ :triplet | | c |
+			c _ triplet first = Character space
+				ifFalse: [ triplet first asString, String tab ]
+				ifTrue: [ 'Space'].
+			strm nextPutAll: ('Cmd-', c, String tab, String tab, triplet third).
+			strm newLine ].
+		]! !
+
+!StyledTextEditor methodsFor: 'model access' stamp: 'jmv 6/13/2012 18:07'!
 model: aModel
 	super model: aModel.
 	"All assignments to the styleSet ivar should call this method."
@@ -2586,7 +2612,7 @@ model: aModel
 	model _ aModel.
 	model ifNotNil: [ model when: #stylesChanged send: #someStyleChanged to: self ].
 	emphasisHere _ { ParagraphStyleReference for: model styleSet defaultStyle }.
-	self buildCmdActions! !
+	self buildCmdShortcuts! !
 
 !StyledTextEditor methodsFor: 'commands' stamp: 'jmv 3/11/2011 16:55'!
 quit: aKeyboardEvent
@@ -2764,14 +2790,28 @@ setEmphasisHereFromTextForward: f
 			morph possiblyChanged ]
 		ifFalse: [ super setEmphasisHereFromTextForward: f ]! !
 
-!StyledTextEditor methodsFor: 'notifications' stamp: 'jmv 12/30/2011 10:12'!
+!StyledTextEditor methodsFor: 'notifications' stamp: 'jmv 6/13/2012 18:07'!
 someStyleChanged
 	paragraph composeAll.
 	self recomputeSelection.
 	morph updateFromParagraph.
 
 	"Update keyboard shortcuts"
-	self buildCmdActions! !
+	self buildCmdShortcuts! !
+
+!StyledTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'jmv 6/13/2012 18:02'!
+cmdShortcutsSpec
+	"
+	Editor initialize
+	"
+	"arranged in QWERTY keyboard order"
+	^#(
+		#(		$q 	#quit:							'Quit')
+
+		#(		$s 	#save: 						'Save')
+		#(		$j 	#selectCurrentStyle: 		'Select Paragraph Style')
+		#(		$k 	#selectCharacterStyle:	'Select Character Style')
+	)! !
 
 !StyledTextEditor class methodsFor: 'class initialization' stamp: 'jmv 11/4/2011 11:05'!
 initialize
@@ -2780,25 +2820,7 @@ initialize
 	"
 	super initialize! !
 
-!StyledTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'jmv 8/3/2011 16:40'!
-initializeCmdKeyShortcuts
-	"Initialize the (unshifted) command-key (or alt-key if not on Mac) shortcut table."
-
-	"NOTE: if you don't know what your keyboard generates, use Sensor test"
-
-	"
-	Editor initialize
-	"
-
-	| cmds |
-	self initializeBasicCmdKeyShortcuts.
-	
-	cmds := #($q #quit: $s #save: $j #selectCurrentStyle: $k #selectCharacterStyle:).
-	1 to: cmds size
-		by: 2
-		do: [ :i | cmdActions at: (cmds at: i) asciiValue + 1 put: (cmds at: i + 1)]! !
-
-!StyledTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'jmv 12/19/2011 14:16'!
+!StyledTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'jmv 6/13/2012 18:16'!
 initializeMenu
 	"Initialize the yellow button pop-up menu and corresponding messages."
 
@@ -2806,6 +2828,8 @@ initializeMenu
 	Editor initialize
 	"
 	menu _ SelectionMenu fromArray: {
+		{'Help...'.									#openHelp}.
+		#-.
 		{'Find...(f)'.									#find}.
 		{'Find Again (g)'.							#findAgain}.
 		{'Use Selection for Find (h)'.				#setSearchString}.
