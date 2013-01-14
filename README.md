@@ -21,12 +21,15 @@ If you already installed StyledTextEditor in an image you can update it to a new
 - Pull from the GitHub repository of Cuis-StyledTextEditor you are using
 - Do the following: StyledTextInstaller new update
 
+
+### Features ###
+
 The Styled Text Editor is a framework for rich text editing using styles as known from popular word processors like Apple Pages or Microsoft Word. It features paragraph and character styles, allowing easy text formatting using styles only. It is intended for applications where users need to work with good looking rich text in a simple and fast way.
 
 Rich text commonly refers to text with formatting information like different fonts, sizes, alignments, and emphasis. To make editing as simple as possible instead of individual formatting information end users apply styles to parts of the text. Editing is made fast by keyboard shortcuts for text navigation, selection, and styles selection. Where possible the feel of widely used rich text editors is supported.
 
 
-### Features ###
+
 
 The editor includes features like
 - numbered and bulleted list paragraph styles
