@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 17 April 2012 at 11:21:08 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1616] on 25 February 2013 at 3:44:13 pm'!
 'Description Please enter a description for this package.'!
 !classDefinition: #ExtendedClipboardInterface category: #ExtendedClipboard!
 Object subclass: #ExtendedClipboardInterface
@@ -119,9 +119,10 @@ fromRefStreamBytes: bytes
 fromTIFFBytes: bytes
 	^ (TIFFReadWriter on: bytes readStream) nextImage! !
 
-!ExtendedClipboardInterface methodsFor: 'object from raw data' stamp: 'jmv 3/13/2012 16:23'!
+!ExtendedClipboardInterface methodsFor: 'object from raw data' stamp: 'jmv 2/25/2013 14:34'!
 fromUTF8Bytes: bytes
-	^ bytes asString utf8ToISO8859s15 withCuisLineEndings! !
+
+	^(String fromUtf8: bytes hex: false trimLastNull: true) withCuisLineEndings! !
 
 !ExtendedClipboardInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 14:47'!
 getClipboardFormat: formatNumber
@@ -286,13 +287,13 @@ storeForm: aForm id: otherString
 	"
 	self addClipboardData: otherString dataFormat: 'cuis-id'! !
 
-!ExtendedClipboardMacInterface methodsFor: 'api - store' stamp: 'jmv 3/14/2012 09:33'!
+!ExtendedClipboardMacInterface methodsFor: 'api - store' stamp: 'jmv 2/14/2013 12:21'!
 storeString: aString id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id at the end."
 	self clearClipboard.
 	self
-		addClipboardData: aString iso8859s15ToUtf8
+		addClipboardData: aString asUtf8
 		dataFormat: 'public.utf8-plain-text'.
 	"Could be done in addition (maybe with cr line ending?)
 	self
@@ -301,7 +302,7 @@ storeString: aString id: otherString
 		"
 	self addClipboardData: otherString dataFormat: 'cuis-id'! !
 
-!ExtendedClipboardMacInterface methodsFor: 'api - store' stamp: 'jmv 3/14/2012 09:29'!
+!ExtendedClipboardMacInterface methodsFor: 'api - store' stamp: 'jmv 2/14/2013 12:21'!
 storeText: aText id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id is usually at the end, but don't include it if we include a streamed representation."
@@ -315,7 +316,7 @@ storeText: aText id: otherString
 
 	"Just the string"
 	self
-		addClipboardData: aText asString iso8859s15ToUtf8
+		addClipboardData: aText asString asUtf8
 		dataFormat: 'public.utf8-plain-text'.
 
 	"If we store a streamed representation, don't store the id. In these cases, we prefer rebuilding the object, regardless of
@@ -436,15 +437,15 @@ Tom\u225? ag\u252?ita, \u241?and\u250?. \u209?and\u250?. \par \u339?\u381?\u174?
 		addClipboardData: text rtfString dataFormat: 'public.rtf'.
 	self assert: Clipboard default retrieveObject = text.! !
 
-!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 4/6/2011 14:29'!
+!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 12/7/2012 22:27'!
 testStar16BitToAndFromImageClipboard
 	"
 	ExtendedClipboardTest new testStar16BitToAndFromImageClipboard
 	"
 	| form form1 form2 |
-	form _ (StarMorph new
-		extent: 100@100;
-		imageForm) asFormOfDepth: 16.
+		form _ EllipseMorph new
+		morphExtent: 100@100;
+		imageForm: 16.
 
 	"This will use a refStreamed object"
 	Clipboard default storeObject: form.
@@ -462,15 +463,15 @@ testStar16BitToAndFromImageClipboard
 	form1 addDeltasFrom: form2.
 	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.! !
 
-!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 4/6/2011 14:29'!
+!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 12/7/2012 22:27'!
 testStar8BitToAndFromImageClipboard
 	"
 	ExtendedClipboardTest new testStar8BitToAndFromImageClipboard
 	"
 	| form form1 form2 |
-	form _ (StarMorph new
-		extent: 100@100;
-		imageForm) asFormOfDepth: 8.
+	form _ EllipseMorph new
+		morphExtent: 100@100;
+		imageForm: 8.
 
 	"This will use a refStreamed object"
 	Clipboard default storeObject: form.
@@ -488,15 +489,15 @@ testStar8BitToAndFromImageClipboard
 	form1 addDeltasFrom: form2.
 	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.! !
 
-!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 4/6/2011 14:29'!
+!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 12/7/2012 22:28'!
 testStarToAndFromImageClipboard
 	"
 	ExtendedClipboardTest new testStarToAndFromImageClipboard
 	"
 	| form form1 form2 |
-	form _ StarMorph new
-		extent: 100@100;
-		imageForm.
+	form _ EllipseMorph new
+		morphExtent: 100@100;
+		imageForm: 32.
 
 	"This will use a refStreamed object"
 	Clipboard default storeObject: form.
@@ -566,17 +567,17 @@ storeForm: aForm id: otherString
 	self addClipboardData: (PNGReadWriter bytesFor: aForm) dataFormat: 'image/png'.
 	self addClipboardData: otherString dataFormat: 'cuis-id'! !
 
-!ExtendedClipboardUnixInterface methodsFor: 'api - store' stamp: 'jmv 3/14/2012 09:30'!
+!ExtendedClipboardUnixInterface methodsFor: 'api - store' stamp: 'jmv 2/14/2013 12:21'!
 storeString: aString id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id at the end."
 	self clearClipboard.
 	self
-		addClipboardData: aString iso8859s15ToUtf8
+		addClipboardData: aString asUtf8
 		dataFormat: 'UTF8_STRING'.
 	self addClipboardData: otherString dataFormat: 'cuis-id'! !
 
-!ExtendedClipboardUnixInterface methodsFor: 'api - store' stamp: 'jmv 3/14/2012 09:31'!
+!ExtendedClipboardUnixInterface methodsFor: 'api - store' stamp: 'jmv 2/14/2013 12:21'!
 storeText: aText id: otherString
 	"I presume the order is: most preferred format first, least desirable format last.
 	Cuis object id is usually at the end, but don't include it if we include a streamed representation."
@@ -592,7 +593,7 @@ storeText: aText id: otherString
 		dataFormat: '????'
 	"
 	self
-		addClipboardData: aText asString iso8859s15ToUtf8
+		addClipboardData: aText asString asUtf8
 		dataFormat: 'UTF8_STRING'.
 
 	"If we store a streamed representation, don't store the id. In these cases, we prefer rebuilding the object, regardless of

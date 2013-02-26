@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 17 April 2012 at 11:21:23 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1616] on 25 February 2013 at 3:44:19 pm'!
 'Description Please enter a description for this package.'!
 !classDefinition: #BpStyledTextNotebook category: #StyledTextNotebook!
 Object subclass: #BpStyledTextNotebook
@@ -11,13 +11,13 @@ BpStyledTextNotebook class
 	instanceVariableNames: ''!
 
 
-!BpStyledTextNotebook class methodsFor: 'StyledText Notebook' stamp: 'jmv 8/2/2011 15:10'!
+!BpStyledTextNotebook class methodsFor: 'StyledText Notebook' stamp: 'jmv 12/20/2012 13:07'!
 createModelAndView
 	"
 	BpStyledTextNotebook createModelAndView
 	"
 
-	| saveButton topRow |
+	| saveButton topRow w |
 	MyModel _ StyledTextModel new.
 	AppMorph _ SystemWindow createStyledTextEditor: MyModel in: STEMainMorph newColumn.
 	AppMorph adoptWidgetsColor: MyModel class windowColor.
@@ -29,10 +29,11 @@ createModelAndView
 	topRow _ AppMorph submorphs last.
 	topRow addMorphBack: saveButton.
 
-	AppMorph bounds: World bounds.
-	World addMorph: AppMorph.! !
+	w _ PasteUpMorph someInstance.
+	AppMorph morphBoundsInWorld: w morphBoundsInWorld.
+	w addMorph: AppMorph.! !
 
-!BpStyledTextNotebook class methodsFor: 'StyledText Notebook' stamp: 'jmv 5/24/2011 08:53'!
+!BpStyledTextNotebook class methodsFor: 'StyledText Notebook' stamp: 'jmv 12/20/2012 12:25'!
 install
 	"
 	BpStyledTextNotebook install
@@ -44,10 +45,9 @@ install
 	Smalltalk addToStartUpList: self.
 
 	Filename _ 'StyledText.object'.
-	(SystemWindow windowsIn: World satisfying: [:w | true])
-		do: [:w | w delete].
-	World allNonFlapRelatedSubmorphs do: [ :m | m delete].
-	World color: Color white.
+	PasteUpMorph allInstancesDo: [ :w |
+		w submorphsDo: [ :m | m delete ].
+		w color: Color white ].
 
 	self createModelAndView.
 

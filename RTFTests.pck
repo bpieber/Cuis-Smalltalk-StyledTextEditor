@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 17 April 2012 at 11:21:18 pm'!
+'From Cuis 4.0 of 21 April 2012 [latest update: #1510] on 7 December 2012 at 10:46:06 pm'!
 'Description Please enter a description for this package.'!
 !classDefinition: #RTFConversionTest category: #RTFtests!
 TestCase subclass: #RTFConversionTest
@@ -678,7 +678,7 @@ textSample4
 		(Text string: 'normal ' attributes: #())
 	)! !
 
-!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 3/30/2011 11:23'!
+!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 12/7/2012 22:38'!
 textSample5
 	"
 	| text |
@@ -686,7 +686,7 @@ textSample5
 	text edit.
 	Clipboard default storeObject: text
 	"
-	^'Hello', (Text withForm: EllipseMorph new imageForm), 'world'! !
+	^'Hello', (Text withForm: (EllipseMorph new imageForm: 32)), 'world'! !
 
 !RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 11/22/2011 15:00'!
 textSample6

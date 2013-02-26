@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 21 April 2012 [latest update: #1308] on 13 June 2012 at 6:47:36 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1616] on 25 February 2013 at 3:44:16 pm'!
 'Description Please enter a description for this package.'!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
@@ -48,6 +48,16 @@ ScrollBar subclass: #FancyScrollBar
 	category: 'StyledText-Morphic-Windows'!
 !classDefinition: 'FancyScrollBar class' category: #'StyledText-Morphic-Windows'!
 FancyScrollBar class
+	instanceVariableNames: ''!
+
+!classDefinition: #FilteringDDLEditorMorph category: #'StyledText-Morphic-Windows'!
+OneLineEditorMorph subclass: #FilteringDDLEditorMorph
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'StyledText-Morphic-Windows'!
+!classDefinition: 'FilteringDDLEditorMorph class' category: #'StyledText-Morphic-Windows'!
+FilteringDDLEditorMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #ParagraphStyle category: #StyledText!
@@ -571,10 +581,10 @@ drawOn: aCanvas
 	icon ifNotNil: [
 		self drawInconOn: aCanvas ].! !
 
-!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:21'!
+!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:14'!
 drawSTELookOn: aCanvas
 
-	aCanvas image: (FormCanvas steButtonForm: bounds extent) at: bounds topLeft! !
+	aCanvas image: (FormCanvas steButtonForm: extent) at:0@0! !
 
 !FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:37'!
 iconColor
@@ -635,15 +645,15 @@ drawOn: aCanvas
 
 	self drawSTELookOn: aCanvas! !
 
-!FancyDraggeableButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:21'!
+!FancyDraggeableButtonMorph methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:16'!
 drawSTELookOn: aCanvas
 
 	aCanvas
-		roundRect: ((bounds insetBy: (owner bounds isWide ifTrue: [0@4] ifFalse: [4@0])) translateBy: (0@0))
+		roundRect: (((0@0 extent: extent) insetBy: (owner morphBoundsInWorld isWide ifTrue: [0@4] ifFalse: [4@0])) )
 		color: (Color black)
 		radius: 4.
 	aCanvas
-		roundRect: ((bounds insetBy: (owner bounds isWide ifTrue: [0@4] ifFalse: [5@0 corner: 4@0])) translateBy: (-1@0))
+		roundRect: (((-1@0 extent: extent) insetBy: (owner morphBoundsInWorld isWide ifTrue: [0@4] ifFalse: [5@0 corner: 4@0])) )
 		color: (self isPressed ifTrue: [Color red] ifFalse: [Color gray: 0.86])
 		radius: 4.! !
 
@@ -661,15 +671,15 @@ iconColor
 buttonClass
 	^FancyButtonMorph! !
 
-!FancyScrollBar methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:20'!
+!FancyScrollBar methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:19'!
 drawOn: aCanvas
 
 	aCanvas
-		roundRect: bounds
+		roundRect: (0@0 extent: extent)
 		color: (Color gray: 0.4)
 		radius: 4.
 	aCanvas
-		roundRect: (bounds insetBy: 1)
+		roundRect: (1@1 extent: extent-2)
 		color: (Color gray: 0.95)
 		radius: 4! !
 
@@ -677,17 +687,32 @@ drawOn: aCanvas
 sliderClass
 	^FancyDraggeableButtonMorph! !
 
-!FancyScrollBar methodsFor: 'scrolling' stamp: 'jmv 4/12/2012 22:21'!
-sliderGrabbed
+!FancyScrollBar methodsFor: 'scrolling' stamp: 'jmv 2/14/2013 13:23'!
+sliderGrabbedAt: handPositionRelativeToSlider
 
-	sliderShadow
-		bounds: (slider bounds insetBy: (bounds isWide ifTrue: [0@3] ifFalse: [3@0]));
+	grabPosition _ handPositionRelativeToSlider.
+	sliderShadow print
+		morphBoundsInWorld: (slider morphBoundsInWorld insetBy: (extent x > extent y ifTrue: [0@3] ifFalse: [3@0]));
 		show! !
 
 !FancyScrollBar class methodsFor: 'constants' stamp: 'jmv 4/12/2012 22:27'!
 scrollbarThickness
 
 	^super scrollbarThickness + 10! !
+
+!FilteringDDLEditorMorph methodsFor: 'events' stamp: 'jmv 12/27/2012 15:00'!
+keyStroke: aKeyboardEvent
+	"Handle a keystroke event."
+
+	(self focusKeyboardFor: aKeyboardEvent)
+		ifTrue: [ ^ self ].
+	(self closeWindowFor: aKeyboardEvent)
+		ifTrue: [ ^ self ].
+
+	super keyStroke: aKeyboardEvent.
+
+	"We know that our owner is a PluggableFilteringDropDownListMorph"
+	owner keyStrokeInText: aKeyboardEvent! !
 
 !ParagraphStyle methodsFor: 'accessing'!
 alignment
@@ -1041,11 +1066,6 @@ self assert: aParagraphStyle notNil.
 	attribute style: aParagraphStyle.
 	^attribute! !
 
-!PluggableActOnReturnKeyListMorph methodsFor: 'drawing' stamp: 'jmv 3/13/2012 10:10'!
-bounds
-	"We draw our shadow outside our strict bounds..."
-	^super bounds outsetBy: (0@0 corner: 4@4)! !
-
 !PluggableActOnReturnKeyListMorph methodsFor: 'model access' stamp: 'jmv 3/13/2012 10:57'!
 changeModelSelection: anInteger
 	"On regular PluggableListMorphs this method is called when a selection is made.
@@ -1056,44 +1076,56 @@ changeModelSelection: anInteger
 	currentIndex _ anInteger.
 	self selectionIndex: currentIndex! !
 
-!PluggableActOnReturnKeyListMorph methodsFor: 'drawing' stamp: 'jmv 3/13/2012 10:10'!
+!PluggableActOnReturnKeyListMorph methodsFor: 'geometry' stamp: 'jmv 2/25/2013 15:28'!
+clippingBoundsInWorld
+	"Return the bounds to which any submorphs should be clipped if the property is set"
+	"Should be a region, like our shadow"
+	| r |
+	r _ super clippingBoundsInWorld.
+	^r origin extent: r extent - 4! !
+
+!PluggableActOnReturnKeyListMorph methodsFor: 'drawing' stamp: 'jmv 2/25/2013 15:18'!
 drawOn: aCanvas
 	"We draw our shadow outside our strict bounds..."
+
 	aCanvas
-		roundRect: (bounds translateBy: 4)
+		roundRect: (4@4 extent: extent-4)
 		color: (Color black alpha: 0.13)
 		radius: 4.
 	aCanvas
-		roundRect: bounds
+		roundRect: (0@0 extent: extent-4)
 		color: (Color gray: 0.4)
 		radius: 4.
 	aCanvas
-		roundRect: (bounds insetBy: 1)
+		roundRect: (1@1 extent: extent-2-4)
 		color: (Color white)
 		radius: 4! !
-
-!PluggableActOnReturnKeyListMorph methodsFor: 'drawing' stamp: 'jmv 3/13/2012 10:10'!
-fullBounds
-	"We draw our shadow outside our strict bounds..."
-	^super fullBounds outsetBy: (0@0 corner: 4@4)! !
 
 !PluggableActOnReturnKeyListMorph methodsFor: 'model access' stamp: 'jmv 3/13/2012 10:10'!
 getCurrentSelectionIndex
 	^currentIndex ifNil: [ super getCurrentSelectionIndex ]! !
 
-!PluggableActOnReturnKeyListMorph methodsFor: 'events' stamp: 'jmv 3/13/2012 10:25'!
+!PluggableActOnReturnKeyListMorph methodsFor: 'events' stamp: 'jmv 12/27/2012 15:02'!
 keyStroke: event 
 
 	event isReturnKey ifTrue: [
 		self returnPressed.
 		^self ].
-	^super keyStroke: event! !
+	super keyStroke: event.
+	
+	"We know our model is a PluggableDropDownListMorph"
+	model keyStrokeInList: event! !
 
-!PluggableActOnReturnKeyListMorph methodsFor: 'events' stamp: 'jmv 3/13/2012 10:10'!
-mouseUp: event
+!PluggableActOnReturnKeyListMorph methodsFor: 'events' stamp: 'jmv 2/14/2013 12:46'!
+mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition
 	"Do update model right away"
-	super mouseUp: event.
+	super mouseButton1Up: aMouseButtonEvent localPosition: localEventPosition.
 	self realChangeModelSelection! !
+
+!PluggableActOnReturnKeyListMorph methodsFor: 'events' stamp: 'jmv 12/27/2012 15:02'!
+mouseLeave: evt
+	"We know our model is a PluggableDropDownListMorph"
+	model mouseLeaveList: evt! !
 
 !PluggableActOnReturnKeyListMorph methodsFor: 'model access' stamp: 'jmv 3/13/2012 10:10'!
 realChangeModelSelection
@@ -1103,12 +1135,6 @@ realChangeModelSelection
 			perform: setIndexSelector
 			with: currentIndex ].
 	currentIndex _ nil! !
-
-!PluggableActOnReturnKeyListMorph methodsFor: 'updating' stamp: 'jmv 3/13/2012 10:10'!
-redrawNeeded
-	"Report that the area occupied by this morph should be redrawn."
-	"We draw our shadow outside our strict bounds..."
-	self invalidRect: (self fullBounds ifNil: [ self bounds ])! !
 
 !PluggableActOnReturnKeyListMorph methodsFor: 'events' stamp: 'jmv 3/13/2012 10:10'!
 returnPressed
@@ -1120,6 +1146,19 @@ returnPressed
 scrollBarClass
 	^FancyScrollBar! !
 
+!PluggableActOnReturnKeyListMorph methodsFor: 'geometry' stamp: 'jmv 2/25/2013 15:19'!
+updateScrollBarsBounds
+	
+	| t |
+	hideScrollBars ifTrue: [^self].
+	t _ self scrollBarClass scrollbarThickness.
+	scrollBar
+		morphPosition: extent x - t - borderWidth - 4 @ borderWidth;
+		morphExtent: t @ (self vScrollBarHeight-4).
+	hScrollBar
+		morphPosition: borderWidth @ (extent y - t - borderWidth - 4);
+		morphExtent: self hScrollBarWidth - 4@t! !
+
 !PluggableActOnReturnKeyListMorph methodsFor: 'updating' stamp: 'jmv 3/13/2012 10:10'!
 verifyContents
 	super verifyContents.
@@ -1127,9 +1166,15 @@ verifyContents
 	self selectionIndex = 0 ifTrue: [
 		self changeModelSelection: 1 ]! !
 
-!PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 3/14/2012 13:22'!
+!PluggableActOnReturnKeyListMorph methodsFor: 'geometry' stamp: 'jmv 2/25/2013 15:26'!
+viewableExtent
+
+	^self focusIndicatorExtent - (self xtraBorder * 2) - 4! !
+
+!PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 2/25/2013 15:21'!
 basicOpenList
-	| xtraWidth xtraHeight |
+	| xtraWidth xtraHeight bounds |
+	bounds _ self morphBoundsInWorld.
 	listMorph _ PluggableActOnReturnKeyListMorph
 		model: self
 		listGetter: #getList
@@ -1137,21 +1182,20 @@ basicOpenList
 		indexSetter: #setIndex:.
 	listMorph
 		color: Color white;
-		width: self width;
-		height: 4;
+		morphWidth: self morphWidth;
+		morphHeight: 4;
 		borderWidth: 1;
 		borderColor: (Color black alpha: 0.3);
-		position: bounds bottomLeft;
-		autoDeselect: false;
-		on: #mouseLeave send: #mouseLeaveList: to: self.
+		morphPosition: bounds bottomLeft;
+		autoDeselect: false.
 	self world addMorph: listMorph.
 	listMorph updateList.
-	xtraWidth _ listMorph hLeftoverScrollRange.
+	xtraWidth _ listMorph hLeftoverScrollRange + 4.
 	xtraWidth > 0 ifTrue: [
-		listMorph width: listMorph width + xtraWidth ].
-	xtraHeight _ listMorph vLeftoverScrollRange.
+		listMorph morphWidth: listMorph morphWidth + xtraWidth ].
+	xtraHeight _ listMorph vLeftoverScrollRange + 4.
 	xtraHeight > 0 ifTrue: [
-		listMorph height: (listMorph height + xtraHeight min: 100) ].! !
+		listMorph morphHeight: (listMorph morphHeight + xtraHeight min: 100) ]! !
 
 !PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 9/10/2010 15:31'!
 closeList
@@ -1159,22 +1203,23 @@ closeList
 		listMorph delete.
 		listMorph _ nil ]! !
 
-!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 1/2/2012 18:22'!
+!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:29'!
 drawBasicLookOn: aCanvas
+
 	aCanvas
-		fillRectangle: bounds
-		colorOrInfiniteForm: color
+		fillRectangle: (0@0 extent: extent)
+		color: color
 		borderWidth: borderWidth
 		borderStyleSymbol: #simple
 		baseColorForBorder: borderColor.
 	self drawLabelOn: aCanvas ! !
 
-!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 9/10/2010 08:56'!
+!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:33'!
 drawLabelOn: aCanvas 
 
 	| f |
 	f _ Preferences standardButtonFont.
-	aCanvas drawString: label at: bounds leftCenter + (8@ f height negated // 2) font: f color: Color black! !
+	aCanvas drawString: label at: 0@(extent y // 2) + (8@ f height negated // 2) font: f color: Color black! !
 
 !PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:19'!
 drawOn: aCanvas
@@ -1184,23 +1229,25 @@ drawOn: aCanvas
 		ifTrue: [ self drawSTELookOn: aCanvas ]
 		ifFalse: [ self drawBasicLookOn: aCanvas ]! !
 
-!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 1/4/2012 15:55'!
+!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:31'!
 drawSTELookOn: aCanvas
+	| gh |
 "sin gradiente el borde!!"
+	gh _ extent y-8 max: extent y//2.
 	aCanvas
-		roundRect: bounds
+		roundRect: (0@0 extent: extent)
 		color: (Color gray: 0.4)
 		radius: 4
 		gradientTop: 0.9
 		gradientBottom: 0.6
-		gradientHeight: (bounds height-8 max: bounds height//2).
+		gradientHeight: gh.
 	aCanvas
-		roundRect: (bounds insetBy: 1)
+		roundRect: (1@1 extent: extent-2)
 		color: (Color gray: 0.95)
 		radius: 4
 		gradientTop: 0.99
 		gradientBottom: 0.96
-		gradientHeight: (bounds height-8 max: bounds height//2).
+		gradientHeight: gh.
 	self drawLabelOn: aCanvas ! !
 
 !PluggableDropDownListMorph methodsFor: 'model' stamp: 'jmv 9/9/2010 15:12'!
@@ -1229,14 +1276,14 @@ handlesMouseOver: anEvent
 	"So our #mouseLeave: method is called"
 	^ true! !
 
-!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 4/12/2012 22:31'!
+!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 12/20/2012 13:10'!
 initialize
 	| icon |
 	super initialize.
 	self color: Color white.
 	self borderColor: Color black.
 	self getLabel.
-	self extent: 120 @ 20.
+"	self extent: 120 @ 20."
 	icon _ "Theme current steButtons" true
 		ifFalse: [ FormCanvas arrowOfDirection: #down size: ScrollBar scrollbarThickness ]
 		ifTrue: [ FormCanvas arrowWithGradientOfDirection: #down ].
@@ -1257,11 +1304,13 @@ isListOpen
 label
 	^ label! !
 
-!PluggableDropDownListMorph methodsFor: 'layout' stamp: 'jmv 12/19/2011 10:15'!
+!PluggableDropDownListMorph methodsFor: 'layout' stamp: 'jmv 12/20/2012 12:57'!
 layoutSubmorphs
-	| e |
-	e _ self innerBounds height.
-	downButton bounds: (self innerBounds bottomRight - e extent: e)! !
+	| e innerBounds |
+	"innerBounds _ self innerBounds".
+	innerBounds _ self morphBoundsInWorld insetBy: borderWidth.
+	e _ innerBounds height.
+	downButton morphBoundsInWorld: (innerBounds bottomRight - e extent: e)! !
 
 !PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 9/16/2009 11:29'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
@@ -1276,23 +1325,23 @@ modelChanged
 	self getLabel.
 	self changed: self! !
 
-!PluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 5/24/2011 08:32'!
+!PluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 12/20/2012 13:24'!
 mouseLeave: evt
 	super mouseLeave: evt.
-	(listMorph isNil or: [ (listMorph containsPoint: evt position) not])
+	(listMorph isNil or: [ (listMorph morphBoundsInWorld containsPoint: evt eventPosition) not])
 		ifTrue: [
 			"Do the call even if the list is not there, as this also clears selection in subclass with entry field"
 			self closeList ]! !
 
-!PluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 5/24/2011 08:32'!
+!PluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 12/27/2012 15:02'!
 mouseLeaveList: evt
-	(self containsPoint: evt position)
+	(self morphBoundsInWorld containsPoint: evt eventPosition)
 		ifFalse: [ self closeList ]! !
 
-!PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 11/4/2010 15:42'!
+!PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 2/14/2013 12:41'!
 openList
 	self basicOpenList.
-	self activeHand newKeyboardFocus: listMorph! !
+	self world activeHand newKeyboardFocus: listMorph! !
 
 !PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 8/16/2010 16:01'!
 openOrCloseList
@@ -1317,17 +1366,11 @@ model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter:
 		indexGetter: getSelectionSel
 		indexSetter: setSelectionSel! !
 
-!PluggableFilteringDropDownListMorph methodsFor: 'private' stamp: 'jmv 10/11/2011 19:48'!
-basicOpenList
-
-	super basicOpenList.
-	listMorph on: #keyStroke send: #keyStrokeInList: to: self! !
-
-!PluggableFilteringDropDownListMorph methodsFor: 'private' stamp: 'jmv 12/20/2011 16:26'!
+!PluggableFilteringDropDownListMorph methodsFor: 'private' stamp: 'jmv 12/20/2012 13:22'!
 closeList
 	"Also clear the selection in the entry field"
 	(listMorph notNil and: [ listMorph hasKeyboardFocus ]) ifTrue: [
-		self activeHand newKeyboardFocus: editorMorph ].
+		self world activeHand newKeyboardFocus: editorMorph ].
 	super closeList! !
 
 !PluggableFilteringDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 9/10/2010 08:57'!
@@ -1374,14 +1417,13 @@ getList
 			answer _ filtered ]].
 	^answer! !
 
-!PluggableFilteringDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 12/30/2011 11:24'!
+!PluggableFilteringDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 12/27/2012 15:06'!
 initialize
 	| labelFont |
 	super initialize.
-labelFont _ AbstractFont familyName: 'DejaVu' aroundPointSize: 10.
-	editorMorph _ OneLineEditorMorph contents: self label font: labelFont emphasis: 1.
+	labelFont _ AbstractFont familyName: 'DejaVu' aroundPointSize: 10.
+	editorMorph _ FilteringDDLEditorMorph contents: self label font: labelFont emphasis: 1.
 	editorMorph keyboardFocusWatcher: self.
-	editorMorph on: #keyStroke send: #keyStrokeInText: to: self.
 	self addMorph: editorMorph! !
 
 !PluggableFilteringDropDownListMorph methodsFor: 'events' stamp: 'jmv 3/13/2012 10:41'!
@@ -1408,12 +1450,14 @@ keyStrokeInText: aKeyboardEvent
 			ifTrue: [ listMorph keyStroke: aKeyboardEvent ].
 		listMorph verifyContents ]! !
 
-!PluggableFilteringDropDownListMorph methodsFor: 'layout' stamp: 'jmv 1/3/2012 11:13'!
+!PluggableFilteringDropDownListMorph methodsFor: 'layout' stamp: 'jmv 12/20/2012 13:11'!
 layoutSubmorphs
-	| b |
+	| b innerBounds |
 	super layoutSubmorphs.
-	b _ self innerBounds insetBy: 8@4.
-	editorMorph bounds: (b topLeft extent: b extent - (downButton width@0))! !
+	"innerBounds _ self innerBounds".
+	innerBounds _ self morphBoundsInWorld insetBy: borderWidth.
+	b _ innerBounds insetBy: 8@4.
+	editorMorph morphBoundsInWorld: (b topLeft extent: b extent - (downButton morphWidth@0))! !
 
 !PluggableFilteringDropDownListMorph methodsFor: 'events' stamp: 'jmv 12/29/2011 14:50'!
 lostFocus: aMorph
@@ -1527,7 +1571,7 @@ initialize
 	}.
 	Theme current class beCurrent! !
 
-!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 1/3/2012 11:10'!
+!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 12/20/2012 13:11'!
 withModel: aStyledTextModel in: aLayoutMorph
 	| topRow paragraphStyleList characterStyleList textMorph m topRowHeight labelFont topRowBorderWidth topRowElementsWidth ddlHeight |
 	textMorph _ self withModel: aStyledTextModel.
@@ -1545,14 +1589,14 @@ withModel: aStyledTextModel in: aLayoutMorph
 		color: (InfiniteForm 
 			verticalGradient: topRowHeight-topRowBorderWidth-topRowBorderWidth
 			topColor: "(Color gray: 0.93)" (Color r: 189 g: 214 b: 199 range: 255)
-			bottomColor: "(Color gray: 0.85)" (Color r: 115 g: 134 b: 125 range: 255));
-		borderWidth: topRowBorderWidth;
-		borderColor: (Color r: 80 g: 80 b: 80 range: 255).
+			bottomColor: "(Color gray: 0.85)" (Color r: 115 g: 134 b: 125 range: 255)).
+"		borderWidth: topRowBorderWidth;"
+"		borderColor: (Color r: 80 g: 80 b: 80 range: 255)."
 
 	labelFont _ AbstractFont familyName: 'DejaVu' aroundPointSize: 10.
 	m _ StringMorph contents: 'Paragraph Style'.
 	m font: labelFont emphasis: 1; color: Color white.
-	topRowElementsWidth _ m width.
+	topRowElementsWidth _ m morphWidth.
 	topRow
 		addMorph: m
 		layoutSpec: (((LayoutSpec morphHeightFixedWidth: topRowElementsWidth) minorDirectionPadding: #center) minorDirectionPadding: #center).
@@ -1561,14 +1605,14 @@ withModel: aStyledTextModel in: aLayoutMorph
 			listGetter: #paragraphStyleNamesAndShortcuts
 			indexGetter: #currentParagraphStyleIndex
 			indexSetter: #currentParagraphStyleIndex:.
-	paragraphStyleList borderWidth: 0; height: ddlHeight. 
+	paragraphStyleList borderWidth: 0"; height: ddlHeight".
 	topRow
 		addMorph: paragraphStyleList
 		layoutSpec: (((LayoutSpec morphHeightFixedWidth: topRowElementsWidth+50) minorDirectionPadding: #center) minorDirectionPadding: #center).
 	textMorph when: #possiblyChanged send: #modelChanged to: paragraphStyleList.
 
-	m _ RectangleMorph new.
-	m color: Color transparent; borderWidth: 0.
+	m _ RectangleLikeMorph new.
+	m color: Color transparent.
 	topRow addMorph: m layoutSpec: (LayoutSpec fixedWidth: 8).
 
 	m _ StringMorph contents: 'Character Style'.
@@ -1581,7 +1625,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 			listGetter: #characterStyleNamesAndShortcuts
 			indexGetter: #currentCharacterStyleIndex
 			indexSetter: #currentCharacterStyleIndex:.
-	characterStyleList borderWidth: 0; height: ddlHeight. 
+	characterStyleList borderWidth: 0"; height: ddlHeight". 
 	topRow
 		addMorph: characterStyleList
 		layoutSpec: (((LayoutSpec morphHeightFixedWidth: topRowElementsWidth+50) minorDirectionPadding: #center) minorDirectionPadding: #center).
@@ -1697,15 +1741,15 @@ initialize
 	super initialize.
 	self step; startStepping! !
 
-!STEMainMorph methodsFor: 'stepping' stamp: 'jmv 7/11/2011 16:14'!
+!STEMainMorph methodsFor: 'stepping' stamp: 'jmv 12/20/2012 12:24'!
 step
 
 	"My dimensions are constrained live."
 	| r |
-	owner == World ifTrue: [
-		r _ World bounds.
-		bounds = r ifFalse: [
-			self bounds: r]]! !
+	owner isWorldMorph ifTrue: [
+		r _ owner morphBoundsInWorld.
+		self morphBoundsInWorld = r ifFalse: [
+			self morphBoundsInWorld: r]]! !
 
 !STEMainMorph methodsFor: 'stepping' stamp: 'jmv 5/24/2011 09:04'!
 stepTime
@@ -2855,12 +2899,12 @@ initializeMenu
 		{'Replace all uses of Character Style...'.		#replaceAllCharacterStyle}.
 	}! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/22/2011 11:20'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 2/14/2013 12:29'!
 testClickAndHalf
 	"
 	StyledTextEditorTest new testClickAndHalf
 	"
-	| hand ev morph |
+	| hand ev morph textModelMorph |
 	hand _ HandMorph new.
 	ev _ MouseButtonEvent new 
 		setType: #mouseDown
@@ -2869,12 +2913,15 @@ testClickAndHalf
 		buttons: 4
 		hand: hand
 		stamp: nil.
-	morph _ (TextModelMorph withModel: (StyledTextModel new contents: '')) textMorph.
-	ActiveHand newKeyboardFocus: morph.
-	morph mouseDown: ev.
-	self assert: ((hand instVarNamed: 'mouseClickState') instVarNamed: 'clickAndHalfSelector') notNil description: 'Click-n-half should be handled'! !
+	textModelMorph _ TextModelMorph withModel: (StyledTextModel new contents: '').
+	textModelMorph openInWorld: PasteUpMorph someInstance.
+	morph _ textModelMorph textMorph.
+	morph world activeHand newKeyboardFocus: morph.
+	morph mouseButton1Down: ev localPosition: 10@10.
+	self assert: ((hand instVarNamed: 'mouseClickState') instVarNamed: 'clickAndHalfSelector') notNil description: 'Click-n-half should be handled'.
+	textModelMorph delete! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/22/2011 11:19'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 2/14/2013 12:29'!
 testClickAndHalfSelection
 	"
 	StyledTextEditorTest new testClickAndHalfSelection
@@ -2884,27 +2931,30 @@ testClickAndHalfSelection
 	style _ model styleSet paragraphStyleNamed: 'Normal'.
 	text _ Text string: 'This is a test.' attribute: (ParagraphStyleReference for: style).
 	model contents: text.
-	morph _ (PluggableStyledTextMorph withModel: model) openInWorld.
-	ActiveHand newKeyboardFocus: morph textMorph.
+	morph _ (PluggableStyledTextMorph withModel: model) openInWorld: PasteUpMorph someInstance.
+	morph world activeHand  newKeyboardFocus: morph textMorph.
 
 	point1 _ 60@20.
 	hand _ HandMorph new.
-	morph mouseDown:
+	morph mouseButton1Down:
 		(MouseButtonEvent new 
 			setType: #mouseDown position: point1
-			which: 4 buttons: 4 hand: hand stamp: nil).
-	morph mouseUp:
+			which: 4 buttons: 4 hand: hand stamp: nil)
+			localPosition: point1.
+	morph mouseButton1Up:
 		(MouseButtonEvent new 
 			setType: #mouseUp position: point1
-			which: 4 buttons: 4 hand: hand stamp: nil).
+			which: 4 buttons: 4 hand: hand stamp: nil)
+			localPosition: point1.
 	morph textMorph clickAndHalf:
 		(MouseButtonEvent new 
 			setType: nil position: point1
-			which: 4 buttons: 4 hand: hand stamp: nil).
+			which: 4 buttons: 4 hand: hand stamp: nil)
+			localPosition: point1.
 	self assert: morph editor selectionInterval = (1 to: 4) description: 'Click-n-half does not set selection properly.'.
 	morph delete! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 8/10/2011 09:00'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 2/14/2013 12:44'!
 testDropDownKeyboardNavigation
 	"
 	StyledTextEditorTest new testDropDownKeyboardNavigation
@@ -2914,8 +2964,8 @@ testDropDownKeyboardNavigation
 	style _ model styleSet paragraphStyleNamed: 'Normal'.
 	text _ Text string: 'x' attribute: (ParagraphStyleReference for: style).
 	model contents: text.
-	SystemWindow editFancierStyledText: model label: 'Styled Text Editor'.
-	window _ World firstSubmorph.
+	window _ SystemWindow editFancierStyledText: model label: 'Styled Text Editor'.
+	window world ifNil: [ window openInWorld: PasteUpMorph someInstance ].
 	editorMorph _ window findDeepSubmorphThat: [:m | m class = PluggableStyledTextMorph ] ifAbsent: nil.
 	editorMorph _ editorMorph textMorph.
 	listMorph _ window
@@ -2924,10 +2974,8 @@ testDropDownKeyboardNavigation
 				(any instVarNamed: 'getListSelector') = #paragraphStyleNamesAndShortcuts ]]
 		 ifAbsent: nil.
 	listMorph openOrCloseList.
-	
 	(listMorph instVarNamed: 'editorMorph') contents: 'Norm'.
 	self shouldnt: [ (listMorph instVarNamed: 'listMorph') verifyContents ] raise: MessageNotUnderstood.
-	
 	listMorph openOrCloseList.
 
 	window delete! !
@@ -3040,7 +3088,7 @@ testEmptyText
 	self assert: block width = 0.
 	self assert: block left = style firstIndent.! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 12/7/2011 15:27'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 2/14/2013 12:15'!
 testEmptyTextClick
 	"
 	StyledTextEditorTest new testEmptyTextClick
@@ -3061,8 +3109,9 @@ testEmptyTextClick
 	morph editor pointIndex: model actualContents size + 1.
 	
 	evt _ MouseEvent new setType: #mouseMove position: 100@100 buttons: 0 hand: nil.
-	morph editor mouseDown: evt.
-	morph editor mouseUp: evt.
+	morph editor mouseButton1Down: evt localPosition: 100@100.
+	morph editor mouseButton1Up: evt
+			localPosition: 100@100.
 	
 	self deny: morph editor lastFont = oldFont.
 	self assert: morph editor lastFont = style font.
@@ -3236,7 +3285,7 @@ testSelectStyle
 		assert: (text paragraphStyleOrNilAt: unstyled size + 1) = heading2
 		description: 'Should have new style affected line'.! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/16/2011 17:18'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 2/14/2013 12:33'!
 testShiftClickSelection
 	"
 	StyledTextEditorTest new testShiftClickSelection
@@ -3246,30 +3295,34 @@ testShiftClickSelection
 	style _ model styleSet paragraphStyleNamed: 'Normal'.
 	text _ Text string: 'This is a test.' attribute: (ParagraphStyleReference for: style).
 	model contents: text.
-	morph _ (PluggableStyledTextMorph withModel: model) openInWorld.
-	ActiveHand newKeyboardFocus: morph textMorph.
+	morph _ (PluggableStyledTextMorph withModel: model) openInWorld: PasteUpMorph someInstance.
+	morph world activeHand newKeyboardFocus: morph textMorph.
 
 	point1 _ 64@20.
 	point2 _ 110@20.
 	hand _ HandMorph new.
-	morph mouseDown:
+	textMorph _ morph textMorph.
+	p _  textMorph morphPosition.
+	morph mouseButton1Down:
 		(MouseButtonEvent new 
 			setType: #mouseDown position: point1
-			which: 4 buttons: 4 hand: hand stamp: nil).
-	morph mouseUp:
+			which: 4 buttons: 4 hand: hand stamp: nil)
+			localPosition: point1-p.
+	morph mouseButton1Up:
 		(MouseButtonEvent new 
 			setType: #mouseUp position: point1
-			which: 4 buttons: 4 hand: hand stamp: nil).
-	morph mouseDown:
+			which: 4 buttons: 4 hand: hand stamp: nil)
+			localPosition: point1-p.
+	morph mouseButton1Down:
 		(MouseButtonEvent new 
 			setType: #mouseDown position: point2
-			which: 4 buttons: 12 hand: hand stamp: nil).
-	morph mouseUp:
+			which: 4 buttons: 12 hand: hand stamp: nil)
+			localPosition: point2-p.
+	morph mouseButton1Up:
 		(MouseButtonEvent new 
 			setType: #mouseUp position: point2
-			which: 4 buttons: 12 hand: hand stamp: nil).
-	textMorph _ morph textMorph.
-	p _  textMorph position.
+			which: 4 buttons: 12 hand: hand stamp: nil)
+			localPosition: point2-p.
 	editor _ textMorph editor.
 	self assert: (editor startBlock containsPoint: (point1 - p)) description: 'Incorrect selection when shift-click'.
 	self assert: (editor stopBlock left > (point2 - p)) description: 'Incorrect selection when shift-click'.
@@ -3582,12 +3635,12 @@ replaceReferencesToStyle: oldParagraphOrCharacterStyle with: newParagraphOrChara
 
 	actualContents replaceReferencesToStyle: oldParagraphOrCharacterStyle with: newParagraphOrCharacterStyle! !
 
-!StyledTextModel methodsFor: 'file save' stamp: 'bp 4/22/2012 13:38'!
+!StyledTextModel methodsFor: 'file save' stamp: 'jmv 12/20/2012 12:21'!
 save
 	"Answer wether save was successful."
 	"Note: to enable the use of StyledText in applications, where 'accept' or 'save' have other meanings than 'save to file', we need to merge this class with PluggableTextModel, and have the textProvider be the application."
 	fileName ifNil: [
-		fileName _ FillInTheBlank
+		fileName _ FillInTheBlankMorph
 			request: 'File name?'
 			initialAnswer: ''.
 		fileName isEmpty ifTrue: [ ^false ]].
@@ -4243,7 +4296,7 @@ testStylesInPaste4
 	self assert: concatenation runs values first first style name = 'Heading 1'.
 	self assert: concatenation runs values second first style name = 'Imported '! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 3/14/2012 09:52'!
+!StyledTextTest methodsFor: 'tests' stamp: 'jmv 2/14/2013 12:19'!
 testStylesInPaste5
 	"
 	self new testStylesInPaste5
@@ -4268,7 +4321,7 @@ testStylesInPaste5
 	"Now we give an text without styles to the Clipboard, and we test that it does include some paragraph style when it comes back"
 	ExtendedClipboardInterface current
 		clearClipboard;
-		addClipboardData: simpleText asString iso8859s15ToUtf8 dataFormat: 'public.utf8-plain-text'.
+		addClipboardData: simpleText asString asUtf8 dataFormat: 'public.utf8-plain-text'.
 	editor paste.
 	concatenation _ editor text.
 	self assert: concatenation runs runs size = 1 description: 'Should apply same attributes to the whole text'.

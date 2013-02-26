@@ -253,7 +253,8 @@ To do:
 	(el builder es solo para StyledText... Yo quisiera que esto sea mas general!!)!
 
 !RTFTextConverter commentStamp: '<historical>' prior: 0!
-The abstract class for all different type of text converters.  nextFromStream: and nextPut:toStream: are the public accessible methods.  If you are going to make a subclass for a stateful text conversion, you should override restoreStateOf:with: and saveStateOf: along the line of CompoundTextConverter.!
+The abstract class for all different type of text converters.  nextFromStream: and nextPut:toStream: are the public accessible methods.  If you are going to make a subclass for a stateful text conversion, you should override restoreStateOf:with: and saveStateOf: along the line of CompoundTextConverter.
+!
 
 !RTFToken commentStamp: '<historical>' prior: 0!
 token types:
@@ -275,7 +276,8 @@ At initialization last is nil. Must getToken to get first
 newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped newlines!
 
 !RTFUnicode commentStamp: '<historical>' prior: 0!
-Not a real Unicode implementation. Just compatibility for Sophie-RTF. Answers instances of Character (i.e. ISO-8859-15).Based on http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-15.TXT!
+Not a real Unicode implementation. Just compatibility for Sophie-RTF. Answers instances of Character (i.e. ISO-8859-15).
+Based on http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-15.TXT!
 
 !RTFCP1250UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
 toSqueak: char
