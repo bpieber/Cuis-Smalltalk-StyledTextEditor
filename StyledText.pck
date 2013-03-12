@@ -1,4 +1,4 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1616] on 25 February 2013 at 3:44:16 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1621] on 5 March 2013 at 8:21:37 am'!
 'Description Please enter a description for this package.'!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
@@ -687,11 +687,11 @@ drawOn: aCanvas
 sliderClass
 	^FancyDraggeableButtonMorph! !
 
-!FancyScrollBar methodsFor: 'scrolling' stamp: 'jmv 2/14/2013 13:23'!
+!FancyScrollBar methodsFor: 'scrolling' stamp: 'jmv 3/5/2013 08:20'!
 sliderGrabbedAt: handPositionRelativeToSlider
 
 	grabPosition _ handPositionRelativeToSlider.
-	sliderShadow print
+	sliderShadow
 		morphBoundsInWorld: (slider morphBoundsInWorld insetBy: (extent x > extent y ifTrue: [0@3] ifFalse: [3@0]));
 		show! !
 

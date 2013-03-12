@@ -1,4 +1,4 @@
-'From Cuis 4.0 of 21 April 2012 [latest update: #1308] on 13 June 2012 at 6:47:38 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1621] on 5 March 2013 at 8:18:18 am'!
 'Description A small package whose purpose is to install the rest of the packages that comprise the StyledTextEditor project.'!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
@@ -10,6 +10,9 @@ Object subclass: #StyledTextInstaller
 StyledTextInstaller class
 	instanceVariableNames: ''!
 
+
+!StyledTextInstaller commentStamp: '<historical>' prior: 0!
+StyledTextInstaller new install!
 
 !StyledTextInstaller methodsFor: 'private' stamp: 'bp 12/4/2011 09:14'!
 createStyledTextEditorDocumentation
@@ -41,12 +44,12 @@ install
 	STETheme beCurrent.
 	self openExamples! !
 
-!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/5/2012 23:10'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'jmv 3/2/2013 23:56'!
 installPackage: packageName
 	| versionName |
 	versionName := self repositoryDirectory lastNameFor: packageName extension: 'pck'.
 	versionName _ packageName, '.pck'.
-	CodeFileBrowser installPackage: (self repositoryDirectory readOnlyFileNamed: versionName)! !
+	CodePackageFile installPackageStream: (self repositoryDirectory readOnlyFileNamed: versionName)! !
 
 !StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/20/2012 21:31'!
 installPackages: packages
