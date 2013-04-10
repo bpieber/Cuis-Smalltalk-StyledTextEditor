@@ -4512,6 +4512,36 @@ commandForRemoveCharacterStylesIn: anInterval
 		start: start
 		stop: stop! !
 
+!Text methodsFor: '*styledText' stamp: 'bp 12/12/2012 19:56'!
+exportTextileParagraphOn: stream
+	| paragraphStyles paragraphStyleName |
+	paragraphStyles _ Dictionary new
+		at: 'Text' put: 'p. ';
+		at: 'Normal' put: '';
+		at: 'Heading 1' put: 'h1. ';
+		at: 'Heading 2' put: 'h2. ';
+		at: 'Heading 3' put: 'h3. ';
+		yourself.
+	paragraphStyleName _ (self paragraphStyleOrNilAt: 1) name.
+	stream nextPutAll: (paragraphStyles at: paragraphStyleName ifAbsent: ['p. ']).
+	runs withStartStopAndValueDo: [:start :stop :attributes |
+		| characterStyles styleName characterStyle |
+		characterStyles _ Dictionary new
+			at: 'Green 14' put: '@';
+			at: 'Class Name' put: '@';
+			at: 'Red 10 bold' put: '_';
+			at: 'Emphasized' put: '_';
+			yourself.
+		styleName _ (self characterStyleOrNilAt: start) name.
+		characterStyle _ characterStyles at: styleName ifAbsent: [''].
+		stream
+			nextPutAll: characterStyle;
+			nextPutAll: (string copyFrom: start to: stop);
+			nextPutAll: characterStyle].
+	stream
+		newLine;
+		newLine! !
+
 !Text methodsFor: '*styledText' stamp: 'jmv 4/11/2011 22:08'!
 isStyledText
 	runs do: [ :run |
@@ -4520,6 +4550,19 @@ isStyledText
 		run do: [ :attribute |
 			(attribute isForFormatting and: [ attribute isStyle not ]) ifTrue: [ ^false ]]].
 	^true! !
+
+!Text methodsFor: '*styledText' stamp: 'bp 12/12/2012 19:24'!
+paragraphs
+	| result s previousParagraphEnd paragraphEnd |
+	result _ OrderedCollection new.
+	s _ self size.
+	s = 0 ifTrue: [^result].
+	previousParagraphEnd _ 0.
+	[previousParagraphEnd < s] whileTrue: [
+		paragraphEnd _ string indexOf: Character newLineCharacter startingAt: previousParagraphEnd + 1 ifAbsent: [s + 1].
+		result add: (self copyFrom: previousParagraphEnd + 1 to: paragraphEnd - 1).
+		previousParagraphEnd _ paragraphEnd].
+	^result! !
 
 !Text methodsFor: '*styledText' stamp: 'jmv 12/29/2011 15:44'!
 removeReferencesToCharacterStyle: oldCharacterStyle
@@ -4535,6 +4578,12 @@ replaceReferencesToStyle: oldParagraphOrCharacterStyle with: newParagraphOrChara
 		attributes do: [ :att |
 			(att isStyle and: [ att style == oldParagraphOrCharacterStyle ])
 				ifTrue: [ att style: newParagraphOrCharacterStyle ]]]! !
+
+!Text methodsFor: '*styledText' stamp: 'bp 12/12/2012 19:38'!
+textileString
+	^String streamContents: [:stream |
+		self paragraphs do: [:each |
+			each exportTextileParagraphOn: stream]]! !
 
 !Text methodsFor: '*styledText' stamp: 'jmv 4/11/2011 22:04'!
 usesAnyStyles
