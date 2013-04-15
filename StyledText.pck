@@ -1,4 +1,4 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1621] on 5 March 2013 at 8:21:37 am'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1674] on 14 April 2013 at 10:36:16 pm'!
 'Description Please enter a description for this package.'!
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
@@ -238,6 +238,16 @@ TestCase subclass: #StyledTextTest
 	category: 'StyledText-Tests'!
 !classDefinition: 'StyledTextTest class' category: #'StyledText-Tests'!
 StyledTextTest class
+	instanceVariableNames: ''!
+
+!classDefinition: #ToolbarMorph category: #'StyledText-Morphic-Windows'!
+LayoutMorph subclass: #ToolbarMorph
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'StyledText-Morphic-Windows'!
+!classDefinition: 'ToolbarMorph class' category: #'StyledText-Morphic-Windows'!
+ToolbarMorph class
 	instanceVariableNames: ''!
 
 
@@ -1076,12 +1086,12 @@ changeModelSelection: anInteger
 	currentIndex _ anInteger.
 	self selectionIndex: currentIndex! !
 
-!PluggableActOnReturnKeyListMorph methodsFor: 'geometry' stamp: 'jmv 2/25/2013 15:28'!
-clippingBoundsInWorld
+!PluggableActOnReturnKeyListMorph methodsFor: 'geometry' stamp: 'jmv 4/14/2013 22:00'!
+clippingRect
 	"Return the bounds to which any submorphs should be clipped if the property is set"
 	"Should be a region, like our shadow"
 	| r |
-	r _ super clippingBoundsInWorld.
+	r _ super clippingRect.
 	^r origin extent: r extent - 4! !
 
 !PluggableActOnReturnKeyListMorph methodsFor: 'drawing' stamp: 'jmv 2/25/2013 15:18'!
@@ -1571,25 +1581,23 @@ initialize
 	}.
 	Theme current class beCurrent! !
 
-!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 12/20/2012 13:11'!
+!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 4/12/2013 20:25'!
 withModel: aStyledTextModel in: aLayoutMorph
-	| topRow paragraphStyleList characterStyleList textMorph m topRowHeight labelFont topRowBorderWidth topRowElementsWidth ddlHeight |
+	| topRow paragraphStyleList characterStyleList textMorph m topRowHeight labelFont topRowElementsWidth |
 	textMorph _ self withModel: aStyledTextModel.
 	textMorph
 		borderWidth: 0;
 		drawKeyboardFocusIndicator: false;
 		wrapFlag: true.
 	aLayoutMorph separation: 0.
-	topRow _ LayoutMorph newRow separation: 10@0.
+	topRow _ ToolbarMorph newRow separation: 10@0.
 
 	topRowHeight _ 32.
-	topRowBorderWidth _ 1.
-	ddlHeight _ 24.
 	topRow
-		color: (InfiniteForm 
-			verticalGradient: topRowHeight-topRowBorderWidth-topRowBorderWidth
-			topColor: "(Color gray: 0.93)" (Color r: 189 g: 214 b: 199 range: 255)
-			bottomColor: "(Color gray: 0.85)" (Color r: 115 g: 134 b: 125 range: 255)).
+		color: (Form 
+			verticalGradient: topRowHeight
+			topColor:  (Color r: 189 g: 214 b: 199 range: 255)
+			bottomColor:  (Color r: 115 g: 134 b: 125 range: 255))..
 "		borderWidth: topRowBorderWidth;"
 "		borderColor: (Color r: 80 g: 80 b: 80 range: 255)."
 
@@ -4571,6 +4579,18 @@ openFancierStyledTextEditor
 openStyledTextEditor
 
 	SystemWindow editStyledText: StyledTextModel new label: 'Styled Text Editor'! !
+
+!ToolbarMorph methodsFor: 'as yet unclassified' stamp: 'jmv 4/12/2013 20:18'!
+clipsSubmorphs
+	^true! !
+
+!ToolbarMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2013 20:23'!
+drawOn: aCanvas
+	aCanvas
+		fillRectangle: (0@0 extent: self morphExtent)
+		tilingWith: color
+		sourceRect: color boundingBox
+		rule: Form paint! !
 PluggableStyledTextMorph initialize!
 STECompleter initialize!
 StyledTextEditor initialize!
