@@ -1,4 +1,4 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1621] on 5 March 2013 at 8:18:18 am'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1674] on 14 April 2013 at 10:58:28 pm'!
 'Description A small package whose purpose is to install the rest of the packages that comprise the StyledTextEditor project.'!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
@@ -133,9 +133,9 @@ styledTextModelNamed: name
 	window _ SystemWindow allInstances detect: [:each | each label = name].
 	^window model! !
 
-!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/4/2012 19:50'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'jmv 4/14/2013 22:46'!
 styledTextPackages
-	^#('RTFImporting' 'RTFExporting' 'RTFTests' 'FFI' 'ExtendedClipboard' 'CrappyOSProcess' 'StyledText' 'StyledTextNotebook' 'StyledTextWiki')! !
+	^#('RTFImporting' 'RTFExporting' 'RTFTests' 'FFI' 'ExtendedClipboard' 'StyledText' 'StyledTextNotebook' 'StyledTextWiki')! !
 
 !StyledTextInstaller methodsFor: 'public' stamp: 'bp 4/22/2012 11:23'!
 update

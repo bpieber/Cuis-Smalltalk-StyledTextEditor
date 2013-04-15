@@ -6,7 +6,6 @@ This is the StyledTextEditor project for Cuis, brought to you by Bernhard Pieber
 
 ### Installation ###
 
-
 Steps to install:
 If you want to install StyledTextEditor in an image for the first time do the following steps:
 - Uncompress scowl-7.1.tar.gz into the directory where the Cuis image resides (so contents are in a subdirectory named 'scowl-7.1')
@@ -28,9 +27,6 @@ The Styled Text Editor is a framework for rich text editing using styles as know
 
 Rich text commonly refers to text with formatting information like different fonts, sizes, alignments, and emphasis. To make editing as simple as possible instead of individual formatting information end users apply styles to parts of the text. Editing is made fast by keyboard shortcuts for text navigation, selection, and styles selection. Where possible the feel of widely used rich text editors is supported.
 
-
-
-
 The editor includes features like
 - numbered and bulleted list paragraph styles
 - support for images
@@ -39,11 +35,6 @@ The editor includes features like
 - RTF clipboard (on OS X VMs with the ClipboardExtendedPlugin)
 
 The Styled Text Editor is developed in Cuis with the plan to eventually port it to Squeak and Pharo. The development of the Styled Text Editor inspired many changes to Cuis itself, and It is the first package to use the brand new DVCS based development process for external packages for Cuis 4.0. 
-
-### Notes ###
-
-Bernhard, could you please add a note what CrappyOSProcess.pck is used for. Why is it named 'CrappyOSProcess.pck'?
-What is 'crappy' about it, what is fine?
 
 ### Acknowlegements ###
 
