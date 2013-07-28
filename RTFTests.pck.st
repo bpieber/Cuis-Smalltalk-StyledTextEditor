@@ -1,5 +1,8 @@
-'From Cuis 4.0 of 21 April 2012 [latest update: #1510] on 7 December 2012 at 10:46:06 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1759] on 17 July 2013 at 12:57:05.099612 am'!
 'Description Please enter a description for this package.'!
+!provides: 'RTFTests' 1 0!
+!requires: 'RTFExporting' 1 nil!
+!requires: 'RTFImporting' 1 nil!
 !classDefinition: #RTFConversionTest category: #RTFtests!
 TestCase subclass: #RTFConversionTest
 	instanceVariableNames: ''

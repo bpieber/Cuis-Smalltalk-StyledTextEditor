@@ -1,5 +1,16 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 17 April 2012 at 11:21:11 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1759] on 17 July 2013 at 12:56:34.384191 am'!
 'Description Please enter a description for this package.'!
+!provides: 'FFI' 1 0!
+!classDefinition: #FFIConstants category: #'FFI-Pools'!
+SharedPool subclass: #FFIConstants
+	instanceVariableNames: ''
+	classVariableNames: 'FFIAtomicTypeMask FFIAtomicTypeShift FFICallTypeApi FFICallTypeCDecl FFIErrorAddressNotFound FFIErrorAttemptToPassVoid FFIErrorBadAddress FFIErrorBadArg FFIErrorBadArgs FFIErrorBadAtomicType FFIErrorBadExternalFunction FFIErrorBadExternalLibrary FFIErrorBadReturn FFIErrorCallFrameTooBig FFIErrorCallType FFIErrorCoercionFailed FFIErrorGenericError FFIErrorIntAsPointer FFIErrorInvalidPointer FFIErrorModuleNotFound FFIErrorNoModule FFIErrorNotFunction FFIErrorStructSize FFIErrorWrongType FFIFlagAtomic FFIFlagPointer FFIFlagStructure FFINoCalloutAvailable FFIStructSizeMask FFITypeBool FFITypeDoubleFloat FFITypeSignedByte FFITypeSignedChar FFITypeSignedInt FFITypeSignedLongLong FFITypeSignedShort FFITypeSingleFloat FFITypeUnsignedByte FFITypeUnsignedChar FFITypeUnsignedInt FFITypeUnsignedLongLong FFITypeUnsignedShort FFITypeVoid'
+	poolDictionaries: ''
+	category: 'FFI-Pools'!
+!classDefinition: 'FFIConstants class' category: #'FFI-Pools'!
+FFIConstants class
+	instanceVariableNames: ''!
+
 !classDefinition: #ExternalAddress category: #'FFI-Kernel'!
 ByteArray variableByteSubclass: #ExternalAddress
 	instanceVariableNames: ''
@@ -30,26 +41,6 @@ Object subclass: #ExternalObject
 ExternalObject class
 	instanceVariableNames: ''!
 
-!classDefinition: #ExternalLibrary category: #'FFI-Kernel'!
-ExternalObject subclass: #ExternalLibrary
-	instanceVariableNames: 'name'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'FFI-Kernel'!
-!classDefinition: 'ExternalLibrary class' category: #'FFI-Kernel'!
-ExternalLibrary class
-	instanceVariableNames: ''!
-
-!classDefinition: #FFIConstants category: #'FFI-Pools'!
-SharedPool subclass: #FFIConstants
-	instanceVariableNames: ''
-	classVariableNames: 'FFIAtomicTypeMask FFIAtomicTypeShift FFICallTypeApi FFICallTypeCDecl FFIErrorAddressNotFound FFIErrorAttemptToPassVoid FFIErrorBadAddress FFIErrorBadArg FFIErrorBadArgs FFIErrorBadAtomicType FFIErrorBadExternalFunction FFIErrorBadExternalLibrary FFIErrorBadReturn FFIErrorCallFrameTooBig FFIErrorCallType FFIErrorCoercionFailed FFIErrorGenericError FFIErrorIntAsPointer FFIErrorInvalidPointer FFIErrorModuleNotFound FFIErrorNoModule FFIErrorNotFunction FFIErrorStructSize FFIErrorWrongType FFIFlagAtomic FFIFlagPointer FFIFlagStructure FFINoCalloutAvailable FFIStructSizeMask FFITypeBool FFITypeDoubleFloat FFITypeSignedByte FFITypeSignedChar FFITypeSignedInt FFITypeSignedLongLong FFITypeSignedShort FFITypeSingleFloat FFITypeUnsignedByte FFITypeUnsignedChar FFITypeUnsignedInt FFITypeUnsignedLongLong FFITypeUnsignedShort FFITypeVoid'
-	poolDictionaries: ''
-	category: 'FFI-Pools'!
-!classDefinition: 'FFIConstants class' category: #'FFI-Pools'!
-FFIConstants class
-	instanceVariableNames: ''!
-
 !classDefinition: #ExternalFunction category: #'FFI-Kernel'!
 ExternalObject subclass: #ExternalFunction
 	instanceVariableNames: 'flags argTypes'
@@ -68,6 +59,16 @@ ExternalFunction subclass: #ExternalLibraryFunction
 	category: 'FFI-Kernel'!
 !classDefinition: 'ExternalLibraryFunction class' category: #'FFI-Kernel'!
 ExternalLibraryFunction class
+	instanceVariableNames: ''!
+
+!classDefinition: #ExternalLibrary category: #'FFI-Kernel'!
+ExternalObject subclass: #ExternalLibrary
+	instanceVariableNames: 'name'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'FFI-Kernel'!
+!classDefinition: 'ExternalLibrary class' category: #'FFI-Kernel'!
+ExternalLibrary class
 	instanceVariableNames: ''!
 
 !classDefinition: #ExternalStructure category: #'FFI-Kernel'!
@@ -104,16 +105,6 @@ ExternalType class
 !ExternalAddress commentStamp: '<historical>' prior: 0!
 An ExternalAddress is an opaque handle to objects outside Smalltalk memory (e.g., a pointer).!
 
-!ExternalData commentStamp: '<historical>' prior: 0!
-Instances of ExternalData explicitly describe objects with associated type. They can be used for describing atomic C types like arrays of atomic types (e.g., 'int[]') or pointer to atomic types (e.g., 'int *').
-
-Instance variables:
-	type	<Integer | Behavior>	The basic type of the receiver.
-
-The encoding of type is equivalent to that of the basic type in class ExternalType. The interpretation of whether the receiver describes an array of data or a pointer to data depends on the contents of the instance variable 'handle'. If handle contains an ExternalAddress the receiver is treated as pointer to type. If the handle contains a ByteArray the receiver is interpreted as describing an array of type. Note that both interpretations are treated equivalent in external calls, e.g., if one describes an argument to an external call as taking 'int*' then, depending on the type of handle either the actual contents (if ExternalAddress) or a pointer to the contents (if ByteArray) is passed.
-
-!
-
 !ExternalForm commentStamp: 'jcg 1/29/2010 01:00' prior: 0!
 An ExternalForm is a specialized Form whose pixel-data is stored in memory that the user provides a pointer to.  This can simply be memory on the C heap, or (the motivating use-case...) it can be a pointer that is temporarily "mapped" from GPU memory by an API such as OpenCL.
 
@@ -131,6 +122,12 @@ form displayAt: 0@0.
 form destroySurface.
 !
 
+!ExternalObject commentStamp: '<historical>' prior: 0!
+External objects represent entities that are not part of the Smalltalk universe. They are accessed using a unique handle which is interpreted depending on the actual entity that is represented. 
+
+Instance variables:
+	handle	<ByteArray | ExternalAddress>!
+
 !ExternalFunction commentStamp: '<historical>' prior: 0!
 This class represents an external function called from Smalltalk. Instances of ExternalFunction can be created if the address/parameters of the function are known by some other means than loading from a shared library or compiling the appropriate primitive specification.
 
@@ -143,11 +140,6 @@ Implementation notes:
 The arguments consist of an array with the first element defining the return type, the remaining arguments defining the parameters of the call.
 !
 
-!ExternalLibrary commentStamp: '<historical>' prior: 0!
-An external library bundles calls to functions from the same library. It is provided mainly as convenience since every external function can be fully specified by the name and the module it resides in.
-
-Every external function that is defined in an external library by default will use the library it is defined in. This can always be modified by providing the appropriate module in the specification. !
-
 !ExternalLibraryFunction commentStamp: '<historical>' prior: 0!
 An ExternalLibraryFunction specifies a fully qualified function from an external library.
 
@@ -155,11 +147,10 @@ Instance variables:
 	name	<Integer | String>	name or ordinal of function
 	module	<String | nil>			name of module (nil if bound in the VM).!
 
-!ExternalObject commentStamp: '<historical>' prior: 0!
-External objects represent entities that are not part of the Smalltalk universe. They are accessed using a unique handle which is interpreted depending on the actual entity that is represented. 
+!ExternalLibrary commentStamp: '<historical>' prior: 0!
+An external library bundles calls to functions from the same library. It is provided mainly as convenience since every external function can be fully specified by the name and the module it resides in.
 
-Instance variables:
-	handle	<ByteArray | ExternalAddress>!
+Every external function that is defined in an external library by default will use the library it is defined in. This can always be modified by providing the appropriate module in the specification. !
 
 !ExternalStructure commentStamp: '<historical>' prior: 0!
 This class provides an abstract base for all structures that can be used by external functions. ExternalStructures have two possible handle types:
@@ -168,6 +159,16 @@ This class provides an abstract base for all structures that can be used by exte
 	- ByteArray
 		If the handle is a byte array then the object described resides in Smalltalk memory.
 Useful methods should be implemented by subclasses of ExternalStructure using the common ByteArray/ExternalAddress platform dependent access protocol which will transparently access the correct memory location.!
+
+!ExternalData commentStamp: '<historical>' prior: 0!
+Instances of ExternalData explicitly describe objects with associated type. They can be used for describing atomic C types like arrays of atomic types (e.g., 'int[]') or pointer to atomic types (e.g., 'int *').
+
+Instance variables:
+	type	<Integer | Behavior>	The basic type of the receiver.
+
+The encoding of type is equivalent to that of the basic type in class ExternalType. The interpretation of whether the receiver describes an array of data or a pointer to data depends on the contents of the instance variable 'handle'. If handle contains an ExternalAddress the receiver is treated as pointer to type. If the handle contains a ByteArray the receiver is interpreted as describing an array of type. Note that both interpretations are treated equivalent in external calls, e.g., if one describes an argument to an external call as taking 'int*' then, depending on the type of handle either the actual contents (if ExternalAddress) or a pointer to the contents (if ByteArray) is passed.
+
+!
 
 !ExternalType commentStamp: '<historical>' prior: 0!
 An external type represents the type of external objects.
@@ -205,6 +206,13 @@ Note that all combinations of the flags FFIFlagPointer, FFIFlagAtomic, and FFIFl
 
 [Note: Other combinations may be allowed in the future]
 !
+
+!Object methodsFor: '*FFI-Kernel' stamp: 'ar 8/14/2006 23:02'!
+externalCallFailed
+	"Raise an error after a failed call to an external function"
+	| errCode |
+	errCode := ExternalFunction getLastError. "this allows us to look at the actual error code"
+	^self error: (ExternalFunction errorMessageFor: errCode).! !
 
 !ByteArray methodsFor: '*FFI-Kernel' stamp: 'ar 1/28/2000 17:45'!
 asExternalPointer
@@ -414,6 +422,106 @@ voidAt: byteOffset put: value
 	"no accessors for void"
 	^self shouldNotImplement! !
 
+!FFIConstants class methodsFor: 'pool initialization' stamp: 'ar 5/18/2003 18:54'!
+initialize
+	"FFIConstants initialize"
+	self initializeTypeConstants.
+	self initializeErrorConstants.
+	self initializeCallingConventions.! !
+
+!FFIConstants class methodsFor: 'pool initialization' stamp: 'ar 5/18/2003 18:50'!
+initializeCallingConventions
+	FFICallTypeCDecl := 0.
+	FFICallTypeApi := 1.
+! !
+
+!FFIConstants class methodsFor: 'pool initialization' stamp: 'eem 11/5/2009 10:21'!
+initializeErrorConstants
+	"FFIConstants initializeErrorConstants"
+
+	"No callout mechanism available"
+	FFINoCalloutAvailable := -1.
+	"generic error"
+	FFIErrorGenericError := 0.
+	"primitive invoked without ExternalFunction"
+	FFIErrorNotFunction := 1.
+	"bad arguments to primitive call"
+	FFIErrorBadArgs := 2.
+
+	"generic bad argument"
+	FFIErrorBadArg := 3.
+	"int passed as pointer"
+	FFIErrorIntAsPointer := 4.
+	"bad atomic type (e.g., unknown)"
+	FFIErrorBadAtomicType := 5.
+	"argument coercion failed"
+	FFIErrorCoercionFailed := 6.
+	"Type check for non-atomic types failed"
+	FFIErrorWrongType := 7.
+	"struct size wrong or too large"
+	FFIErrorStructSize := 8.
+	"unsupported calling convention"
+	FFIErrorCallType := 9.
+	"cannot return the given type"
+	FFIErrorBadReturn := 10.
+	"bad function address"
+	FFIErrorBadAddress := 11.
+	"no module given but required for finding address"
+	FFIErrorNoModule := 12.
+	"function address not found"
+	FFIErrorAddressNotFound := 13.
+	"attempt to pass 'void' parameter"
+	FFIErrorAttemptToPassVoid := 14.
+	"module not found"
+	FFIErrorModuleNotFound := 15.
+	"external library invalid"
+	FFIErrorBadExternalLibrary := 16.
+	"external function invalid"
+	FFIErrorBadExternalFunction := 17.
+	"ExternalAddress points to ST memory (don't you dare to do this!!)"
+	FFIErrorInvalidPointer := 18.
+	"Stack frame required more than 16k bytes to pass arguments."
+	FFIErrorCallFrameTooBig := 19! !
+
+!FFIConstants class methodsFor: 'pool initialization' stamp: 'ar 5/18/2003 18:34'!
+initializeTypeConstants
+	"type void"
+	FFITypeVoid := 0.
+
+	"type bool"
+	FFITypeBool := 1.
+
+	"basic integer types.
+	note: (integerType anyMask: 1) = integerType isSigned"
+
+	FFITypeUnsignedByte := 2.
+	FFITypeSignedByte := 3.
+	FFITypeUnsignedShort := 4.
+	FFITypeSignedShort := 5.
+	FFITypeUnsignedInt := 6.
+	FFITypeSignedInt := 7.
+
+	"64bit types"
+	FFITypeUnsignedLongLong := 8.
+	FFITypeSignedLongLong := 9.
+
+	"special integer types"
+	FFITypeUnsignedChar := 10.
+	FFITypeSignedChar := 11.
+
+	"float types"
+	FFITypeSingleFloat := 12.
+	FFITypeDoubleFloat := 13.
+
+	"type flags"
+	FFIFlagAtomic := 16r40000. "type is atomic"
+	FFIFlagPointer := 16r20000. "type is pointer to base type"
+	FFIFlagStructure := 16r10000. "baseType is structure of 64k length"
+	FFIStructSizeMask := 16rFFFF. "mask for max size of structure"
+	FFIAtomicTypeMask := 16r0F000000. "mask for atomic type spec"
+	FFIAtomicTypeShift := 24. "shift for atomic type"
+! !
+
 !ExternalAddress methodsFor: 'arithmetic' stamp: 'ar 9/16/2010 21:05'!
 + offset
 	"Create an address that is offset by the given number of bytes.
@@ -545,69 +653,6 @@ new: n
 startUp: resuming
 	resuming ifTrue:[self allInstancesDo:[:addr| addr beNull]].! !
 
-!ExternalData methodsFor: 'conversion' stamp: 'hg 2/25/2000 14:51'!
-fromCString
-	"Assume that the receiver represents a C string and convert it to a Smalltalk string. hg 2/25/2000 14:18"
-
-	| stream index char |
-	type isPointerType ifFalse: [self error: 'External object is not a pointer type.'].
-	stream := WriteStream on: String new.
-	index := 1.
-	[(char := handle unsignedCharAt: index) = 0 asCharacter] whileFalse: [
-		stream nextPut: char.
-		index := index + 1].
-	^stream contents! !
-
-!ExternalData methodsFor: 'conversion' stamp: 'jrd 4/23/2009 17:35'!
-fromCStrings
-	"Assume that the receiver represents a set of C strings and is teerminated by a empty string and convert it to a Smalltalk ordered collection of strings"
-
-	| stream index char strings str |
-	type isPointerType ifFalse: [self error: 'External object is not a pointer type.'].
-	strings := OrderedCollection new.
-	index := 1.
-	[
-		stream := WriteStream on: String new.
-		[(char := handle unsignedCharAt: index) = 0 asCharacter]
-			whileFalse: [
-				stream nextPut: char.
-				index := index + 1
-			].
-		str := stream contents.
-		strings addLast: str.
-		str size = 0
-	] whileFalse.
-	^strings! !
-
-!ExternalData methodsFor: 'private' stamp: 'ar 11/21/1999 14:23'!
-setHandle: aHandle type: aType
-	handle := aHandle.
-	type := aType.! !
-
-!ExternalData class methodsFor: 'class initialization' stamp: 'ar 8/14/2006 23:18'!
-compileFields
-	"Ensure proper initialization of ExternalType when first loading"
-	ExternalType initialize.
-	^super compileFields! !
-
-!ExternalData class methodsFor: 'field definition' stamp: 'ar 1/27/2000 01:23'!
-fields
-	"ExternalData defineFields"
-	"Note: The definition is for completeness only.
-	ExternalData is treated specially by the VM."
-	^#(nil 'void*')! !
-
-!ExternalData class methodsFor: 'instance creation' stamp: 'ar 12/2/1999 14:57'!
-fromHandle: aHandle type: aType
-	"Create a pointer to the given type"
-	"ExternalData fromHandle: ExternalAddress new type: ExternalType float"
-	^self basicNew setHandle: aHandle type: aType! !
-
-!ExternalData class methodsFor: 'instance creation' stamp: 'ar 11/22/1999 04:28'!
-new
-	"You better not..."
-	^self shouldNotImplement! !
-
 !ExternalForm methodsFor: 'initialize' stamp: 'jcg 6/6/2010 14:32'!
 allocateSpace
 	"Convenient way to allocate space for the pixels.  This isn't done by default, because it is common to use a pointer obtained from elsewhere."
@@ -693,6 +738,51 @@ setManualSurfacePointer: newPointer "ExternalStructure, ExternalAddress, or nil"
 				unsignedLongAt: 1 
 				bigEndian: Smalltalk isBigEndian.
 	self primManualSurface: bits setPointer: integer.! !
+
+!ExternalObject methodsFor: 'private' stamp: 'ar 11/16/1999 20:25'!
+getHandle
+	"Private. Return the handle used to represent the external entitiy."
+	^handle! !
+
+!ExternalObject methodsFor: 'testing' stamp: 'jcg 6/4/2010 02:40'!
+isExternalAddress
+	"Return true if the receiver describes the address of an object in the outside world"
+	^false! !
+
+!ExternalObject methodsFor: 'testing' stamp: 'ar 11/16/2006 15:36'!
+isNull
+	"Answer true if the receiver currently is a NULL pointer"
+	^handle == nil or:[handle isNull]! !
+
+!ExternalObject methodsFor: 'private' stamp: 'ar 11/16/1999 20:26'!
+setHandle: anObject
+	"Private. Set the handle used to represent the external entity."
+	handle := anObject! !
+
+!ExternalObject class methodsFor: 'class initialization' stamp: 'ar 11/19/1999 22:37'!
+initialize
+	"ExternalObject initialize"
+	Smalltalk addToStartUpList: self after: ShortRunArray.! !
+
+!ExternalObject class methodsFor: 'system startup' stamp: 'ar 11/28/1999 23:37'!
+install
+	"Notify all instances of the receiver that we're coming up on a new platform.
+	Note: The default implementation does nothing since the general external
+	objects are cleaned up by ExternalAddress>>startUp: but subclasses may
+	implement this method so that the appropriate action for existing instances can
+	be taken."! !
+
+!ExternalObject class methodsFor: 'system startup' stamp: 'ar 11/28/1999 23:36'!
+installSubclasses
+	"Notify all the subclasses of ExternalObject that we are starting up on a new platform."
+	self withAllSubclassesDo:[:cls| cls install].! !
+
+!ExternalObject class methodsFor: 'system startup' stamp: 'ar 11/28/1999 23:36'!
+startUp: resuming
+	"The system is coming up. If it is on a new platform, clear out the existing handles."
+	ExternalAddress startUp: resuming. "Make sure handles are invalid"
+	resuming ifTrue:[self installSubclasses].
+! !
 
 !ExternalFunction methodsFor: 'accessing' stamp: 'ar 11/19/1999 19:13'!
 argTypes
@@ -865,33 +955,6 @@ unload
 	Smalltalk specialObjectsArray from: 44 to: 48 put: nil.
 ! !
 
-!ExternalLibrary methodsFor: 'initialize-release' stamp: 'ar 12/8/1999 21:49'!
-forceLoading
-	"Primitive. Force loading the given library.
-	The primitive will fail if the library is not available
-	or if anything is wrong with the receiver."
-	<primitive: 'primitiveForceLoad' module:'SqueakFFIPrims'>
-	^self externalCallFailed "The primitive will set the error code"! !
-
-!ExternalLibrary methodsFor: 'accessing' stamp: 'ar 11/17/1999 19:35'!
-handle
-	^handle! !
-
-!ExternalLibrary methodsFor: 'initialize-release' stamp: 'ar 11/29/1999 00:35'!
-initialize
-	"Initialize the receiver"
-	name := self class moduleName.
-	handle := ExternalAddress new.! !
-
-!ExternalLibrary methodsFor: 'accessing' stamp: 'ar 11/17/1999 19:35'!
-name
-	^name! !
-
-!ExternalLibrary class methodsFor: 'accessing' stamp: 'ar 11/17/1999 19:33'!
-moduleName
-	"Return the name of the module for this library"
-	^nil! !
-
 !ExternalLibraryFunction methodsFor: 'accessing' stamp: 'ar 11/17/1999 19:55'!
 module
 	^module! !
@@ -921,50 +984,32 @@ name: aName module: aModule callType: callType returnType: retType argumentTypes
 		flags: callType
 		argTypes: (Array with: retType), argTypes! !
 
-!ExternalObject methodsFor: 'private' stamp: 'ar 11/16/1999 20:25'!
-getHandle
-	"Private. Return the handle used to represent the external entitiy."
+!ExternalLibrary methodsFor: 'initialize-release' stamp: 'ar 12/8/1999 21:49'!
+forceLoading
+	"Primitive. Force loading the given library.
+	The primitive will fail if the library is not available
+	or if anything is wrong with the receiver."
+	<primitive: 'primitiveForceLoad' module:'SqueakFFIPrims'>
+	^self externalCallFailed "The primitive will set the error code"! !
+
+!ExternalLibrary methodsFor: 'accessing' stamp: 'ar 11/17/1999 19:35'!
+handle
 	^handle! !
 
-!ExternalObject methodsFor: 'testing' stamp: 'jcg 6/4/2010 02:40'!
-isExternalAddress
-	"Return true if the receiver describes the address of an object in the outside world"
-	^false! !
-
-!ExternalObject methodsFor: 'testing' stamp: 'ar 11/16/2006 15:36'!
-isNull
-	"Answer true if the receiver currently is a NULL pointer"
-	^handle == nil or:[handle isNull]! !
-
-!ExternalObject methodsFor: 'private' stamp: 'ar 11/16/1999 20:26'!
-setHandle: anObject
-	"Private. Set the handle used to represent the external entity."
-	handle := anObject! !
-
-!ExternalObject class methodsFor: 'class initialization' stamp: 'ar 11/19/1999 22:37'!
+!ExternalLibrary methodsFor: 'initialize-release' stamp: 'ar 11/29/1999 00:35'!
 initialize
-	"ExternalObject initialize"
-	Smalltalk addToStartUpList: self after: ShortRunArray.! !
+	"Initialize the receiver"
+	name := self class moduleName.
+	handle := ExternalAddress new.! !
 
-!ExternalObject class methodsFor: 'system startup' stamp: 'ar 11/28/1999 23:37'!
-install
-	"Notify all instances of the receiver that we're coming up on a new platform.
-	Note: The default implementation does nothing since the general external
-	objects are cleaned up by ExternalAddress>>startUp: but subclasses may
-	implement this method so that the appropriate action for existing instances can
-	be taken."! !
+!ExternalLibrary methodsFor: 'accessing' stamp: 'ar 11/17/1999 19:35'!
+name
+	^name! !
 
-!ExternalObject class methodsFor: 'system startup' stamp: 'ar 11/28/1999 23:36'!
-installSubclasses
-	"Notify all the subclasses of ExternalObject that we are starting up on a new platform."
-	self withAllSubclassesDo:[:cls| cls install].! !
-
-!ExternalObject class methodsFor: 'system startup' stamp: 'ar 11/28/1999 23:36'!
-startUp: resuming
-	"The system is coming up. If it is on a new platform, clear out the existing handles."
-	ExternalAddress startUp: resuming. "Make sure handles are invalid"
-	resuming ifTrue:[self installSubclasses].
-! !
+!ExternalLibrary class methodsFor: 'accessing' stamp: 'ar 11/17/1999 19:33'!
+moduleName
+	"Return the name of the module for this library"
+	^nil! !
 
 !ExternalStructure methodsFor: 'initialize-release' stamp: 'ar 11/28/1999 23:21'!
 free
@@ -1214,6 +1259,69 @@ rename: aString
 	oldName := name.
 	super rename: aString.
 	oldName = name ifFalse:[ExternalType noticeRenamingOf: self from: oldName to: name].! !
+
+!ExternalData methodsFor: 'conversion' stamp: 'hg 2/25/2000 14:51'!
+fromCString
+	"Assume that the receiver represents a C string and convert it to a Smalltalk string. hg 2/25/2000 14:18"
+
+	| stream index char |
+	type isPointerType ifFalse: [self error: 'External object is not a pointer type.'].
+	stream := WriteStream on: String new.
+	index := 1.
+	[(char := handle unsignedCharAt: index) = 0 asCharacter] whileFalse: [
+		stream nextPut: char.
+		index := index + 1].
+	^stream contents! !
+
+!ExternalData methodsFor: 'conversion' stamp: 'jrd 4/23/2009 17:35'!
+fromCStrings
+	"Assume that the receiver represents a set of C strings and is teerminated by a empty string and convert it to a Smalltalk ordered collection of strings"
+
+	| stream index char strings str |
+	type isPointerType ifFalse: [self error: 'External object is not a pointer type.'].
+	strings := OrderedCollection new.
+	index := 1.
+	[
+		stream := WriteStream on: String new.
+		[(char := handle unsignedCharAt: index) = 0 asCharacter]
+			whileFalse: [
+				stream nextPut: char.
+				index := index + 1
+			].
+		str := stream contents.
+		strings addLast: str.
+		str size = 0
+	] whileFalse.
+	^strings! !
+
+!ExternalData methodsFor: 'private' stamp: 'ar 11/21/1999 14:23'!
+setHandle: aHandle type: aType
+	handle := aHandle.
+	type := aType.! !
+
+!ExternalData class methodsFor: 'class initialization' stamp: 'ar 8/14/2006 23:18'!
+compileFields
+	"Ensure proper initialization of ExternalType when first loading"
+	ExternalType initialize.
+	^super compileFields! !
+
+!ExternalData class methodsFor: 'field definition' stamp: 'ar 1/27/2000 01:23'!
+fields
+	"ExternalData defineFields"
+	"Note: The definition is for completeness only.
+	ExternalData is treated specially by the VM."
+	^#(nil 'void*')! !
+
+!ExternalData class methodsFor: 'instance creation' stamp: 'ar 12/2/1999 14:57'!
+fromHandle: aHandle type: aType
+	"Create a pointer to the given type"
+	"ExternalData fromHandle: ExternalAddress new type: ExternalType float"
+	^self basicNew setHandle: aHandle type: aType! !
+
+!ExternalData class methodsFor: 'instance creation' stamp: 'ar 11/22/1999 04:28'!
+new
+	"You better not..."
+	^self shouldNotImplement! !
 
 !ExternalType methodsFor: 'converting' stamp: 'ar 12/2/1999 16:41'!
 asNonPointerType
@@ -1710,114 +1818,7 @@ ushort
 !ExternalType class methodsFor: 'type constants' stamp: 'ar 12/2/1999 16:58'!
 void
 	^AtomicTypes at: 'void'! !
-
-!FFIConstants class methodsFor: 'pool initialization' stamp: 'ar 5/18/2003 18:54'!
-initialize
-	"FFIConstants initialize"
-	self initializeTypeConstants.
-	self initializeErrorConstants.
-	self initializeCallingConventions.! !
-
-!FFIConstants class methodsFor: 'pool initialization' stamp: 'ar 5/18/2003 18:50'!
-initializeCallingConventions
-	FFICallTypeCDecl := 0.
-	FFICallTypeApi := 1.
-! !
-
-!FFIConstants class methodsFor: 'pool initialization' stamp: 'eem 11/5/2009 10:21'!
-initializeErrorConstants
-	"FFIConstants initializeErrorConstants"
-
-	"No callout mechanism available"
-	FFINoCalloutAvailable := -1.
-	"generic error"
-	FFIErrorGenericError := 0.
-	"primitive invoked without ExternalFunction"
-	FFIErrorNotFunction := 1.
-	"bad arguments to primitive call"
-	FFIErrorBadArgs := 2.
-
-	"generic bad argument"
-	FFIErrorBadArg := 3.
-	"int passed as pointer"
-	FFIErrorIntAsPointer := 4.
-	"bad atomic type (e.g., unknown)"
-	FFIErrorBadAtomicType := 5.
-	"argument coercion failed"
-	FFIErrorCoercionFailed := 6.
-	"Type check for non-atomic types failed"
-	FFIErrorWrongType := 7.
-	"struct size wrong or too large"
-	FFIErrorStructSize := 8.
-	"unsupported calling convention"
-	FFIErrorCallType := 9.
-	"cannot return the given type"
-	FFIErrorBadReturn := 10.
-	"bad function address"
-	FFIErrorBadAddress := 11.
-	"no module given but required for finding address"
-	FFIErrorNoModule := 12.
-	"function address not found"
-	FFIErrorAddressNotFound := 13.
-	"attempt to pass 'void' parameter"
-	FFIErrorAttemptToPassVoid := 14.
-	"module not found"
-	FFIErrorModuleNotFound := 15.
-	"external library invalid"
-	FFIErrorBadExternalLibrary := 16.
-	"external function invalid"
-	FFIErrorBadExternalFunction := 17.
-	"ExternalAddress points to ST memory (don't you dare to do this!!)"
-	FFIErrorInvalidPointer := 18.
-	"Stack frame required more than 16k bytes to pass arguments."
-	FFIErrorCallFrameTooBig := 19! !
-
-!FFIConstants class methodsFor: 'pool initialization' stamp: 'ar 5/18/2003 18:34'!
-initializeTypeConstants
-	"type void"
-	FFITypeVoid := 0.
-
-	"type bool"
-	FFITypeBool := 1.
-
-	"basic integer types.
-	note: (integerType anyMask: 1) = integerType isSigned"
-
-	FFITypeUnsignedByte := 2.
-	FFITypeSignedByte := 3.
-	FFITypeUnsignedShort := 4.
-	FFITypeSignedShort := 5.
-	FFITypeUnsignedInt := 6.
-	FFITypeSignedInt := 7.
-
-	"64bit types"
-	FFITypeUnsignedLongLong := 8.
-	FFITypeSignedLongLong := 9.
-
-	"special integer types"
-	FFITypeUnsignedChar := 10.
-	FFITypeSignedChar := 11.
-
-	"float types"
-	FFITypeSingleFloat := 12.
-	FFITypeDoubleFloat := 13.
-
-	"type flags"
-	FFIFlagAtomic := 16r40000. "type is atomic"
-	FFIFlagPointer := 16r20000. "type is pointer to base type"
-	FFIFlagStructure := 16r10000. "baseType is structure of 64k length"
-	FFIStructSizeMask := 16rFFFF. "mask for max size of structure"
-	FFIAtomicTypeMask := 16r0F000000. "mask for atomic type spec"
-	FFIAtomicTypeShift := 24. "shift for atomic type"
-! !
-
-!Object methodsFor: '*FFI-Kernel' stamp: 'ar 8/14/2006 23:02'!
-externalCallFailed
-	"Raise an error after a failed call to an external function"
-	| errCode |
-	errCode := ExternalFunction getLastError. "this allows us to look at the actual error code"
-	^self error: (ExternalFunction errorMessageFor: errCode).! !
-ExternalFunction initialize!
-ExternalObject initialize!
-ExternalType initialize!
 FFIConstants initialize!
+ExternalObject initialize!
+ExternalFunction initialize!
+ExternalType initialize!

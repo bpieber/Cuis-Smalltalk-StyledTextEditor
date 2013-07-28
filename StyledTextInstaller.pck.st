@@ -1,5 +1,9 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1674] on 14 April 2013 at 10:58:28 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1760] on 17 July 2013 at 9:55:40.969337 am'!
 'Description A small package whose purpose is to install the rest of the packages that comprise the StyledTextEditor project.'!
+!provides: 'StyledTextInstaller' 1 0!
+!requires: 'StyledText' 1 nil!
+!requires: 'StyledTextNotebook' 1 nil!
+!requires: 'StyledTextWiki' 1 nil!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
 	instanceVariableNames: ''
@@ -34,26 +38,6 @@ documentsDirectory
 !StyledTextInstaller methodsFor: 'features' stamp: 'bp 4/21/2012 14:58'!
 featuresModelNames
 	^#('STE - New Features' 'STE - Done Features' 'Cuis Features')! !
-
-!StyledTextInstaller methodsFor: 'public' stamp: 'jmv 6/13/2012 18:47'!
-install
-	"
-	StyledTextInstaller new install
-	"
-	self installPackages: self styledTextPackages.
-	STETheme beCurrent.
-	self openExamples! !
-
-!StyledTextInstaller methodsFor: 'private' stamp: 'jmv 3/2/2013 23:56'!
-installPackage: packageName
-	| versionName |
-	versionName := self repositoryDirectory lastNameFor: packageName extension: 'pck'.
-	versionName _ packageName, '.pck'.
-	CodePackageFile installPackageStream: (self repositoryDirectory readOnlyFileNamed: versionName)! !
-
-!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/20/2012 21:31'!
-installPackages: packages
-	packages do: [:each | self installPackage: each]! !
 
 !StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/22/2012 13:23'!
 open: name
@@ -133,13 +117,11 @@ styledTextModelNamed: name
 	window _ SystemWindow allInstances detect: [:each | each label = name].
 	^window model! !
 
-!StyledTextInstaller methodsFor: 'private' stamp: 'jmv 4/14/2013 22:46'!
-styledTextPackages
-	^#('RTFImporting' 'RTFExporting' 'RTFTests' 'FFI' 'ExtendedClipboard' 'StyledText' 'StyledTextNotebook' 'StyledTextWiki')! !
-
-!StyledTextInstaller methodsFor: 'public' stamp: 'bp 4/22/2012 11:23'!
-update
+!StyledTextInstaller class methodsFor: 'class initialization' stamp: 'jmv 7/17/2013 09:55'!
+initialize
 	"
-	StyledTextInstaller new update
+	StyledTextInstaller initialize
 	"
-	self installPackages: (self styledTextPackages asOrderedCollection add: self class name; yourself)! !
+	STETheme beCurrent.
+	self new openExamples! !
+StyledTextInstaller initialize!

@@ -1,5 +1,7 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 17 April 2012 at 11:21:13 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1759] on 17 July 2013 at 12:56:04.13233 am'!
 'Description Please enter a description for this package.'!
+!provides: 'RTFExporting' 1 0!
+!requires: 'Graphics-Files-Additional' 1 nil!
 
 !String methodsFor: '*rtfExporting' stamp: 'jmv 11/22/2011 14:52'!
 iso8859s15ToRTFEncoding
@@ -96,6 +98,15 @@ pointSizeConversionFactor
 	"^1.33333"
 	^1! !
 
+!TextAttribute methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:51'!
+writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
+	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
+	^0! !
+
+!TextAttribute methodsFor: '*rtfExporting' stamp: 'jmv 1/21/2011 13:41'!
+writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
+	"Write the RTF code for attribute stop."! !
+
 !TextAlignment methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:52'!
 writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
@@ -122,15 +133,6 @@ writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	^1! !
 
 !TextAnchor methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:12'!
-writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
-	"Write the RTF code for attribute stop."! !
-
-!TextAttribute methodsFor: '*rtfExporting' stamp: 'jmv 1/24/2011 11:51'!
-writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
-	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
-	^0! !
-
-!TextAttribute methodsFor: '*rtfExporting' stamp: 'jmv 1/21/2011 13:41'!
 writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop."! !
 

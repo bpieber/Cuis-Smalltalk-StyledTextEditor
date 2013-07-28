@@ -1,5 +1,17 @@
-'From Cuis 4.0 of 3 April 2012 [latest update: #1260] on 17 April 2012 at 11:21:15 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1759] on 17 July 2013 at 12:56:06.44085 am'!
 'Description Please enter a description for this package.'!
+!provides: 'RTFImporting' 1 0!
+!requires: 'Graphics-Files-Additional' 1 nil!
+!classDefinition: #RTFException category: #RTFimporting!
+Error subclass: #RTFException
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'RTFimporting'!
+!classDefinition: 'RTFException class' category: #RTFimporting!
+RTFException class
+	instanceVariableNames: ''!
+
 !classDefinition: #RTFChunkScanner category: #RTFimporting!
 Object subclass: #RTFChunkScanner
 	instanceVariableNames: 'destX lastIndex xTable rightEdge stopConditions prevIndex bufferStream buffer chunk'
@@ -18,16 +30,6 @@ Object subclass: #RTFColorDef
 	category: 'RTFimporting'!
 !classDefinition: 'RTFColorDef class' category: #RTFimporting!
 RTFColorDef class
-	instanceVariableNames: ''!
-
-!classDefinition: #RTFException category: #RTFimporting!
-Error subclass: #RTFException
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'RTFimporting'!
-!classDefinition: 'RTFException class' category: #RTFimporting!
-RTFException class
 	instanceVariableNames: ''!
 
 !classDefinition: #RTFFontInfo category: #RTFimporting!
@@ -201,6 +203,45 @@ RTFUnicode class
 	instanceVariableNames: ''!
 
 
+!RTFColorDef commentStamp: '<historical>' prior: 0!
+Carries color information for the color table!
+
+!RTFFontInfo commentStamp: '<historical>' prior: 0!
+Carries RTF font information to be passed to a builder!
+
+!RTFParser commentStamp: '<historical>' prior: 0!
+An RTF parser!
+
+!RTFParserState commentStamp: '<historical>' prior: 0!
+A state of the RTF parser contains:
+	- a destination block (to send plain text to)
+	- a context (a currently built object for the builder, e.g. RTFFontInfo)
+The state has abilities for saving and restoring states on a stack!
+
+!RTFStylesheet commentStamp: '<historical>' prior: 0!
+Carries information about RTF styles!
+
+!RTFSophieStylesheet commentStamp: '<historical>' prior: 0!
+Adds style applying functionality to stylesheets!
+
+!RTFTextBuilder commentStamp: '<historical>' prior: 0!
+To do:
+- Ensure consistency between rtf export and import
+- write tests for that consistency
+- integrate with StyledTextBuilder (el parser der rtf seria un transcodificador???)!!
+	(el builder es solo para StyledText... Yo quisiera que esto sea mas general!!)!
+
+!RTFTextConverter commentStamp: '<historical>' prior: 0!
+The abstract class for all different type of text converters.  nextFromStream: and nextPut:toStream: are the public accessible methods.  If you are going to make a subclass for a stateful text conversion, you should override restoreStateOf:with: and saveStateOf: along the line of CompoundTextConverter.
+!
+
+!RTFLatin1TextConverter commentStamp: '<historical>' prior: 0!
+Text converter for ISO 8859-1.  An international encoding used in Western Europe.!
+
+!RTFMappingUnicodeTextConverter commentStamp: '<historical>' prior: 0!
+Base class for Unicode converters based on mappings as defined in
+http://www.unicode.org/Public/MAPPINGS/!
+
 !RTFCP1250UnicodeTextConverter commentStamp: '<historical>' prior: 0!
 CP1250 to Unicode converter based on
 http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1250.TXT!
@@ -213,48 +254,9 @@ http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1251.TXT!
 CP1251 to Unicode converter based on
 http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1252.TXT!
 
-!RTFColorDef commentStamp: '<historical>' prior: 0!
-Carries color information for the color table!
-
-!RTFFontInfo commentStamp: '<historical>' prior: 0!
-Carries RTF font information to be passed to a builder!
-
-!RTFLatin1TextConverter commentStamp: '<historical>' prior: 0!
-Text converter for ISO 8859-1.  An international encoding used in Western Europe.!
-
 !RTFMacRomanUnicodeTextConverter commentStamp: '<historical>' prior: 0!
 True MacRoman to Unicode converter based on
 http://www.unicode.org/Public/MAPPINGS/VENDORS/APPLE/ROMAN.TXT!
-
-!RTFMappingUnicodeTextConverter commentStamp: '<historical>' prior: 0!
-Base class for Unicode converters based on mappings as defined in
-http://www.unicode.org/Public/MAPPINGS/!
-
-!RTFParser commentStamp: '<historical>' prior: 0!
-An RTF parser!
-
-!RTFParserState commentStamp: '<historical>' prior: 0!
-A state of the RTF parser contains:
-	- a destination block (to send plain text to)
-	- a context (a currently built object for the builder, e.g. RTFFontInfo)
-The state has abilities for saving and restoring states on a stack!
-
-!RTFSophieStylesheet commentStamp: '<historical>' prior: 0!
-Adds style applying functionality to stylesheets!
-
-!RTFStylesheet commentStamp: '<historical>' prior: 0!
-Carries information about RTF styles!
-
-!RTFTextBuilder commentStamp: '<historical>' prior: 0!
-To do:
-- Ensure consistency between rtf export and import
-- write tests for that consistency
-- integrate with StyledTextBuilder (el parser der rtf seria un transcodificador???)!!
-	(el builder es solo para StyledText... Yo quisiera que esto sea mas general!!)!
-
-!RTFTextConverter commentStamp: '<historical>' prior: 0!
-The abstract class for all different type of text converters.  nextFromStream: and nextPut:toStream: are the public accessible methods.  If you are going to make a subclass for a stateful text conversion, you should override restoreStateOf:with: and saveStateOf: along the line of CompoundTextConverter.
-!
 
 !RTFToken commentStamp: '<historical>' prior: 0!
 token types:
@@ -278,21 +280,6 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 !RTFUnicode commentStamp: '<historical>' prior: 0!
 Not a real Unicode implementation. Just compatibility for Sophie-RTF. Answers instances of Character (i.e. ISO-8859-15).
 Based on http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-15.TXT!
-
-!RTFCP1250UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
-toSqueak: char
-	^self toSqueak: char withTable: #(8364 129 8218 131 8222 8230 8224 8225 136 8240 352 8249 346 356 381 377 144 8216 8217 8220 8221 8226 8211 8212 152 8482 353 8250 347 357 382 378 160 711 728 321 164 260 166 167 168 169 350 171 172 173 174 379 176 177 731 322 180 181 182 183 184 261 351 187 317 733 318 380 340 193 194 258 196 313 262 199 268 201 280 203 282 205 206 270 272 323 327 211 212 336 214 215 344 366 218 368 220 221 354 223 341 225 226 259 228 314 263 231 269 233 281 235 283 237 238 271 273 324 328 243 244 337 246 247 345 367 250 369 252 253 355 729)
-! !
-
-!RTFCP1251UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
-toSqueak: char
-	^self toSqueak: char withTable: #(1026 1027 8218 1107 8222 8230 8224 8225 8364 8240 1033 8249 1034 1036 1035 1039 1106 8216 8217 8220 8221 8226 8211 8212 152 8482 1113 8250 1114 1116 1115 1119 160 1038 1118 1032 164 1168 166 167 1025 169 1028 171 172 173 174 1031 176 177 1030 1110 1169 181 182 183 1105 8470 1108 187 1112 1029 1109 1111 1040 1041 1042 1043 1044 1045 1046 1047 1048 1049 1050 1051 1052 1053 1054 1055 1056 1057 1058 1059 1060 1061 1062 1063 1064 1065 1066 1067 1068 1069 1070 1071 1072 1073 1074 1075 1076 1077 1078 1079 1080 1081 1082 1083 1084 1085 1086 1087 1088 1089 1090 1091 1092 1093 1094 1095 1096 1097 1098 1099 1100 1101 1102 1103)
-! !
-
-!RTFCP1252UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
-toSqueak: char
-	^self toSqueak: char withTable: #(8364 129 8218 402 8222 8230 8224 8225 710 8240 352 8249 338 141 381 143 144 8216 8217 8220 8221 8226 8211 8212 732 8482 353 8250 339 157 382 376 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255)
-! !
 
 !RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/14/2006 16:25'!
 addScannedString
@@ -488,36 +475,6 @@ num
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:22'!
 num: n
 	num := n! !
-
-!RTFLatin1TextConverter methodsFor: 'conversion' stamp: 'mir 8/13/2006 17:36'!
-toSqueak: aChar
-	^aChar! !
-
-!RTFMacRomanUnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:13'!
-toSqueak: char
-	^self toSqueak: char withTable: #(
-		196 197 199 201 209 214 220 225 224 226 228 227 229 231 233 232
-		234 235 237 236 238 239 241 243 242 244 246 245 250 249 251 252
-		8224 176 162 163 167 8226 182 223 174 169 8482 180 168 8800 198 216
-		8734 177 8804 8805 165 181 8706 8721 8719 960 8747 170 186 937 230 248
-		191 161 172 8730 402 8776 8710 171 187 8230 160 192 195 213 338 339
-		8211 8212 8220 8221 8216 8217 247 9674 255 376 8260 8364 8249 8250 64257 64258
-		8225 183 8218 8222 8240 194 202 193 203 200 205 206 207 204 211 212
-		63743 210 218 219 217 305 710 732 175 728 729 730 184 733 731 711 256)! !
-
-!RTFMappingUnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:15'!
-toSqueak: char
-	^self subclassResponsibility! !
-
-!RTFMappingUnicodeTextConverter methodsFor: 'conversion' stamp: 'jmv 4/6/2011 10:40'!
-toSqueak: char withTable: table
-
-	| value |
-	value _ char asciiValue.
-	value < 128 ifTrue: [^ char].
-	value > 255 ifTrue: [^ char].
-	^ RTFUnicode value: (table at: (value - 128 + 1)).
-! !
 
 !RTFParser methodsFor: 'handlers' stamp: 'tat 11/1/2006 15:00'!
 addContents
@@ -1537,24 +1494,6 @@ saveState
 	self push: (destination copy).
 	self push: (context copy)! !
 
-!RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 3/11/2007 22:15'!
-applyTo: builder
-	"applies the stylesheet to the builder"
-	basedon isNil ifFalse: [ builder buildApplyStylesheet: basedon].
-	additive ifFalse: [ self resetStyle: builder ].
-	style do: [:aBlock | aBlock value: builder state]
-	! !
-
-!RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 5/6/2006 17:05'!
-getStyleFrom: builder
-	type = #paragraph ifTrue: [^builder activeParagraphStyle].
-	type = #character ifTrue: [^builder activeCharacterStyle]! !
-
-!RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 5/6/2006 17:40'!
-resetStyle: builder
-	type = #paragraph ifTrue: [builder buildResetParagraphSettings. builder buildResetCharFormat].
-	type = #character ifTrue: [builder buildResetCharFormat ]! !
-
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:50'!
 additive
 	additive := true! !
@@ -1604,6 +1543,24 @@ type
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
 type: t
 	type := t! !
+
+!RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 3/11/2007 22:15'!
+applyTo: builder
+	"applies the stylesheet to the builder"
+	basedon isNil ifFalse: [ builder buildApplyStylesheet: basedon].
+	additive ifFalse: [ self resetStyle: builder ].
+	style do: [:aBlock | aBlock value: builder state]
+	! !
+
+!RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 5/6/2006 17:05'!
+getStyleFrom: builder
+	type = #paragraph ifTrue: [^builder activeParagraphStyle].
+	type = #character ifTrue: [^builder activeCharacterStyle]! !
+
+!RTFSophieStylesheet methodsFor: 'applying' stamp: 'tat 5/6/2006 17:40'!
+resetStyle: builder
+	type = #paragraph ifTrue: [builder buildResetParagraphSettings. builder buildResetCharFormat].
+	type = #character ifTrue: [builder buildResetCharFormat ]! !
 
 !RTFTextBuilder methodsFor: 'private' stamp: 'jmv 3/30/2011 15:53'!
 addToText: aString
@@ -2106,6 +2063,51 @@ digitValue: char
 	value >= $a asciiValue 
 		ifTrue: [value <= $z asciiValue ifTrue: [^value - $a asciiValue + 10]].
 ! !
+
+!RTFLatin1TextConverter methodsFor: 'conversion' stamp: 'mir 8/13/2006 17:36'!
+toSqueak: aChar
+	^aChar! !
+
+!RTFMappingUnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:15'!
+toSqueak: char
+	^self subclassResponsibility! !
+
+!RTFMappingUnicodeTextConverter methodsFor: 'conversion' stamp: 'jmv 4/6/2011 10:40'!
+toSqueak: char withTable: table
+
+	| value |
+	value _ char asciiValue.
+	value < 128 ifTrue: [^ char].
+	value > 255 ifTrue: [^ char].
+	^ RTFUnicode value: (table at: (value - 128 + 1)).
+! !
+
+!RTFCP1250UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
+toSqueak: char
+	^self toSqueak: char withTable: #(8364 129 8218 131 8222 8230 8224 8225 136 8240 352 8249 346 356 381 377 144 8216 8217 8220 8221 8226 8211 8212 152 8482 353 8250 347 357 382 378 160 711 728 321 164 260 166 167 168 169 350 171 172 173 174 379 176 177 731 322 180 181 182 183 184 261 351 187 317 733 318 380 340 193 194 258 196 313 262 199 268 201 280 203 282 205 206 270 272 323 327 211 212 336 214 215 344 366 218 368 220 221 354 223 341 225 226 259 228 314 263 231 269 233 281 235 283 237 238 271 273 324 328 243 244 337 246 247 345 367 250 369 252 253 355 729)
+! !
+
+!RTFCP1251UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
+toSqueak: char
+	^self toSqueak: char withTable: #(1026 1027 8218 1107 8222 8230 8224 8225 8364 8240 1033 8249 1034 1036 1035 1039 1106 8216 8217 8220 8221 8226 8211 8212 152 8482 1113 8250 1114 1116 1115 1119 160 1038 1118 1032 164 1168 166 167 1025 169 1028 171 172 173 174 1031 176 177 1030 1110 1169 181 182 183 1105 8470 1108 187 1112 1029 1109 1111 1040 1041 1042 1043 1044 1045 1046 1047 1048 1049 1050 1051 1052 1053 1054 1055 1056 1057 1058 1059 1060 1061 1062 1063 1064 1065 1066 1067 1068 1069 1070 1071 1072 1073 1074 1075 1076 1077 1078 1079 1080 1081 1082 1083 1084 1085 1086 1087 1088 1089 1090 1091 1092 1093 1094 1095 1096 1097 1098 1099 1100 1101 1102 1103)
+! !
+
+!RTFCP1252UnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:49'!
+toSqueak: char
+	^self toSqueak: char withTable: #(8364 129 8218 402 8222 8230 8224 8225 710 8240 352 8249 338 141 381 143 144 8216 8217 8220 8221 8226 8211 8212 732 8482 353 8250 339 157 382 376 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255)
+! !
+
+!RTFMacRomanUnicodeTextConverter methodsFor: 'conversion' stamp: 'tat 8/2/2006 22:13'!
+toSqueak: char
+	^self toSqueak: char withTable: #(
+		196 197 199 201 209 214 220 225 224 226 228 227 229 231 233 232
+		234 235 237 236 238 239 241 243 242 244 246 245 250 249 251 252
+		8224 176 162 163 167 8226 182 223 174 169 8482 180 168 8800 198 216
+		8734 177 8804 8805 165 181 8706 8721 8719 960 8747 170 186 937 230 248
+		191 161 172 8730 402 8776 8710 171 187 8230 160 192 195 213 338 339
+		8211 8212 8220 8221 8216 8217 247 9674 255 376 8260 8364 8249 8250 64257 64258
+		8225 183 8218 8222 8240 194 202 193 203 200 205 206 207 204 211 212
+		63743 210 218 219 217 305 710 732 175 728 729 730 184 733 731 711 256)! !
 
 !RTFToken methodsFor: 'accessing' stamp: 'tat 7/11/2006 00:38'!
 arg

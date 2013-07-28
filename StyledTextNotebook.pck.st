@@ -1,5 +1,7 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1616] on 25 February 2013 at 3:44:19 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1759] on 17 July 2013 at 12:57:15.697354 am'!
 'Description Please enter a description for this package.'!
+!provides: 'StyledTextNotebook' 1 0!
+!requires: 'StyledText' 1 nil!
 !classDefinition: #BpStyledTextNotebook category: #StyledTextNotebook!
 Object subclass: #BpStyledTextNotebook
 	instanceVariableNames: ''

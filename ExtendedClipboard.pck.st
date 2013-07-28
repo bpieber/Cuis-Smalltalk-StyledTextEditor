@@ -1,5 +1,11 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1616] on 25 February 2013 at 3:44:13 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1759] on 17 July 2013 at 12:56:52.876252 am'!
 'Description Please enter a description for this package.'!
+!provides: 'ExtendedClipboard' 1 0!
+!requires: 'FFI' 1 nil!
+!requires: 'Graphics-Files-Additional' 1 nil!
+!requires: 'RTFExporting' 1 nil!
+!requires: 'RTFImporting' 1 nil!
+!requires: 'RTFTests' 1 nil!
 !classDefinition: #ExtendedClipboardInterface category: #ExtendedClipboard!
 Object subclass: #ExtendedClipboardInterface
 	instanceVariableNames: 'clipboard'
@@ -18,16 +24,6 @@ ExtendedClipboardInterface subclass: #ExtendedClipboardMacInterface
 	category: 'ExtendedClipboard'!
 !classDefinition: 'ExtendedClipboardMacInterface class' category: #ExtendedClipboard!
 ExtendedClipboardMacInterface class
-	instanceVariableNames: ''!
-
-!classDefinition: #ExtendedClipboardTest category: #'ExtendedClipboard-tests'!
-TestCase subclass: #ExtendedClipboardTest
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'ExtendedClipboard-tests'!
-!classDefinition: 'ExtendedClipboardTest class' category: #'ExtendedClipboard-tests'!
-ExtendedClipboardTest class
 	instanceVariableNames: ''!
 
 !classDefinition: #ExtendedClipboardUnixInterface category: #ExtendedClipboard!
@@ -60,6 +56,31 @@ ExternalStructure subclass: #Win32Bitmap
 Win32Bitmap class
 	instanceVariableNames: ''!
 
+!classDefinition: #ExtendedClipboardTest category: #'ExtendedClipboard-tests'!
+TestCase subclass: #ExtendedClipboardTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ExtendedClipboard-tests'!
+!classDefinition: 'ExtendedClipboardTest class' category: #'ExtendedClipboard-tests'!
+ExtendedClipboardTest class
+	instanceVariableNames: ''!
+
+
+!Form methodsFor: '*extendedClipboard-Win32' stamp: 'mir 2/16/2008 19:52'!
+fromWin32BitMap: bitmapBits
+	0 to: self height-1 do: [:y |
+		1 to: self width do: [:x |
+			bits integerAt: (y*width) + x put: ((bitmapBits unsignedLongAt: 1 + (y*width*4) + ((x-1) *4)) bitOr: 16rFF000000)
+	]].
+! !
+
+!Form class methodsFor: '*extendedClipboard-Win32' stamp: 'mir 2/15/2008 10:24'!
+fromWin32BitMap: bitmap bits: bits
+	| form |
+	form := self extent: bitmap bmWidth@bitmap bmHeight depth: bitmap bmBitsPixel.
+	form fromWin32BitMap: bits.
+	^form! !
 
 !ExtendedClipboardInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 23:45'!
 addClipboardData: data dataFormat: aFormat
@@ -322,198 +343,6 @@ storeText: aText id: otherString
 	"If we store a streamed representation, don't store the id. In these cases, we prefer rebuilding the object, regardless of
 	whether it is present in memory (because we stored it in the clipboard) or not (because some other Cuis image did it)"
 	self addClipboardData: otherString dataFormat: 'cuis-id'! !
-
-!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:34'!
-testSample1ToAndFromRTFClipboard
-	"
-	ExtendedClipboardTest new testSample1ToAndFromRTFClipboard
-	"
-	| text |
-	text _ RTFConversionTest textSample1.
-
-	"This will use a refStreamed object"
-	Clipboard default storeObject: text.
-	self assert:Clipboard default retrieveObject = text.
-
-	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
-	ExtendedClipboardInterface current
-		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
-	self assert:Clipboard default retrieveObject = text.! !
-
-!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:35'!
-testSample2ToAndFromRTFClipboard
-	"
-	ExtendedClipboardTest new testSample2ToAndFromRTFClipboard
-	"
-	| text |
-	text _ RTFConversionTest textSample2.
-
-	"This will use a refStreamed object"
-	Clipboard default storeObject: text.
-	self assert:Clipboard default retrieveObject = text.
-
-	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
-	ExtendedClipboardInterface current
-		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
-	self assert:Clipboard default retrieveObject = text.! !
-
-!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:35'!
-testSample3ToAndFromRTFClipboard
-	"
-	ExtendedClipboardTest new testSample3ToAndFromRTFClipboard
-	"
-	| text |
-	text _ RTFConversionTest textSample3.
-
-	"This will use a refStreamed object"
-	Clipboard default storeObject: text.
-	self assert:Clipboard default retrieveObject = text.
-
-	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
-	ExtendedClipboardInterface current
-		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
-	self assert:Clipboard default retrieveObject = text.! !
-
-!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:35'!
-testSample4ToAndFromRTFClipboard
-	"
-	ExtendedClipboardTest new testSample4ToAndFromRTFClipboard
-	"
-	| text |
-	text _ RTFConversionTest textSample4.
-
-	"This will use a refStreamed object"
-	Clipboard default storeObject: text.
-	self assert:Clipboard default retrieveObject = text.
-
-	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
-	ExtendedClipboardInterface current
-		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
-	self assert:Clipboard default retrieveObject = text.! !
-
-!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:49'!
-testSample5ToAndFromRTFClipboard
-	"
-	ExtendedClipboardTest new testSample5ToAndFromRTFClipboard
-	"
-	| text |
-	text _ RTFConversionTest textSample5.
-
-	"This will use a refStreamed object"
-	Clipboard default storeObject: text.
-	self assert:Clipboard default retrieveObject = text.
-
-	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
-	ExtendedClipboardInterface current
-		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
-	self assert:Clipboard default retrieveObject = text.! !
-
-!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:49'!
-testSample6ToAndFromRTFClipboard
-	"
-	ExtendedClipboardTest new testSample6ToAndFromRTFClipboard
-	"
-	| text |
-	text _ RTFConversionTest textSample6.
-
-	"This will use a refStreamed object"
-	Clipboard default storeObject: text.
-	self assert:Clipboard default retrieveObject = text.
-
-	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
-	self deny: text rtfString = '{\rtf
-{\colortbl;}
-Tomá agüita, ñandú. Ñandú. \par ½´®¥¨øåßƒ©Ý²Þ¬­ç¦µ.\par ¼´®Á¨ØÅÍÎÏ©ÓÔÞÒ­Ç¦ÐÂ}'.
-	self assert: text rtfString =  '{\rtf
-{\colortbl;}
-Tom\u225? ag\u252?ita, \u241?and\u250?. \u209?and\u250?. \par \u339?\u381?\u174?\u165?\u353?\u248?\u229?\u223?\u131?\u169?\u221?\u178?\u222?\u172?\u173?\u231?\u352?\u181?.\par \u338?\u381?\u174?\u193?\u353?\u216?\u197?\u205?\u206?\u207?\u169?\u211?\u212?\u222?\u210?\u173?\u199?\u352?\u208?\u194?}'.
-	ExtendedClipboardInterface current
-		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
-	self assert: Clipboard default retrieveObject = text.! !
-
-!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 12/7/2012 22:27'!
-testStar16BitToAndFromImageClipboard
-	"
-	ExtendedClipboardTest new testStar16BitToAndFromImageClipboard
-	"
-	| form form1 form2 |
-		form _ EllipseMorph new
-		morphExtent: 100@100;
-		imageForm: 16.
-
-	"This will use a refStreamed object"
-	Clipboard default storeObject: form.
-	form2 _ Clipboard default retrieveObject.
-	form1 _ form copy.
-	form1 addDeltasFrom: form2.
-	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.
-
-	"This will also test storing and retrieving PNG data from platform Clipboard, and PNG conversion"
-	ExtendedClipboardInterface current
-		clearClipboard;
-		addClipboardData: (PNGReadWriter bytesFor: form)  dataFormat: 'public.png'.
-	form2 _ Clipboard default retrieveObject.
-	form1 _ form copy.
-	form1 addDeltasFrom: form2.
-	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.! !
-
-!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 12/7/2012 22:27'!
-testStar8BitToAndFromImageClipboard
-	"
-	ExtendedClipboardTest new testStar8BitToAndFromImageClipboard
-	"
-	| form form1 form2 |
-	form _ EllipseMorph new
-		morphExtent: 100@100;
-		imageForm: 8.
-
-	"This will use a refStreamed object"
-	Clipboard default storeObject: form.
-	form2 _ Clipboard default retrieveObject.
-	form1 _ form copy.
-	form1 addDeltasFrom: form2.
-	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.
-
-	"This will also test storing and retrieving PNG data from platform Clipboard, and PNG conversion"
-	ExtendedClipboardInterface current
-		clearClipboard;
-		addClipboardData: (PNGReadWriter bytesFor: form)  dataFormat: 'public.png'.
-	form2 _ Clipboard default retrieveObject.
-	form1 _ form copy.
-	form1 addDeltasFrom: form2.
-	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.! !
-
-!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 12/7/2012 22:28'!
-testStarToAndFromImageClipboard
-	"
-	ExtendedClipboardTest new testStarToAndFromImageClipboard
-	"
-	| form form1 form2 |
-	form _ EllipseMorph new
-		morphExtent: 100@100;
-		imageForm: 32.
-
-	"This will use a refStreamed object"
-	Clipboard default storeObject: form.
-	form2 _ Clipboard default retrieveObject.
-	form1 _ form copy.
-	form1 addDeltasFrom: form2.
-	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.
-
-	"This will also test storing and retrieving PNG data from platform Clipboard, and PNG conversion"
-	ExtendedClipboardInterface current
-		clearClipboard;
-		addClipboardData: (PNGReadWriter bytesFor: form)  dataFormat: 'public.png'.
-	form2 _ Clipboard default retrieveObject.
-	form1 _ form copy.
-	form1 addDeltasFrom: form2.
-	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.! !
 
 !ExtendedClipboardUnixInterface methodsFor: 'private' stamp: 'jmv 1/18/2011 15:56'!
 readPrimAvailableFormats
@@ -946,21 +775,6 @@ storeText: aText id: otherString
 	Cuis object id is usually at the end, but don't include it if we include a streamed representation."
 	self halt! !
 
-!Form methodsFor: '*extendedClipboard-Win32' stamp: 'mir 2/16/2008 19:52'!
-fromWin32BitMap: bitmapBits
-	0 to: self height-1 do: [:y |
-		1 to: self width do: [:x |
-			bits integerAt: (y*width) + x put: ((bitmapBits unsignedLongAt: 1 + (y*width*4) + ((x-1) *4)) bitOr: 16rFF000000)
-	]].
-! !
-
-!Form class methodsFor: '*extendedClipboard-Win32' stamp: 'mir 2/15/2008 10:24'!
-fromWin32BitMap: bitmap bits: bits
-	| form |
-	form := self extent: bitmap bmWidth@bitmap bmHeight depth: bitmap bmBitsPixel.
-	form fromWin32BitMap: bits.
-	^form! !
-
 !Win32Bitmap methodsFor: 'accessing' stamp: 'mir 2/14/2008 22:47'!
 bmBits
 	"This method was automatically generated"
@@ -1056,4 +870,196 @@ fields
   LPVOID bmBits; 
 } BITMAP"
 ! !
+
+!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:34'!
+testSample1ToAndFromRTFClipboard
+	"
+	ExtendedClipboardTest new testSample1ToAndFromRTFClipboard
+	"
+	| text |
+	text _ RTFConversionTest textSample1.
+
+	"This will use a refStreamed object"
+	Clipboard default storeObject: text.
+	self assert:Clipboard default retrieveObject = text.
+
+	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
+	ExtendedClipboardInterface current
+		clearClipboard;
+		addClipboardData: text rtfString dataFormat: 'public.rtf'.
+	self assert:Clipboard default retrieveObject = text.! !
+
+!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:35'!
+testSample2ToAndFromRTFClipboard
+	"
+	ExtendedClipboardTest new testSample2ToAndFromRTFClipboard
+	"
+	| text |
+	text _ RTFConversionTest textSample2.
+
+	"This will use a refStreamed object"
+	Clipboard default storeObject: text.
+	self assert:Clipboard default retrieveObject = text.
+
+	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
+	ExtendedClipboardInterface current
+		clearClipboard;
+		addClipboardData: text rtfString dataFormat: 'public.rtf'.
+	self assert:Clipboard default retrieveObject = text.! !
+
+!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:35'!
+testSample3ToAndFromRTFClipboard
+	"
+	ExtendedClipboardTest new testSample3ToAndFromRTFClipboard
+	"
+	| text |
+	text _ RTFConversionTest textSample3.
+
+	"This will use a refStreamed object"
+	Clipboard default storeObject: text.
+	self assert:Clipboard default retrieveObject = text.
+
+	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
+	ExtendedClipboardInterface current
+		clearClipboard;
+		addClipboardData: text rtfString dataFormat: 'public.rtf'.
+	self assert:Clipboard default retrieveObject = text.! !
+
+!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:35'!
+testSample4ToAndFromRTFClipboard
+	"
+	ExtendedClipboardTest new testSample4ToAndFromRTFClipboard
+	"
+	| text |
+	text _ RTFConversionTest textSample4.
+
+	"This will use a refStreamed object"
+	Clipboard default storeObject: text.
+	self assert:Clipboard default retrieveObject = text.
+
+	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
+	ExtendedClipboardInterface current
+		clearClipboard;
+		addClipboardData: text rtfString dataFormat: 'public.rtf'.
+	self assert:Clipboard default retrieveObject = text.! !
+
+!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:49'!
+testSample5ToAndFromRTFClipboard
+	"
+	ExtendedClipboardTest new testSample5ToAndFromRTFClipboard
+	"
+	| text |
+	text _ RTFConversionTest textSample5.
+
+	"This will use a refStreamed object"
+	Clipboard default storeObject: text.
+	self assert:Clipboard default retrieveObject = text.
+
+	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
+	ExtendedClipboardInterface current
+		clearClipboard;
+		addClipboardData: text rtfString dataFormat: 'public.rtf'.
+	self assert:Clipboard default retrieveObject = text.! !
+
+!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 3/14/2012 09:49'!
+testSample6ToAndFromRTFClipboard
+	"
+	ExtendedClipboardTest new testSample6ToAndFromRTFClipboard
+	"
+	| text |
+	text _ RTFConversionTest textSample6.
+
+	"This will use a refStreamed object"
+	Clipboard default storeObject: text.
+	self assert:Clipboard default retrieveObject = text.
+
+	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
+	self deny: text rtfString = '{\rtf
+{\colortbl;}
+Tomá agüita, ñandú. Ñandú. \par ½´®¥¨øåßƒ©Ý²Þ¬­ç¦µ.\par ¼´®Á¨ØÅÍÎÏ©ÓÔÞÒ­Ç¦ÐÂ}'.
+	self assert: text rtfString =  '{\rtf
+{\colortbl;}
+Tom\u225? ag\u252?ita, \u241?and\u250?. \u209?and\u250?. \par \u339?\u381?\u174?\u165?\u353?\u248?\u229?\u223?\u131?\u169?\u221?\u178?\u222?\u172?\u173?\u231?\u352?\u181?.\par \u338?\u381?\u174?\u193?\u353?\u216?\u197?\u205?\u206?\u207?\u169?\u211?\u212?\u222?\u210?\u173?\u199?\u352?\u208?\u194?}'.
+	ExtendedClipboardInterface current
+		clearClipboard;
+		addClipboardData: text rtfString dataFormat: 'public.rtf'.
+	self assert: Clipboard default retrieveObject = text.! !
+
+!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 12/7/2012 22:27'!
+testStar16BitToAndFromImageClipboard
+	"
+	ExtendedClipboardTest new testStar16BitToAndFromImageClipboard
+	"
+	| form form1 form2 |
+		form _ EllipseMorph new
+		morphExtent: 100@100;
+		imageForm: 16.
+
+	"This will use a refStreamed object"
+	Clipboard default storeObject: form.
+	form2 _ Clipboard default retrieveObject.
+	form1 _ form copy.
+	form1 addDeltasFrom: form2.
+	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.
+
+	"This will also test storing and retrieving PNG data from platform Clipboard, and PNG conversion"
+	ExtendedClipboardInterface current
+		clearClipboard;
+		addClipboardData: (PNGReadWriter bytesFor: form)  dataFormat: 'public.png'.
+	form2 _ Clipboard default retrieveObject.
+	form1 _ form copy.
+	form1 addDeltasFrom: form2.
+	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.! !
+
+!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 12/7/2012 22:27'!
+testStar8BitToAndFromImageClipboard
+	"
+	ExtendedClipboardTest new testStar8BitToAndFromImageClipboard
+	"
+	| form form1 form2 |
+	form _ EllipseMorph new
+		morphExtent: 100@100;
+		imageForm: 8.
+
+	"This will use a refStreamed object"
+	Clipboard default storeObject: form.
+	form2 _ Clipboard default retrieveObject.
+	form1 _ form copy.
+	form1 addDeltasFrom: form2.
+	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.
+
+	"This will also test storing and retrieving PNG data from platform Clipboard, and PNG conversion"
+	ExtendedClipboardInterface current
+		clearClipboard;
+		addClipboardData: (PNGReadWriter bytesFor: form)  dataFormat: 'public.png'.
+	form2 _ Clipboard default retrieveObject.
+	form1 _ form copy.
+	form1 addDeltasFrom: form2.
+	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.! !
+
+!ExtendedClipboardTest methodsFor: 'testing' stamp: 'jmv 12/7/2012 22:28'!
+testStarToAndFromImageClipboard
+	"
+	ExtendedClipboardTest new testStarToAndFromImageClipboard
+	"
+	| form form1 form2 |
+	form _ EllipseMorph new
+		morphExtent: 100@100;
+		imageForm: 32.
+
+	"This will use a refStreamed object"
+	Clipboard default storeObject: form.
+	form2 _ Clipboard default retrieveObject.
+	form1 _ form copy.
+	form1 addDeltasFrom: form2.
+	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.
+
+	"This will also test storing and retrieving PNG data from platform Clipboard, and PNG conversion"
+	ExtendedClipboardInterface current
+		clearClipboard;
+		addClipboardData: (PNGReadWriter bytesFor: form)  dataFormat: 'public.png'.
+	form2 _ Clipboard default retrieveObject.
+	form1 _ form copy.
+	form1 addDeltasFrom: form2.
+	self assert: form1 primCountBits = 0 description: 'Form copyPasted from Clipboard appears to be bad.'.! !
 ExtendedClipboardInterface initialize!
