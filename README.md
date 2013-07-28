@@ -6,19 +6,32 @@ This is the StyledTextEditor project for Cuis, brought to you by Bernhard Pieber
 ### Installation ###
 
 Steps to install:
+If you have Git installed and configured you can use the following in a shell. (Disclaimer: I only tested it on OS X. Feel free to send pull requests for other platforms.)
+```
+mkdir CuisDevelopment
+cd CuisDevelopment
+git clone https://github.com/bpieber/Cuis-Smalltalk-Dev.git
+Cuis-Smalltalk-Dev/bin/newImage.sh MyProject
+
+git clone https://github.com/bpieber/Cuis-Smalltalk-StyledTextEditor.git
+Cuis-Smalltalk-StyledTextEditor/bin/prepareImage.sh STE 2749
+```
+
 If you want to install StyledTextEditor in a Cuis 4.2 image for the first time do the following steps:
+- Clone or download this GitHub repository.
 - Start Cuis 4.2, preferably with a VM that includes support for the ExtendedClipboardPlugin (like this: http://www.squeakvm.org/mac/release/Squeak%204.2.5beta1U.zip , currently only on the Mac)
 - Open… > File List
-- Navigate to subdirectory Packages/StyledTextEditor
+- Navigate to the repository.
 - Select StyledTextInstaller.pck.st
 - Click the toolbar button 'install package'
 
 Steps to update:
+(Warning: This does not work any more for now. Hopefully I can fix that soon.)
 If you already installed StyledTextEditor in an image you can update it to a newer version like this:
 - Open… > Installed Packages
 - Save unsaved packages if necessary so that Git can merge your changes
 - Pull from the GitHub repository of Cuis-StyledTextEditor you are using
-- Do the following: StyledTextInstaller new update
+- Do the following: StyledTextInstaller new update 
 
 
 ### Features ###
