@@ -12,10 +12,10 @@ If you have Git installed and configured you can use the following in a shell. (
 mkdir CuisDevelopment
 cd CuisDevelopment
 git clone https://github.com/bpieber/Cuis-Smalltalk-Dev.git
-Cuis-Smalltalk-Dev/bin/newImage.sh MyProject
+Cuis-Smalltalk-Dev/bin/newImage.sh STE
 
 git clone https://github.com/bpieber/Cuis-Smalltalk-StyledTextEditor.git
-Cuis-Smalltalk-StyledTextEditor/bin/prepareImage.sh STE 2749
+Cuis-Smalltalk-StyledTextEditor/bin/prepareImage.sh STE
 ```
 The above script creates a new image with a current Cog VM in a folder named STE. It also adds the ClipboardExtendedPlugin to the VM.
 - Start the image by dragging the STE.image and drop it on the VM.
