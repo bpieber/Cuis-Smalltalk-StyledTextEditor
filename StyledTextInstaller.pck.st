@@ -1,6 +1,6 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1788] on 10 August 2013 at 1:55:42.140969 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #1788] on 10 August 2013 at 2:09:04.365781 pm'!
 'Description '!
-!provides: 'StyledTextInstaller' 1 1!
+!provides: 'StyledTextInstaller' 1 2!
 !requires: 'StyledTextWiki' 1 nil nil!
 !requires: 'StyledText' 1 nil nil!
 !requires: 'StyledTextNotebook' 1 nil nil!
@@ -62,12 +62,12 @@ openStyledTextEditorDocumentation
 	"self new openStyledTextEditorDocumentation"
 	self open: 'Styled Text Editor Documentation'! !
 
-!StyledTextInstaller methodsFor: 'public' stamp: 'bp 12/7/2011 02:06'!
+!StyledTextInstaller methodsFor: 'features' stamp: 'bp 12/7/2011 02:06'!
 openStyledTextEditorFeatures
 	"self new openStyledTextEditorFeatures"
 	self featuresModelNames do: [:each | self open: each]! !
 
-!StyledTextInstaller methodsFor: 'private' stamp: 'bp 12/4/2011 10:06'!
+!StyledTextInstaller methodsFor: 'public' stamp: 'bp 12/4/2011 10:06'!
 recreateDocumentationStyleSet
 	"self new recreateDocumentationStyleSet"
 	| model styleSet |
@@ -98,7 +98,12 @@ save: name
 	model _ self styledTextModelNamed: name.
 	model saveAs: (self documentsDirectory fullNameFor: name)! !
 
-!StyledTextInstaller methodsFor: 'private' stamp: 'bp 12/4/2011 09:40'!
+!StyledTextInstaller methodsFor: 'public' stamp: 'bp 8/10/2013 14:08'!
+saveMacbethExample
+	"self new saveMacbethExample"
+	self save: 'Macbeth Example'! !
+
+!StyledTextInstaller methodsFor: 'public' stamp: 'bp 12/4/2011 09:40'!
 saveStyledTextEditorDocumentation
 	"self new saveStyledTextEditorDocumentation"
 	self save: 'Styled Text Editor Documentation'! !
