@@ -1,10 +1,10 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1762] on 17 July 2013 at 10:10:53.56446 am'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #1788] on 9 August 2013 at 10:39:24.935724 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 0!
-!requires: 'RTFTests' 1 nil!
-!requires: 'RTFExporting' 1 nil!
-!requires: 'ExtendedClipboard' 1 nil!
-!requires: 'RTFImporting' 1 nil!
+!provides: 'StyledText' 1 1!
+!requires: 'RTFTests' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
+!requires: 'RTFImporting' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
@@ -1348,9 +1348,25 @@ addEntriesTo: aStream
 		aStream nextPut: (capitalize ifTrue: [key capitalized] ifFalse: [key]).
 		count _ count + 1 ]! !
 
+!STECompleter methodsFor: 'initialization' stamp: 'jmv 8/5/2013 10:45'!
+clearWords
+	words _ nil! !
+
+!STECompleter methodsFor: 'objects from disk' stamp: 'jmv 8/5/2013 10:44'!
+comeFullyUpOnReload: smartRefStream
+	"This is not the proper way to handle multiple dictionaries!!"
+	
+	words _ EnglishDict.
+	^ self! !
+
 !STECompleter methodsFor: 'initialization' stamp: 'jmv 7/14/2011 13:58'!
 initialize
 	words _ EnglishDict! !
+
+!STECompleter methodsFor: 'objects from disk' stamp: 'jmv 8/5/2013 10:45'!
+objectForDataStream: refStrm
+
+	^self shallowCopy clearWords; yourself! !
 
 !STECompleter methodsFor: 'entries' stamp: 'jmv 9/21/2011 11:14'!
 selectedEntry
