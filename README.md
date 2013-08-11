@@ -19,19 +19,10 @@ Cuis-Smalltalk-StyledTextEditor/bin/prepareImage.sh STE
 ```
 The above script creates a new image with a current Cog VM in a folder named STE. It also adds the ClipboardExtendedPlugin to the VM.
 - Start the image by dragging the STE.image and drop it on the VM.
-- Open… > File List
-- Navigate to the repository.
-- Select StyledTextInstaller.pck.st
-- Click the toolbar button 'install package'
-
-Steps to update:
-(Warning: This does not work currently. I hope to have it fixed soon.)
-If you already installed StyledTextEditor in an image you can update it to a newer version like this:
-- Open… > Installed Packages
-- Save unsaved packages if necessary so that Git can merge your changes
-- Pull from the GitHub repository of Cuis-StyledTextEditor you are using
-- Do the following: StyledTextInstaller new update 
-
+- Execute the following Smalltalk code in a Workspace:
+```
+Feature require: 'StyledTextInstaller'
+```
 
 ### Features ###
 
