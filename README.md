@@ -20,6 +20,7 @@ Cuis-Smalltalk-StyledTextEditor/bin/prepareImage.sh STE
 The above script creates a new image with a current Cog VM in a folder named STE. It also adds the ClipboardExtendedPlugin to the VM.
 - Start the image by dragging the STE.image and drop it on the VM.
 - Execute the following Smalltalk code in a Workspace:
+
 ```
 Feature require: 'StyledTextInstaller'
 ```
