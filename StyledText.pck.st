@@ -1,8 +1,8 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1788] on 9 August 2013 at 10:39:24.935724 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #1798] on 13 August 2013 at 5:16:28.270755 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 1!
-!requires: 'RTFTests' 1 nil nil!
+!provides: 'StyledText' 1 2!
 !requires: 'RTFExporting' 1 nil nil!
+!requires: 'RTFTests' 1 nil nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
@@ -2675,7 +2675,7 @@ initialize
 	}.
 	Theme current class beCurrent! !
 
-!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 4/12/2013 20:25'!
+!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 8/13/2013 12:24'!
 withModel: aStyledTextModel in: aLayoutMorph
 	| topRow paragraphStyleList characterStyleList textMorph m topRowHeight labelFont topRowElementsWidth |
 	textMorph _ self withModel: aStyledTextModel.
@@ -2684,7 +2684,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 		drawKeyboardFocusIndicator: false;
 		wrapFlag: true.
 	aLayoutMorph separation: 0.
-	topRow _ ToolbarMorph newRow separation: 10@0.
+	topRow _ ToolbarMorph newRow separation: 10@4.
 
 	topRowHeight _ 32.
 	topRow
@@ -2767,10 +2767,10 @@ sliderGrabbedAt: handPositionRelativeToSlider
 		morphBoundsInWorld: (slider morphBoundsInWorld insetBy: (extent x > extent y ifTrue: [0@3] ifFalse: [3@0]));
 		show! !
 
-!FancyScrollBar class methodsFor: 'constants' stamp: 'jmv 4/12/2012 22:27'!
+!FancyScrollBar class methodsFor: 'constants' stamp: 'jmv 8/13/2013 12:29'!
 scrollbarThickness
 
-	^super scrollbarThickness + 10! !
+	^super scrollbarThickness + 11! !
 
 !STEMainMorph methodsFor: 'initialization' stamp: 'jmv 5/24/2011 09:02'!
 initialize
