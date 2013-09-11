@@ -1,10 +1,10 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1798] on 13 August 2013 at 5:16:28.270755 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #1823] on 11 September 2013 at 12:21:34.422653 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 2!
-!requires: 'RTFExporting' 1 nil nil!
+!provides: 'StyledText' 1 3!
 !requires: 'RTFTests' 1 nil nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
@@ -2772,20 +2772,21 @@ scrollbarThickness
 
 	^super scrollbarThickness + 11! !
 
-!STEMainMorph methodsFor: 'initialization' stamp: 'jmv 5/24/2011 09:02'!
-initialize
-	super initialize.
-	self step; startStepping! !
-
-!STEMainMorph methodsFor: 'stepping' stamp: 'jmv 12/20/2012 12:24'!
+!STEMainMorph methodsFor: 'stepping' stamp: 'jmv 9/11/2013 00:21'!
 step
 
 	"My dimensions are constrained live."
+	"
 	| r |
-	owner isWorldMorph ifTrue: [
+	(owner notNil and: [ owner isWorldMorph ]) ifTrue: [
 		r _ owner morphBoundsInWorld.
 		self morphBoundsInWorld = r ifFalse: [
-			self morphBoundsInWorld: r]]! !
+			self morphBoundsInWorld: r ]]
+	"
+	"My dimensions are constrained live."
+	(owner notNil and: [ owner isWorldMorph ]) ifTrue: [
+		self morphExtent: (self internalize: owner morphExtent).
+		self morphPosition: 0@0 ]! !
 
 !STEMainMorph methodsFor: 'stepping' stamp: 'jmv 5/24/2011 09:04'!
 stepTime
