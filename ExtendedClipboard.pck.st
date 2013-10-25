@@ -1,11 +1,11 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1759] on 17 July 2013 at 12:56:52.876252 am'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #1851] on 17 October 2013 at 7:11:51.460591 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'ExtendedClipboard' 1 0!
-!requires: 'FFI' 1 nil!
-!requires: 'Graphics-Files-Additional' 1 nil!
-!requires: 'RTFExporting' 1 nil!
-!requires: 'RTFImporting' 1 nil!
-!requires: 'RTFTests' 1 nil!
+!provides: 'ExtendedClipboard' 1 1!
+!requires: 'RTFTests' 1 nil nil!
+!requires: 'RTFImporting' 1 nil nil!
+!requires: 'Graphics-Files-Additional' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
+!requires: 'FFI' 1 nil nil!
 !classDefinition: #ExtendedClipboardInterface category: #ExtendedClipboard!
 Object subclass: #ExtendedClipboardInterface
 	instanceVariableNames: 'clipboard'
@@ -150,7 +150,7 @@ getClipboardFormat: formatNumber
 	clipboard = 0 ifTrue: [^nil].
 	^ self primGetClipboardFormat: clipboard formatNumber: formatNumber! !
 
-!ExtendedClipboardInterface methodsFor: 'initialize-release' stamp: 'tak 5/16/2007 12:03'!
+!ExtendedClipboardInterface methodsFor: 'initialization' stamp: 'tak 5/16/2007 12:03'!
 initialize
 	clipboard := [self createClipboard] on: Error do: [:ex | clipboard := 0]! !
 

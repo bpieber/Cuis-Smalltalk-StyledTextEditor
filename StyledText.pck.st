@@ -1,9 +1,9 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1851] on 16 October 2013 at 10:43:20.87515 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #1851] on 17 October 2013 at 7:11:35.340974 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 4!
+!provides: 'StyledText' 1 5!
 !requires: 'RTFExporting' 1 nil nil!
-!requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'RTFTests' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
@@ -2739,7 +2739,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 
 	^aLayoutMorph! !
 
-!FancyScrollBar methodsFor: 'initialize' stamp: 'jmv 4/12/2012 22:12'!
+!FancyScrollBar methodsFor: 'initialization' stamp: 'jmv 4/12/2012 22:12'!
 buttonClass
 	^FancyButtonMorph! !
 
@@ -2755,7 +2755,7 @@ drawOn: aCanvas
 		color: (Color gray: 0.95)
 		radius: 4! !
 
-!FancyScrollBar methodsFor: 'initialize' stamp: 'jmv 4/12/2012 22:23'!
+!FancyScrollBar methodsFor: 'initialization' stamp: 'jmv 4/12/2012 22:23'!
 sliderClass
 	^FancyDraggeableButtonMorph! !
 
