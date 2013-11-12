@@ -1,7 +1,8 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1851] on 17 October 2013 at 7:11:40.91817 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #1865] on 12 November 2013 at 8:54:49.789064 am'!
 'Description Please enter a description for this package.'!
-!provides: 'RTFImporting' 1 1!
+!provides: 'RTFImporting' 1 2!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
 !classDefinition: #RTFException category: #RTFimporting!
 Error subclass: #RTFException
 	instanceVariableNames: ''
@@ -280,6 +281,16 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 !RTFUnicode commentStamp: '<historical>' prior: 0!
 Not a real Unicode implementation. Just compatibility for Sophie-RTF. Answers instances of Character (i.e. ISO-8859-15).
 Based on http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-15.TXT!
+
+!ExtendedClipboardInterface methodsFor: '*rtfImporting' stamp: 'jmv 11/12/2013 08:52'!
+fromRTFBytes: bytes
+	| parser builder |
+	builder _ RTFTextBuilder currentClass new.
+	parser _ RTFParser new.
+	parser
+		parseWithTokenizer: (RTFTokenizer newFromString: bytes asString)
+		buildWith: builder.
+	^builder text! !
 
 !RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/14/2006 16:25'!
 addScannedString
