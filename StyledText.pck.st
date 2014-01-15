@@ -1,6 +1,6 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1851] on 17 October 2013 at 7:11:35.340974 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #1939] on 15 January 2014 at 9:41:13.776398 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 5!
+!provides: 'StyledText' 1 6!
 !requires: 'RTFExporting' 1 nil nil!
 !requires: 'RTFTests' 1 nil nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
@@ -1498,7 +1498,7 @@ shortDescription
 	"note: Does not use all state. Two different instances could answer the same shortDescription."
 	^String streamContents: [ :strm | self shortPrintOn: strm ]! !
 
-!CharacterStyle methodsFor: 'printing' stamp: 'jmv 4/12/2011 09:52'!
+!CharacterStyle methodsFor: 'printing' stamp: 'jmv 1/9/2014 21:45'!
 shortPrintOn: strm
 	familyName ifNotNil: [
 		strm nextPutAll: familyName ].
@@ -1517,7 +1517,7 @@ shortPrintOn: strm
 		strm nextPutAll: ' outline' ].
 	color ifNotNil: [
 		strm nextPut: $ .
-		color shortPrintOn: strm ]! !
+		color printOn: strm ]! !
 
 !CharacterStyle class methodsFor: 'instance creation' stamp: 'jmv 8/9/2011 10:45'!
 nullStyle
