@@ -1,10 +1,10 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1939] on 15 January 2014 at 9:41:13.776398 am'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #1962] on 7 February 2014 at 9:59:21.851073 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 6!
-!requires: 'RTFExporting' 1 nil nil!
+!provides: 'StyledText' 1 7!
 !requires: 'RTFTests' 1 nil nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
@@ -2126,7 +2126,7 @@ iconColor
 				ifTrue: [ Color gray: 0.75 ]
 				ifFalse: [ Color white ]].! !
 
-!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 4/12/2012 22:17'!
+!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 2/2/2014 00:57'!
 updateDownButtonImage
 	"update the receiver's as a downButton.  put a new image inside"
 
@@ -2134,10 +2134,9 @@ updateDownButtonImage
 	actionSelector _ #scrollDown.
 	self
 		roundButtonStyle: false;
-		actWhen: #buttonStillDown;		"to enable multiple action if held down"
 		redrawNeeded! !
 
-!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 4/12/2012 22:17'!
+!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 2/2/2014 00:57'!
 updateLeftButtonImage
 	"update the receiver's as a downButton.  put a new image inside"
 
@@ -2145,10 +2144,9 @@ updateLeftButtonImage
 	actionSelector _ #scrollUp.
 	self
 		roundButtonStyle: false;
-		actWhen: #buttonStillDown;		"to enable multiple action if held down"
 		redrawNeeded! !
 
-!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 4/12/2012 22:17'!
+!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 2/2/2014 00:57'!
 updateRightButtonImage
 	"update the receiver's as a downButton.  put a new image inside"
 
@@ -2156,10 +2154,9 @@ updateRightButtonImage
 	actionSelector _ #scrollDown.
 	self
 		roundButtonStyle: false;
-		actWhen: #buttonStillDown;		"to enable multiple action if held down"
 		redrawNeeded! !
 
-!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 4/12/2012 22:17'!
+!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 2/2/2014 00:58'!
 updateUpButtonImage
 	"update the receiver's as a upButton. put a new image inside"
 
@@ -2167,7 +2164,6 @@ updateUpButtonImage
 	actionSelector _ #scrollUp.
 	self
 		roundButtonStyle: false;
-		actWhen: #buttonStillDown;		"to enable multiple action if held down"
 		redrawNeeded! !
 
 !PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 2/25/2013 15:21'!
@@ -2772,8 +2768,8 @@ scrollbarThickness
 
 	^super scrollbarThickness + 11! !
 
-!STEMainMorph methodsFor: 'stepping' stamp: 'jmv 9/11/2013 00:21'!
-step
+!STEMainMorph methodsFor: 'stepping' stamp: 'jmv 2/3/2014 22:54'!
+stepAt: millisecondClockValue
 
 	"My dimensions are constrained live."
 	"
