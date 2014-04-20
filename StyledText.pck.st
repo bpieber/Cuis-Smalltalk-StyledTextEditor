@@ -1,10 +1,10 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1962] on 7 February 2014 at 9:59:21.851073 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #1978] on 19 April 2014 at 7:36:05.790205 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 7!
+!provides: 'StyledText' 1 9!
 !requires: 'RTFTests' 1 nil nil!
-!requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
 !requires: 'RTFExporting' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
@@ -37,7 +37,7 @@ STECompleter class
 
 !classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
-	instanceVariableNames: 'name familyName pointSize emphasis color kern'
+	instanceVariableNames: 'name familyName pointSize emphasis color'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText'!
@@ -366,7 +366,7 @@ asStyledTextWith: aStyleSet
 "	self isStyledText ifTrue: [ ^self ]."
 	^self copy beStyledTextWith: aStyleSet! !
 
-!Text methodsFor: '*styledText' stamp: 'jmv 4/11/2011 18:28'!
+!Text methodsFor: '*styledText' stamp: 'jmv 4/19/2014 11:07'!
 beNonStyledText
 	"Modify the receiver so that it doesn't include any ParagraphStyle or CharacterStyle.
 	Turn them into TextFontFamilyAndSize, TextEmphasis, TextColor, and TextAlignment as appropriate.
@@ -374,8 +374,8 @@ beNonStyledText
 
 	runs mapValues: [ :attributes |
 		Array streamContents: [ :strm |
-			self withFormattingAttributeValues: attributes do: [
-					:familyName :pointSize :emphasis :kern :color :alignment :characterStyle :paragraphStyle |
+			self withAttributeValues: attributes do: [
+					:familyName :pointSize :emphasis :color :alignment :characterStyle :paragraphStyle |
 				familyName ifNotNil: [
 					strm nextPut: (TextFontFamilyAndSize familyName: familyName pointSize: pointSize) ].	
 				emphasis = 0 ifFalse: [
@@ -383,9 +383,7 @@ beNonStyledText
 				color ifNotNil: [
 					strm nextPut: (TextColor color: color) ].
 				alignment = 0 ifFalse: [
-					strm nextPut: (TextAlignment new alignment: alignment) ].
-				kern = 0 ifFalse: [
-					strm nextPut: (TextKern new kern: kern) ]].
+					strm nextPut: (TextAlignment new alignment: alignment) ]].
 			attributes do: [ :attribute |
 				attribute isForFormatting ifFalse: [
 					strm nextPut: attribute ]]
@@ -393,9 +391,9 @@ beNonStyledText
 	].
 	runs coalesce! !
 
-!Text methodsFor: '*styledText' stamp: 'jmv 3/14/2012 08:30'!
+!Text methodsFor: '*styledText' stamp: 'jmv 4/19/2014 11:11'!
 beStyledTextWith: aStyleSet
-	"Modify the receiver so that it doesn't include any TextFontFamilyAndSize, TextEmphasis, TextColor, TextAlignment, TextKern. Turn all of them into ParagraphStyleReference or CharacterStyleReference as appropriate.
+	"Modify the receiver so that it doesn't include any TextFontFamilyAndSize, TextEmphasis, TextColor, TextAlignment. Turn all of them into ParagraphStyleReference or CharacterStyleReference as appropriate.
 	Keep any TextAttribute that doesn't fit into the Styles: TextAction (and subclasses) and TextAnchor.
 	Create new ParagraphStyle and CharacterStyle as needed."
 	
@@ -421,16 +419,14 @@ beStyledTextWith: aStyleSet
 	newRunArray _ nil.
 	newRunSegments do: [ :runArray |
 		self
-			withFormattingAttributeValues: runArray last 
-			do: [ :familyName :pointSize :emphasis :kern :color :alignment :characterStyle :paragraphStyle |
+			withAttributeValues: runArray last 
+			do: [ :familyName :pointSize :emphasis :color :alignment :characterStyle :paragraphStyle |
 				originalParagraphStyle _ paragraphStyle.
 				originalParagraphStyle ifNil: [
 					originalParagraphStyle _ familyName
 						ifNil: [ (aStyleSet defaultStyle) ]
 						ifNotNil: [ ParagraphStyle new
-							privateFamilyName: familyName pointSize: pointSize emphasis: emphasis color: color alignment: alignment ].
-					kern = 0 ifFalse: [
-						originalParagraphStyle privateKern: kern ]]].
+							privateFamilyName: familyName pointSize: pointSize emphasis: emphasis color: color alignment: alignment ]]].
 
 		thisParagraphStyle _ aStyleSet equivalentOrSameNamePSTo: originalParagraphStyle orAddVolatile: 'Imported '.
 		"thisParagraphStyle _ aStyleSet equivalentPSTo: thisParagraphStyle orAddVolatile: 'Imported '."
@@ -440,17 +436,15 @@ beStyledTextWith: aStyleSet
 			attributes = nonFormattingAttributes
 				ifTrue: [ { ParagraphStyleReference for: thisParagraphStyle }, nonFormattingAttributes ]					"If only attribute is, for example, a TextAnchor (to a Form), then just add paragraph style"
 				ifFalse: [
-					self withFormattingAttributeValues: attributes do: [ :familyName :pointSize :emphasis :kern :color :alignment :characterStyle :paragraphStyle |
+					self withAttributeValues: attributes do: [ :familyName :pointSize :emphasis :color :alignment :characterStyle :paragraphStyle |
 						thisCharStyle _ characterStyle.
 						(thisCharStyle isNil and: [ familyName = originalParagraphStyle familyName and: [ pointSize = originalParagraphStyle pointSize and: [ 
-								emphasis = originalParagraphStyle emphasis and: [ color = originalParagraphStyle color and: [kern = originalParagraphStyle kern ]]]]])
+								emphasis = originalParagraphStyle emphasis and: [ color = originalParagraphStyle color ]]]])
 							ifTrue: [ { ParagraphStyleReference for: thisParagraphStyle }, nonFormattingAttributes ]
 							ifFalse: [
 								thisCharStyle ifNil: [
 									thisCharStyle _ CharacterStyle new
-										privateFamilyName: familyName pointSize: pointSize emphasis: emphasis color: color.
-									kern = 0 ifFalse: [
-										thisCharStyle privateKern: kern ]].
+										privateFamilyName: familyName pointSize: pointSize emphasis: emphasis color: color].
 
 								thisCharStyle _ aStyleSet equivalentOrSameNameCSTo: thisCharStyle orAddVolatile: 'Imported '.
 								"thisCharStyle _ aStyleSet equivalentCSTo: thisCharStyle orAddVolatile: 'Imported '."
@@ -1422,13 +1416,12 @@ font
 	base _ (AbstractFont familyName: familyName pointSize: pointSize) ifNil: [ AbstractFont default baseFont ].
 	^base emphasized: emphasis! !
 
-!CharacterStyle methodsFor: 'initialization' stamp: 'jmv 8/11/2011 10:37'!
+!CharacterStyle methodsFor: 'initialization' stamp: 'jmv 4/19/2014 11:09'!
 initialize
 	name _ ''.
-	emphasis _ 0.
-	kern _ 0! !
+	emphasis _ 0! !
 
-!CharacterStyle methodsFor: 'comparing' stamp: 'jmv 8/9/2011 15:50'!
+!CharacterStyle methodsFor: 'comparing' stamp: 'jmv 4/19/2014 11:08'!
 isEquivalentTo: aStyle
 	"Compare all 'functional' attributes. I.e. ignore name."
 	self class == aStyle class ifFalse: [ ^false ].
@@ -1436,16 +1429,11 @@ isEquivalentTo: aStyle
 	^ pointSize = aStyle pointSize and: [
 		emphasis = aStyle emphasis and: [
 			color = aStyle color and: [
-				kern = aStyle kern and: [
-					familyName = aStyle familyName ]]]]! !
+				familyName = aStyle familyName ]]]! !
 
 !CharacterStyle methodsFor: 'testing' stamp: 'jmv 8/9/2011 10:44'!
 isNullStyle
 	^ name = '-none-'! !
-
-!CharacterStyle methodsFor: 'accessing' stamp: 'jmv 4/7/2011 11:18'!
-kern
-	^kern! !
 
 !CharacterStyle methodsFor: 'accessing' stamp: 'jmv 8/26/2009 22:52'!
 name
@@ -1460,7 +1448,7 @@ printOn: aStream
 	super printOn: aStream.
 	aStream space; nextPutAll: self name! !
 
-!CharacterStyle methodsFor: 'private' stamp: 'jmv 8/11/2011 10:48'!
+!CharacterStyle methodsFor: 'private' stamp: 'jmv 4/19/2014 19:29'!
 privateFamilyName: otherString pointSize: aNumber emphasis: otherNumber color: aColor
 	"To be used from CharacterStyle instance creation methods.
 	If used on existing instances, existing text will be modified, but in any case, senders are responsible
@@ -1469,15 +1457,7 @@ privateFamilyName: otherString pointSize: aNumber emphasis: otherNumber color: a
 	familyName _ otherString.
 	pointSize _ aNumber.
 	emphasis _ otherNumber.
-	color _ aColor.
-"	kern _ 0"! !
-
-!CharacterStyle methodsFor: 'private' stamp: 'jmv 8/11/2011 10:48'!
-privateKern: anInteger
-	"To be used from CharacterStyle instance creation methods.
-	If used on existing instances, existing text will be modified, but in any case, senders are responsible
-	for updating any text editor using us, or any text that should start using us (i.e. users of a StyleSet to which we are added)."
-	kern _ anInteger! !
+	color _ aColor! !
 
 !CharacterStyle methodsFor: 'private' stamp: 'jmv 8/11/2011 10:48'!
 privateName: aString
@@ -1601,7 +1581,7 @@ nextTabXFrom: anX leftMargin: leftMargin rightMargin: rightMargin
 				ifTrue: [^leftMargin + tabX min: rightMargin]].
 	^rightMargin! !
 
-!ParagraphStyle methodsFor: 'private' stamp: 'jmv 8/11/2011 10:49'!
+!ParagraphStyle methodsFor: 'private' stamp: 'jmv 4/19/2014 19:30'!
 privateFamilyName: aString pointSize: aNumber emphasis: otherNumber color: aColor alignment: code
 	"To be used from ParagraphStyle instance creation methods.
 	If used on existing instances, existing text will be modified, but in any case, senders are responsible
@@ -1610,7 +1590,6 @@ privateFamilyName: aString pointSize: aNumber emphasis: otherNumber color: aColo
 	pointSize _ aNumber.
 	emphasis _ otherNumber.
 	color _ aColor.
-"	kern _ 0."
 	alignment _ code.
 "	tabsArray _ ParagraphStyle defaultTabsArray."
 "	firstIndent _ fi.
@@ -1621,7 +1600,7 @@ privateFamilyName: aString pointSize: aNumber emphasis: otherNumber color: aColo
 "	listBulletPattern 
 	doesShout"! !
 
-!ParagraphStyle methodsFor: 'private' stamp: 'jmv 8/11/2011 10:49'!
+!ParagraphStyle methodsFor: 'private' stamp: 'jmv 4/19/2014 19:30'!
 privateFamilyName: aString pointSize: aNumber emphasis: otherNumber color: aColor alignment: code firstIndent: fi restIndent: ri rightIndent: rri spaceBefore: sb spaceAfter: sa
 	"To be used from ParagraphStyle instance creation methods.
 	If used on existing instances, existing text will be modified, but in any case, senders are responsible
@@ -1630,7 +1609,6 @@ privateFamilyName: aString pointSize: aNumber emphasis: otherNumber color: aColo
 	pointSize _ aNumber.
 	emphasis _ otherNumber.
 	color _ aColor.
-"	kern _ 0."
 	alignment _ code.
 "	tabsArray _ ParagraphStyle defaultTabsArray."
 	firstIndent _ fi.
@@ -2814,7 +2792,7 @@ keyStroke: aKeyboardEvent
 	"We know that our owner is a PluggableFilteringDropDownListMorph"
 	owner keyStrokeInText: aKeyboardEvent! !
 
-!RTFStyledTextBuilder methodsFor: 'private' stamp: 'jmv 8/11/2011 10:44'!
+!RTFStyledTextBuilder methodsFor: 'private' stamp: 'jmv 4/19/2014 19:31'!
 addToText: aString specialAttributes: nonFormattingAttributesOrNil
 	"nonFormattingAttributesOrNil should only contains attributes that answer false to #isForFormatting"
 	| attributes emphasis ps cs |
@@ -2826,7 +2804,7 @@ addToText: aString specialAttributes: nonFormattingAttributesOrNil
 	underline ifTrue: [ emphasis _ emphasis + 4 ].
 	attributes _ Array streamContents: [ :strm |
 		strm nextPut: (ParagraphStyleReference for: ps).
-		(fontFamilyName = ps familyName and: [ fontPointSize = ps pointSize and: [ emphasis = ps emphasis and: [ currentFgColor = ps color "and: [kern = thisParagraphStyle kern ]"]]]) ifFalse: [
+		(fontFamilyName = ps familyName and: [ fontPointSize = ps pointSize and: [ emphasis = ps emphasis and: [ currentFgColor = ps color ]]]) ifFalse: [
 			cs _ CharacterStyle new
 				privateFamilyName: fontFamilyName pointSize: fontPointSize emphasis: emphasis color: currentFgColor.
 			strm nextPut: (CharacterStyleReference for: cs) ].
@@ -4361,12 +4339,11 @@ style
 style: aCharacterStyle
 	characterStyle _ aCharacterStyle! !
 
-!CharacterStyleReference methodsFor: 'rtf exporting' stamp: 'jmv 4/12/2011 09:59'!
+!CharacterStyleReference methodsFor: 'rtf exporting' stamp: 'jmv 4/19/2014 11:09'!
 writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 	
 	"familyName and pointSize"
-	| kern quarterPoints twips |
 	characterStyle pointSize ifNotNil: [ :ps |
 		aStream nextPutAll: '\fs'; nextPutAll: ((ps * Text pointSizeConversionFactor ) rounded * 2) asString; space ].
 
@@ -4385,15 +4362,6 @@ writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"color"
 	characterStyle color ifNotNil: [ :c |
 		aStream nextPutAll: '\cf'; nextPutAll: (colorArray indexOf: c) asString; space ].
-	
-	"kern"
-	kern _ characterStyle kern.
-	kern = 0 ifFalse: [
-		quarterPoints _ kern * 4.	"This maybe needs tweaking!!"
-		twips _ kern * 12.
-		aStream nextPutAll:
-			'\kerning1\expnd', quarterPoints asString,
-			'\expndtw', twips asString; space ].
 
 	^0! !
 
@@ -4492,12 +4460,12 @@ style
 style: aParagraphStyle
 	paragraphStyle _ aParagraphStyle! !
 
-!ParagraphStyleReference methodsFor: 'rtf exporting' stamp: 'jmv 4/12/2011 09:59'!
+!ParagraphStyleReference methodsFor: 'rtf exporting' stamp: 'jmv 4/19/2014 11:09'!
 writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 	"paragraph attributes still missing..."
 
-	| kern quarterPoints twips k |
+	| twips k |
 
 	"familyName and pointSize"
 	paragraphStyle pointSize ifNotNil: [ :ps |
@@ -4518,15 +4486,6 @@ writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"color"
 	paragraphStyle color ifNotNil: [ :c |
 		aStream nextPutAll: '\cf'; nextPutAll: (colorArray indexOf: c) asString; space ].
-	
-	"kern"
-	kern _ paragraphStyle kern.
-	kern = 0 ifFalse: [
-		quarterPoints _ kern * 4.	"This maybe needs tweaking!!"
-		twips _ kern * 12.
-		aStream nextPutAll:
-			'\kerning1\expnd', quarterPoints asString,
-			'\expndtw', twips asString; space ].
 
 	"alignment"
 	paragraphStyle alignment caseOf: {
