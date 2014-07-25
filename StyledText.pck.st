@@ -1,9 +1,9 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1978] on 19 April 2014 at 7:36:05.790205 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2055] on 25 July 2014 at 9:25:31.364801 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 9!
+!provides: 'StyledText' 1 10!
+!requires: 'RTFExporting' 1 nil nil!
 !requires: 'RTFTests' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
-!requires: 'RTFExporting' 1 nil nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
@@ -524,14 +524,16 @@ buildWithStyles: aDictionary contents: aBlock
 	aBlock value: builder.
 	^builder text! !
 
-!SystemWindow class methodsFor: '*styledText' stamp: 'bp 12/21/2011 10:04'!
+!SystemWindow class methodsFor: '*styledText' stamp: 'jmv 7/24/2014 10:26'!
 editFancierStyledText: aTextModel label: labelString
-	| window |
+	| window textMorph |
+	textMorph _ PluggableStyledTextMorph withModel: aTextModel in: LayoutMorph newColumn.
 	window _ SystemWindow new model: aTextModel.
 	window setLabel: labelString.
 	window layoutMorph
-		addMorph: (PluggableStyledTextMorph withModel: aTextModel in: LayoutMorph newColumn)
+		addMorph: textMorph
 		proportionalHeight: 1.
+	window setProperty: #minimumExtent toValue: 660@300.
 	^ window openInWorld! !
 
 !SystemWindow class methodsFor: '*styledText' stamp: 'jmv 5/24/2011 08:24'!
@@ -2765,10 +2767,6 @@ stepAt: millisecondClockValue
 !STEMainMorph methodsFor: 'stepping' stamp: 'jmv 5/24/2011 09:04'!
 stepTime
 	^ 0  "every cycle"! !
-
-!ToolbarMorph methodsFor: 'as yet unclassified' stamp: 'jmv 4/12/2013 20:18'!
-clipsSubmorphs
-	^true! !
 
 !ToolbarMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2013 20:23'!
 drawOn: aCanvas
