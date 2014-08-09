@@ -1,9 +1,9 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1978] on 19 April 2014 at 7:36:05.790205 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2079] on 9 August 2014 at 10:55:15.299875 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 9!
+!provides: 'StyledText' 1 11!
 !requires: 'RTFTests' 1 nil nil!
-!requires: 'RTFImporting' 1 nil nil!
 !requires: 'RTFExporting' 1 nil nil!
+!requires: 'RTFImporting' 1 nil nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
@@ -524,14 +524,16 @@ buildWithStyles: aDictionary contents: aBlock
 	aBlock value: builder.
 	^builder text! !
 
-!SystemWindow class methodsFor: '*styledText' stamp: 'bp 12/21/2011 10:04'!
+!SystemWindow class methodsFor: '*styledText' stamp: 'jmv 7/24/2014 10:26'!
 editFancierStyledText: aTextModel label: labelString
-	| window |
+	| window textMorph |
+	textMorph _ PluggableStyledTextMorph withModel: aTextModel in: LayoutMorph newColumn.
 	window _ SystemWindow new model: aTextModel.
 	window setLabel: labelString.
 	window layoutMorph
-		addMorph: (PluggableStyledTextMorph withModel: aTextModel in: LayoutMorph newColumn)
+		addMorph: textMorph
 		proportionalHeight: 1.
+	window setProperty: #minimumExtent toValue: 660@300.
 	^ window openInWorld! !
 
 !SystemWindow class methodsFor: '*styledText' stamp: 'jmv 5/24/2011 08:24'!
@@ -2078,16 +2080,16 @@ iconColor
 				ifTrue: [ Color gray: 0.75 ]
 				ifFalse: [ Color white ]].! !
 
-!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:15'!
+!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 8/4/2014 08:39'!
 drawOn: aCanvas
-
+			
 	self isRoundButton
-		ifTrue: [ icon ifNil: [ self drawRoundGradientLookOn: aCanvas ]]
+		ifTrue: [
+			aCanvas drawButtonIconFromCurrentMorph ifFalse: [
+				self drawRoundGradientLookOn: aCanvas ]]
 		ifFalse: [
-			self drawSTELookOn: aCanvas].
-
-	icon ifNotNil: [
-		self drawInconOn: aCanvas ].! !
+			self drawSTELookOn: aCanvas.
+			aCanvas drawButtonIconFromCurrentMorph ]! !
 
 !FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:14'!
 drawSTELookOn: aCanvas
@@ -2766,9 +2768,9 @@ stepAt: millisecondClockValue
 stepTime
 	^ 0  "every cycle"! !
 
-!ToolbarMorph methodsFor: 'as yet unclassified' stamp: 'jmv 4/12/2013 20:18'!
-clipsSubmorphs
-	^true! !
+!ToolbarMorph methodsFor: 'hacks' stamp: 'jmv 8/4/2014 08:37'!
+adoptWidgetsColor: paneColor
+	"We hold a Form in the color instance variable..."! !
 
 !ToolbarMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2013 20:23'!
 drawOn: aCanvas

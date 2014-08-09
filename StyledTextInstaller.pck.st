@@ -1,6 +1,6 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1788] on 10 August 2013 at 2:09:04.365781 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2079] on 9 August 2014 at 10:55:19.217875 am'!
 'Description '!
-!provides: 'StyledTextInstaller' 1 2!
+!provides: 'StyledTextInstaller' 1 3!
 !requires: 'StyledTextWiki' 1 nil nil!
 !requires: 'StyledText' 1 nil nil!
 !requires: 'StyledTextNotebook' 1 nil nil!
@@ -50,12 +50,12 @@ openExamples
 		openStyledTextEditorDocumentation;
 		openMacbethExample! !
 
-!StyledTextInstaller methodsFor: 'public' stamp: 'bp 4/5/2012 23:24'!
+!StyledTextInstaller methodsFor: 'public' stamp: 'jmv 8/9/2014 10:55'!
 openMacbethExample
 	"self new openMacbethExample"
 	| window |
 	window _ self open: 'Macbeth Example'.
-	window ifNotNil: [window color: Color white]! !
+	window ifNotNil: [window widgetsColor: Color white]! !
 
 !StyledTextInstaller methodsFor: 'public' stamp: 'bp 4/5/2012 23:24'!
 openStyledTextEditorDocumentation
