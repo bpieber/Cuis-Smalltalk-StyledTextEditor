@@ -1,8 +1,8 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2055] on 25 July 2014 at 9:25:31.364801 am'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2079] on 9 August 2014 at 10:55:15.299875 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 10!
-!requires: 'RTFExporting' 1 nil nil!
+!provides: 'StyledText' 1 11!
 !requires: 'RTFTests' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
@@ -2080,16 +2080,16 @@ iconColor
 				ifTrue: [ Color gray: 0.75 ]
 				ifFalse: [ Color white ]].! !
 
-!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:15'!
+!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 8/4/2014 08:39'!
 drawOn: aCanvas
-
+			
 	self isRoundButton
-		ifTrue: [ icon ifNil: [ self drawRoundGradientLookOn: aCanvas ]]
+		ifTrue: [
+			aCanvas drawButtonIconFromCurrentMorph ifFalse: [
+				self drawRoundGradientLookOn: aCanvas ]]
 		ifFalse: [
-			self drawSTELookOn: aCanvas].
-
-	icon ifNotNil: [
-		self drawInconOn: aCanvas ].! !
+			self drawSTELookOn: aCanvas.
+			aCanvas drawButtonIconFromCurrentMorph ]! !
 
 !FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:14'!
 drawSTELookOn: aCanvas
@@ -2767,6 +2767,10 @@ stepAt: millisecondClockValue
 !STEMainMorph methodsFor: 'stepping' stamp: 'jmv 5/24/2011 09:04'!
 stepTime
 	^ 0  "every cycle"! !
+
+!ToolbarMorph methodsFor: 'hacks' stamp: 'jmv 8/4/2014 08:37'!
+adoptWidgetsColor: paneColor
+	"We hold a Form in the color instance variable..."! !
 
 !ToolbarMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2013 20:23'!
 drawOn: aCanvas
