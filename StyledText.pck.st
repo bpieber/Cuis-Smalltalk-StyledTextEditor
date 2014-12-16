@@ -1,6 +1,6 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2079] on 9 August 2014 at 10:55:15.299875 am'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2135] on 16 December 2014 at 10:02:47.528061 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 11!
+!provides: 'StyledText' 1 12!
 !requires: 'RTFTests' 1 nil nil!
 !requires: 'RTFExporting' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
@@ -2091,10 +2091,10 @@ drawOn: aCanvas
 			self drawSTELookOn: aCanvas.
 			aCanvas drawButtonIconFromCurrentMorph ]! !
 
-!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:14'!
+!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 11/30/2014 18:51'!
 drawSTELookOn: aCanvas
 
-	aCanvas image: (FormCanvas steButtonForm: extent) at:0@0! !
+	aCanvas image: (BitBltCanvas steButtonForm: extent) at:0@0! !
 
 !FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:37'!
 iconColor
@@ -2106,41 +2106,41 @@ iconColor
 				ifTrue: [ Color gray: 0.75 ]
 				ifFalse: [ Color white ]].! !
 
-!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 2/2/2014 00:57'!
+!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 11/30/2014 18:52'!
 updateDownButtonImage
 	"update the receiver's as a downButton.  put a new image inside"
 
-	icon _ FormCanvas arrowWithGradientOfDirection: #down.
+	icon _ BitBltCanvas arrowWithGradientOfDirection: #down.
 	actionSelector _ #scrollDown.
 	self
 		roundButtonStyle: false;
 		redrawNeeded! !
 
-!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 2/2/2014 00:57'!
+!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 11/30/2014 18:52'!
 updateLeftButtonImage
 	"update the receiver's as a downButton.  put a new image inside"
 
-	icon _ FormCanvas arrowWithGradientOfDirection: #left.
+	icon _ BitBltCanvas arrowWithGradientOfDirection: #left.
 	actionSelector _ #scrollUp.
 	self
 		roundButtonStyle: false;
 		redrawNeeded! !
 
-!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 2/2/2014 00:57'!
+!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 11/30/2014 18:53'!
 updateRightButtonImage
 	"update the receiver's as a downButton.  put a new image inside"
 
-	icon _ FormCanvas arrowWithGradientOfDirection: #right.
+	icon _ BitBltCanvas arrowWithGradientOfDirection: #right.
 	actionSelector _ #scrollDown.
 	self
 		roundButtonStyle: false;
 		redrawNeeded! !
 
-!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 2/2/2014 00:58'!
+!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'jmv 11/30/2014 18:53'!
 updateUpButtonImage
 	"update the receiver's as a upButton. put a new image inside"
 
-	icon _ FormCanvas arrowWithGradientOfDirection: #up.
+	icon _ BitBltCanvas arrowWithGradientOfDirection: #up.
 	actionSelector _ #scrollUp.
 	self
 		roundButtonStyle: false;
@@ -2251,7 +2251,7 @@ handlesMouseOver: anEvent
 	"So our #mouseLeave: method is called"
 	^ true! !
 
-!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 12/20/2012 13:10'!
+!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 11/30/2014 18:53'!
 initialize
 	| icon |
 	super initialize.
@@ -2260,8 +2260,8 @@ initialize
 	self getLabel.
 "	self extent: 120 @ 20."
 	icon _ "Theme current steButtons" true
-		ifFalse: [ FormCanvas arrowOfDirection: #down size: ScrollBar scrollbarThickness ]
-		ifTrue: [ FormCanvas arrowWithGradientOfDirection: #down ].
+		ifFalse: [ BitBltCanvas arrowOfDirection: #down size: ScrollBar scrollbarThickness ]
+		ifTrue: [ BitBltCanvas arrowWithGradientOfDirection: #down ].
 	downButton _ FancyButtonMorph new.
 	downButton
 		model: self;
