@@ -1,6 +1,6 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2079] on 9 August 2014 at 10:55:19.217875 am'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2621] on 4 December 2015 at 9:24:03.94421 pm'!
 'Description '!
-!provides: 'StyledTextInstaller' 1 3!
+!provides: 'StyledTextInstaller' 1 4!
 !requires: 'StyledTextWiki' 1 nil nil!
 !requires: 'StyledText' 1 nil nil!
 !requires: 'StyledTextNotebook' 1 nil nil!
@@ -28,18 +28,18 @@ createStyledTextEditorDocumentation
 		createDocumentationParagraphStyleSet;
 		createDocumentationCharacterStyleSet! !
 
-!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/5/2012 23:13'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'KenD 12/4/2015 21:03'!
 documentsDirectory
-	^self repositoryDirectory directoryNamed: 'Documents'! !
+	^(self repositoryDirectory) / 'Documents'! !
 
 !StyledTextInstaller methodsFor: 'features' stamp: 'bp 4/21/2012 14:58'!
 featuresModelNames
 	^#('STE - New Features' 'STE - Done Features' 'Cuis Features')! !
 
-!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/22/2012 13:23'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'KenD 12/4/2015 21:23'!
 open: name
 	| fileName model |
-	fileName _ self documentsDirectory fullNameFor: name.
+	fileName _ ((self documentsDirectory) // name) pathName.
 	model _ StyledTextModel fromFileNamed: fileName.
 	^SystemWindow editFancierStyledText: model label: name! !
 
@@ -88,9 +88,9 @@ recreateFeaturesStyleSet
 			createFeaturesParagraphStyleSet;
 			createFeaturesCharacterStyleSet]! !
 
-!StyledTextInstaller methodsFor: 'private' stamp: 'jmv 4/30/2012 00:03'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'KenD 12/4/2015 20:56'!
 repositoryDirectory
-	^(FileDirectory on: (CodePackage named: 'StyledTextInstaller' createIfAbsent: false registerIfNew: false) fullFileName) containingDirectory! !
+	^(self class package fullFileName asFileEntry parent)! !
 
 !StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/20/2012 21:19'!
 save: name
