@@ -1,11 +1,12 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2621] on 5 December 2015 at 9:01:23.129145 am'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2679] on 17 February 2016 at 11:59:56.354779 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 15!
-!requires: 'Cuis-Base' 42 2621 nil!
-!requires: 'RTFExporting' 1 nil nil!
-!requires: 'RTFTests' 1 nil nil!
+!provides: 'StyledText' 1 17!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
+!requires: 'RTFTests' 1 nil nil!
+!requires: 'Morphic-Widgets-Extras' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
+!requires: 'Cuis-Base' 42 2621 nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
@@ -1189,9 +1190,9 @@ actualContents: aTextOrString
 			asText
 			beStyledTextWith: styleSet])! !
 
-!StyledTextModel methodsFor: 'as yet unclassified' stamp: 'jmv 7/14/2011 14:00'!
-autoCompleter
-	^STECompleter withModel: self! !
+!StyledTextModel methodsFor: 'user interface support' stamp: 'jmv 2/16/2016 16:29'!
+autoCompleterClass
+	^STECompleter! !
 
 !StyledTextModel methodsFor: 'accessing' stamp: 'jmv 8/11/2011 11:27'!
 basicActualContents: aTextOrString
@@ -1201,7 +1202,7 @@ basicActualContents: aTextOrString
 			asText
 			beStyledTextWith: styleSet])! !
 
-!StyledTextModel methodsFor: 'as yet unclassified' stamp: 'jmv 12/20/2010 14:53'!
+!StyledTextModel methodsFor: 'user interface support' stamp: 'jmv 2/16/2016 16:29'!
 editorClass
 	^StyledTextEditor! !
 
@@ -2022,12 +2023,22 @@ cmdShortcutsSpec
 		#(		$k 	#selectCharacterStyle:	'Select Character Style')
 	)! !
 
-!StyledTextEditor class methodsFor: 'class initialization' stamp: 'jmv 11/4/2011 11:05'!
+!StyledTextEditor class methodsFor: 'file reader registration' stamp: 'KenD 2/3/2016 16:01'!
+fileReaderServicesForFile: filename suffix: suffix
+	"FileList buttons that open a CodeFileBrowserWindow on contents."
+
+	(#('object' 'ste') includes: suffix) ifTrue: [
+		^ { self serviceSTEEdit } ].
+
+	^#()! !
+
+!StyledTextEditor class methodsFor: 'class initialization' stamp: 'KenD 2/3/2016 15:53'!
 initialize
 	"
 	StyledTextEditor initialize
 	"
-	super initialize! !
+	super initialize.
+	FileList registerFileReader: self.! !
 
 !StyledTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'jmv 6/13/2012 18:16'!
 initializeMenu
@@ -2063,6 +2074,32 @@ initializeMenu
 		{'Replace all uses of Paragraph Style...'.	#replaceAllCurrentStyle}.
 		{'Replace all uses of Character Style...'.		#replaceAllCharacterStyle}.
 	}! !
+
+!StyledTextEditor class methodsFor: 'instance creation' stamp: 'KenD 2/3/2016 16:07'!
+openFromFileEntry: fileEntry
+	| model |
+	model _ StyledTextModel fromFileNamed: fileEntry pathName.
+	^SystemWindow editFancierStyledText: model label: fileEntry name! !
+
+!StyledTextEditor class methodsFor: 'file reader registration' stamp: 'KenD 2/3/2016 16:07'!
+serviceSTEEdit
+	"Answer the service of opening a file in a STEditor"
+
+	^ (SimpleServiceEntry
+		provider: self 
+		label: 'open Styled Text Editor file'
+		selector: #openFromFileEntry:
+		description: 'open this file with a Styled Text Editor'
+		buttonLabel: 'open STE')
+		argumentGetter: [ :fileList | fileList selectedFileEntry ]! !
+
+!StyledTextEditor class methodsFor: 'file reader registration' stamp: 'KenD 2/3/2016 16:08'!
+unload
+"
+	self unload.
+"
+
+	FileList unregisterFileReader: self ! !
 
 !FancyDraggeableButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:14'!
 drawOn: aCanvas

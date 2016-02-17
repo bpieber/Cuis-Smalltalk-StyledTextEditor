@@ -1,6 +1,7 @@
 'From Cuis 4.2 of 25 July 2013 [latest update: #2621] on 4 December 2015 at 9:24:03.94421 pm'!
 'Description '!
-!provides: 'StyledTextInstaller' 1 4!
+!provides: 'StyledTextInstaller' 1 5!
+!requires: 'Morphic-Widgets-Extras' 1 nil nil!
 !requires: 'StyledTextWiki' 1 nil nil!
 !requires: 'StyledText' 1 nil nil!
 !requires: 'StyledTextNotebook' 1 nil nil!
