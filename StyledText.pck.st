@@ -1,12 +1,12 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2679] on 17 February 2016 at 11:59:56.354779 am'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2686] on 20 February 2016 at 6:42:21.384916 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 17!
-!requires: 'ExtendedClipboard' 1 nil nil!
-!requires: 'RTFImporting' 1 nil nil!
-!requires: 'RTFTests' 1 nil nil!
-!requires: 'Morphic-Widgets-Extras' 1 nil nil!
+!provides: 'StyledText' 1 18!
 !requires: 'RTFExporting' 1 nil nil!
 !requires: 'Cuis-Base' 42 2621 nil!
+!requires: 'RTFTests' 1 nil nil!
+!requires: 'Morphic-Widgets-Extras' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
+!requires: 'RTFImporting' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
@@ -552,16 +552,6 @@ editStyledText: aTextModel label: labelString
 !TextAttribute methodsFor: '*styledText' stamp: 'jmv 11/1/2011 11:32'!
 isStyle
 	^false! !
-
-!TheWorldMenu methodsFor: '*styledText' stamp: 'jmv 5/24/2011 08:26'!
-openFancierStyledTextEditor
-
-	SystemWindow editFancierStyledText: StyledTextModel new label: 'Styled Text Editor'! !
-
-!TheWorldMenu methodsFor: '*styledText' stamp: 'jmv 5/24/2011 08:17'!
-openStyledTextEditor
-
-	SystemWindow editStyledText: StyledTextModel new label: 'Styled Text Editor'! !
 
 !StyleSet methodsFor: 'accessing' stamp: 'jmv 8/9/2011 11:03'!
 autoCompletedStyle
@@ -2694,16 +2684,15 @@ possiblyChanged
 scrollBarClass
 	^FancyScrollBar! !
 
-!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 11/4/2011 10:39'!
-initialize
-	"
-	PluggableStyledTextMorph initialize
-	"
-	TheWorldMenu addExtraOpenCommands: {
-		{'Styled Text Editor' . {#theWorldMenu . #openFancierStyledTextEditor}. 'A window for composing styled text' }.
-"		{'Styled Text Editor' . {#theWorldMenu . #openStyledTextEditor}. 'A window for composing styled text' }."
-	}.
-	Theme current class beCurrent! !
+!PluggableStyledTextMorph class methodsFor: 'menu-world' stamp: 'jmv 2/20/2016 18:40'!
+openBasicStyledTextEditor
+
+	SystemWindow editStyledText: StyledTextModel new label: 'Styled Text Editor'! !
+
+!PluggableStyledTextMorph class methodsFor: 'menu-world' stamp: 'jmv 2/20/2016 18:38'!
+openFancierStyledTextEditor
+
+	SystemWindow editFancierStyledText: StyledTextModel new label: 'Styled Text Editor'! !
 
 !PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 8/13/2013 12:24'!
 withModel: aStyledTextModel in: aLayoutMorph
@@ -2768,6 +2757,30 @@ withModel: aStyledTextModel in: aLayoutMorph
 		addMorph: textMorph layoutSpec: (LayoutSpec new).
 
 	^aLayoutMorph! !
+
+!PluggableStyledTextMorph class methodsFor: 'menu-world' stamp: 'jmv 2/20/2016 18:38'!
+worldMenu: aMenu menuGroup: aGroupSymbol
+	^ aGroupSymbol = #worldOpenMenu ifTrue: [
+		Dictionary new
+			
+				at: #itemGroup
+				put: 10;
+			
+				at: #itemOrder
+				put: 5;
+			
+				at: #label
+				put: 'Styled Text Editor';
+			
+				at: #object
+				put: self;
+			
+				at: #selector
+				put: #openFancierStyledTextEditor;
+			
+				at: #balloonText
+				put: 'A window for composing styled text';
+			yourself ].! !
 
 !FancyScrollBar methodsFor: 'initialization' stamp: 'jmv 4/12/2012 22:12'!
 buttonClass
@@ -4632,4 +4645,3 @@ unfocusedTextHighlightFrom: aColor
 	^Color r: 218 g: 228 b: 228 range: 255! !
 STECompleter initialize!
 StyledTextEditor initialize!
-PluggableStyledTextMorph initialize!
