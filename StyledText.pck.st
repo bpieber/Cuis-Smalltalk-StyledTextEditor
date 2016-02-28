@@ -1,12 +1,12 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2686] on 20 February 2016 at 6:42:21.384916 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2696] on 28 February 2016 at 9:51:59.480072 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 18!
-!requires: 'RTFExporting' 1 nil nil!
-!requires: 'Cuis-Base' 42 2621 nil!
-!requires: 'RTFTests' 1 nil nil!
+!provides: 'StyledText' 1 19!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
-!requires: 'ExtendedClipboard' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
+!requires: 'RTFTests' 1 nil nil!
+!requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'RTFImporting' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
@@ -2815,8 +2815,8 @@ scrollbarThickness
 
 	^super scrollbarThickness + 11! !
 
-!STEMainMorph methodsFor: 'stepping' stamp: 'jmv 2/3/2014 22:54'!
-stepAt: millisecondClockValue
+!STEMainMorph methodsFor: 'stepping' stamp: 'jmv 2/27/2016 20:07'!
+stepAt: millisecondSinceLast
 
 	"My dimensions are constrained live."
 	"
