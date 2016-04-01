@@ -1,10 +1,10 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2621] on 4 December 2015 at 9:24:03.94421 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2710] on 1 April 2016 at 2:13:03.062542 pm'!
 'Description '!
-!provides: 'StyledTextInstaller' 1 5!
+!provides: 'StyledTextInstaller' 1 6!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
-!requires: 'StyledTextWiki' 1 nil nil!
-!requires: 'StyledText' 1 nil nil!
 !requires: 'StyledTextNotebook' 1 nil nil!
+!requires: 'StyledText' 1 nil nil!
+!requires: 'StyledTextWiki' 1 nil nil!
 !classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
 	instanceVariableNames: ''
@@ -93,11 +93,11 @@ recreateFeaturesStyleSet
 repositoryDirectory
 	^(self class package fullFileName asFileEntry parent)! !
 
-!StyledTextInstaller methodsFor: 'private' stamp: 'bp 4/20/2012 21:19'!
+!StyledTextInstaller methodsFor: 'private' stamp: 'jmv 4/1/2016 14:01'!
 save: name
 	| model |
 	model _ self styledTextModelNamed: name.
-	model saveAs: (self documentsDirectory fullNameFor: name)! !
+	model saveAs: (self documentsDirectory // name) pathName! !
 
 !StyledTextInstaller methodsFor: 'public' stamp: 'bp 8/10/2013 14:08'!
 saveMacbethExample

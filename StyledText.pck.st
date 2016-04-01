@@ -1,12 +1,12 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2696] on 28 February 2016 at 9:51:59.480072 am'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2710] on 1 April 2016 at 2:12:45.291542 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 19!
-!requires: 'Morphic-Widgets-Extras' 1 nil nil!
-!requires: 'RTFExporting' 1 nil nil!
-!requires: 'RTFTests' 1 nil nil!
-!requires: 'Cuis-Base' 42 2621 nil!
-!requires: 'RTFImporting' 1 nil nil!
+!provides: 'StyledText' 1 20!
 !requires: 'ExtendedClipboard' 1 nil nil!
+!requires: 'Morphic-Widgets-Extras' 1 nil nil!
+!requires: 'Cuis-Base' 42 2621 nil!
+!requires: 'RTFExporting' 1 nil nil!
+!requires: 'RTFImporting' 1 nil nil!
+!requires: 'RTFTests' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
@@ -1814,14 +1814,15 @@ model: aModel
 	emphasisHere _ { ParagraphStyleReference for: model styleSet defaultStyle }.
 	self buildCmdShortcuts! !
 
-!StyledTextEditor methodsFor: 'commands' stamp: 'jmv 3/11/2011 16:55'!
+!StyledTextEditor methodsFor: 'commands' stamp: 'jmv 4/1/2016 13:47'!
 quit: aKeyboardEvent
 	morph hasUnacceptedEdits ifTrue: [
 		(self confirm: 'Save changes before quitting?' orCancel: [^ true]) ifTrue: [
 			self save: aKeyboardEvent ]].
 	Smalltalk 
 		snapshot: false
-		andQuit: true.
+		andQuit: true
+		clearAllClassState: false.
 	^true! !
 
 !StyledTextEditor methodsFor: 'commands' stamp: 'jmv 10/16/2013 20:10'!
@@ -4408,7 +4409,7 @@ style
 style: aCharacterStyle
 	characterStyle _ aCharacterStyle! !
 
-!CharacterStyleReference methodsFor: 'rtf exporting' stamp: 'jmv 4/19/2014 11:09'!
+!CharacterStyleReference methodsFor: 'rtf exporting' stamp: 'jmv 4/1/2016 13:45'!
 writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 	
@@ -4425,8 +4426,6 @@ writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 		aStream nextPutAll: '\ul ' ].
 	(characterStyle emphasis allMask: AbstractFont struckThroughCode) ifTrue: [
 		aStream nextPutAll: '\strike \strikec0 ' ].
-	(characterStyle emphasis allMask: AbstractFont outlineCode) ifTrue: [
-		aStream nextPutAll: '\outl\strokewidth60 ' ].
 
 	"color"
 	characterStyle color ifNotNil: [ :c |
@@ -4434,7 +4433,7 @@ writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 
 	^0! !
 
-!CharacterStyleReference methodsFor: 'rtf exporting' stamp: 'jmv 4/12/2011 09:59'!
+!CharacterStyleReference methodsFor: 'rtf exporting' stamp: 'jmv 4/1/2016 13:45'!
 writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop.
 	Do it in the inverse order of writeRTFStartOn:colorTable:fontTable:"
@@ -4446,8 +4445,6 @@ writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	aStream nextPutAll: '\cf0 '.
 
 	"emphasis"
-	(characterStyle emphasis allMask: AbstractFont outlineCode) ifTrue: [
-		aStream nextPutAll: '\outl0\strokewidth0 ' ].
 	(characterStyle emphasis allMask: AbstractFont struckThroughCode) ifTrue: [
 		aStream nextPutAll: '\strike0\striked0 ' ].
 	(characterStyle emphasis allMask: AbstractFont underlinedCode) ifTrue: [
@@ -4529,7 +4526,7 @@ style
 style: aParagraphStyle
 	paragraphStyle _ aParagraphStyle! !
 
-!ParagraphStyleReference methodsFor: 'rtf exporting' stamp: 'jmv 4/19/2014 11:09'!
+!ParagraphStyleReference methodsFor: 'rtf exporting' stamp: 'jmv 4/1/2016 13:45'!
 writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 	"paragraph attributes still missing..."
@@ -4549,8 +4546,6 @@ writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 		aStream nextPutAll: '\ul ' ].
 	(paragraphStyle emphasis allMask: AbstractFont struckThroughCode) ifTrue: [
 		aStream nextPutAll: '\strike \strikec0 ' ].
-	(paragraphStyle emphasis allMask: AbstractFont outlineCode) ifTrue: [
-		aStream nextPutAll: '\outl\strokewidth60 ' ].
 
 	"color"
 	paragraphStyle color ifNotNil: [ :c |
@@ -4591,7 +4586,7 @@ writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 
 	^0! !
 
-!ParagraphStyleReference methodsFor: 'rtf exporting' stamp: 'jmv 4/12/2011 09:59'!
+!ParagraphStyleReference methodsFor: 'rtf exporting' stamp: 'jmv 4/1/2016 13:45'!
 writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop.
 	Do it in the inverse order of writeRTFStartOn:colorTable:fontTable:"
@@ -4606,8 +4601,6 @@ writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	aStream nextPutAll: '\cf0 '.
 
 	"emphasis"
-	(paragraphStyle emphasis allMask: AbstractFont outlineCode) ifTrue: [
-		aStream nextPutAll: '\outl0\strokewidth0 ' ].
 	(paragraphStyle emphasis allMask: AbstractFont struckThroughCode) ifTrue: [
 		aStream nextPutAll: '\strike0\striked0 ' ].
 	(paragraphStyle emphasis allMask: AbstractFont underlinedCode) ifTrue: [
