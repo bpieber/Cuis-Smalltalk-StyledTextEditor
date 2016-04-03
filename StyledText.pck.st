@@ -1,12 +1,12 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2710] on 1 April 2016 at 2:12:45.291542 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2716] on 2 April 2016 at 11:11:27.094394 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 20!
-!requires: 'ExtendedClipboard' 1 nil nil!
-!requires: 'Morphic-Widgets-Extras' 1 nil nil!
-!requires: 'Cuis-Base' 42 2621 nil!
-!requires: 'RTFExporting' 1 nil nil!
+!provides: 'StyledText' 1 22!
 !requires: 'RTFImporting' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
+!requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'RTFTests' 1 nil nil!
+!requires: 'Morphic-Widgets-Extras' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
@@ -557,7 +557,7 @@ isStyle
 autoCompletedStyle
 	^self characterStyleNamed: 'Completed Text'! !
 
-!StyleSet methodsFor: 'accessing' stamp: 'jmv 12/19/2011 14:05'!
+!StyleSet methodsFor: 'accessing' stamp: 'jmv 4/2/2016 23:07'!
 characterStyleAt: index
 	| i ii |
 	index <= characterStyles size ifTrue: [
@@ -565,7 +565,7 @@ characterStyleAt: index
 	volatileParaStyles ifNotNil: [
 		i _ index - characterStyles size.
 		ii _ 0.
-		volatileCharStyles doWithIndex: [ :each :iii |
+		volatileCharStyles withIndexDo: [ :each :iii |
 			each ifNotNil: [
 				ii _ ii + 1.
 				ii = i ifTrue: [ ^each ]]]].
@@ -578,7 +578,7 @@ characterStyleForShortcut: aCharacter
 		pair first = aCharacter ifTrue: [ ^pair second ]].
 	^nil! !
 
-!StyleSet methodsFor: 'accessing' stamp: 'jmv 12/20/2011 12:06'!
+!StyleSet methodsFor: 'accessing' stamp: 'jmv 4/2/2016 23:07'!
 characterStyleIndexOf: aCharacterStyle
 	| index ii |
 	index _ characterStyles findFirst: [ :pair | pair second = aCharacterStyle ].
@@ -586,7 +586,7 @@ characterStyleIndexOf: aCharacterStyle
 
 	volatileCharStyles ifNotNil: [
 		ii _ 0.
-		volatileCharStyles doWithIndex: [ :each :iii |
+		volatileCharStyles withIndexDo: [ :each :iii |
 			each ifNotNil: [
 				ii _ ii + 1.
 				each = aCharacterStyle ifTrue: [ ^characterStyles size + ii ]]]].
@@ -1080,7 +1080,7 @@ makeStylesSmaller
 
 	self triggerEvent: #stylesChanged! !
 
-!StyleSet methodsFor: 'accessing' stamp: 'jmv 12/19/2011 14:04'!
+!StyleSet methodsFor: 'accessing' stamp: 'jmv 4/2/2016 23:07'!
 paragraphStyleAt: index
 	| i ii |
 	index <= paragraphStyles size ifTrue: [
@@ -1088,7 +1088,7 @@ paragraphStyleAt: index
 	volatileParaStyles ifNotNil: [
 		i _ index - paragraphStyles size.
 		ii _ 0.
-		volatileParaStyles doWithIndex: [ :each :iii |
+		volatileParaStyles withIndexDo: [ :each :iii |
 			each ifNotNil: [
 				ii _ ii + 1.
 				ii = i ifTrue: [ ^each ]]]].
@@ -1101,7 +1101,7 @@ paragraphStyleForShortcut: aCharacter
 		pair first = aCharacter ifTrue: [ ^pair second ]].
 	^nil! !
 
-!StyleSet methodsFor: 'accessing' stamp: 'jmv 12/19/2011 14:08'!
+!StyleSet methodsFor: 'accessing' stamp: 'jmv 4/2/2016 23:07'!
 paragraphStyleIndexOf: aParagraphStyle
 	| index ii |
 	index _ paragraphStyles findFirst: [ :pair | pair second = aParagraphStyle ].
@@ -1109,7 +1109,7 @@ paragraphStyleIndexOf: aParagraphStyle
 
 	volatileParaStyles ifNotNil: [
 		ii _ 0.
-		volatileParaStyles doWithIndex: [ :each :iii |
+		volatileParaStyles withIndexDo: [ :each :iii |
 			each ifNotNil: [
 				ii _ ii + 1.
 				each = aParagraphStyle ifTrue: [ ^paragraphStyles size + ii ]]]].
@@ -3135,7 +3135,7 @@ testDropDownKeyboardNavigation
 
 	window delete! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 10/16/2013 20:56'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 4/2/2016 14:47'!
 testEmpasizeScanner
 	"Create a few instances of styled text (i.e. Text using various styles)
 	and assert their properties
@@ -3156,8 +3156,7 @@ testEmpasizeScanner
 	canvas _ Display getCanvas.
 	scanner _ MorphicScanner new 
 			text: composition textComposed
-			foreground: Color black
-			ignoreColorChanges: false.
+			foreground: Color black.
 	scanner canvas: canvas.
 	
 	self 
@@ -3874,12 +3873,13 @@ testSample1ToAndFromRTFClipboardStyle
 	self assert: text2 = text.
 	self assert: text2 asNonStyledText runs = text runs.! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 3/14/2012 09:50'!
+!StyledTextTest methodsFor: 'tests' stamp: 'jmv 4/2/2016 14:48'!
 testSample2ToAndFromRTFClipboardStyle
 	"
 	StyledTextTest new testSample2ToAndFromRTFClipboardStyle
 	"
 	| text text2 |
+	self assert: Clipboard default extendedClipboardInterface canStore description: 'Extended Clipboard cant store'.
 	text _ RTFConversionTest textSample2.
 
 	"This will use a refStreamed object"
