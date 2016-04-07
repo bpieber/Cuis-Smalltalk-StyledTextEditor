@@ -1,12 +1,12 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2719] on 7 April 2016 at 4:28:45.261197 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2720] on 7 April 2016 at 5:49:41.350004 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 23!
-!requires: 'ExtendedClipboard' 1 nil nil!
-!requires: 'RTFTests' 1 nil nil!
-!requires: 'RTFExporting' 1 nil nil!
-!requires: 'RTFImporting' 1 nil nil!
+!provides: 'StyledText' 1 24!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
 !requires: 'Cuis-Base' 42 2621 nil!
+!requires: 'RTFTests' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
+!requires: 'RTFImporting' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
@@ -1911,7 +1911,7 @@ save: aKeyboardEvent
 	"Save keystroke"
 	^self save! !
 
-!StyledTextEditor methodsFor: 'commands' stamp: 'KenD 4/1/2016 14:40'!
+!StyledTextEditor methodsFor: 'commands' stamp: 'jmv 4/7/2016 17:48'!
 saveAs
 	"SaveAs command"
 	| fileName |
@@ -1922,7 +1922,7 @@ saveAs
 
 	model saveAs: fileName.	
 	morph hasUnacceptedEdits: false.
-	self window
+	morph owningWindow
 		setLabel: model fileName;
 		invalidateTitleArea.
 	
@@ -2028,20 +2028,6 @@ someStyleChanged
 
 	"Update keyboard shortcuts"
 	self buildCmdShortcuts! !
-
-!StyledTextEditor methodsFor: 'private' stamp: 'KenD 4/1/2016 14:20'!
-window
-	"Answer the SystemWindow I belong to"
-
-	| container |
-	container := self morph owner.
-
-	[ (container is: #SystemWindow) ] 
-		whileFalse: [ 
-			container ifNil: [ ^nil ].
-			container := container owner
-		].
-	^ container! !
 
 !StyledTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'jmv 6/13/2012 18:02'!
 cmdShortcutsSpec
