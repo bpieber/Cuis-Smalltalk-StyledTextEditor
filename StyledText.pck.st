@@ -1,12 +1,12 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2720] on 7 April 2016 at 5:49:41.350004 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2781] on 31 May 2016 at 12:07:02.01749 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 24!
+!provides: 'StyledText' 1 25!
+!requires: 'RTFImporting' 1 nil nil!
+!requires: 'RTFTests' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
 !requires: 'Cuis-Base' 42 2621 nil!
-!requires: 'RTFTests' 1 nil nil!
-!requires: 'ExtendedClipboard' 1 nil nil!
-!requires: 'RTFImporting' 1 nil nil!
 !requires: 'RTFExporting' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
@@ -1262,12 +1262,12 @@ save
 	self saveAs: fileName.
 	^true! !
 
-!StyledTextModel methodsFor: 'file save' stamp: 'KenD 12/5/2015 09:00'!
+!StyledTextModel methodsFor: 'file save' stamp: 'jmv 5/31/2016 11:24'!
 saveAs: aName
 	| refStream |
 	fileName _ self class withExtension: aName.
 	self flushUndoRedoCommands.
-	fileName asFileEntry forceWriteStream: [ :strm |
+	fileName asFileEntry forceWriteStreamDo: [ :strm |
 		refStream _ SmartRefStream on: strm.
 		refStream nextPut: self 
 	].! !
@@ -1297,11 +1297,11 @@ styleSetChanged
 	actualContents beStyledTextWith: styleSet.
 	self triggerEvent: #stylesChanged! !
 
-!StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'KenD 12/4/2015 21:07'!
+!StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'jmv 5/31/2016 11:16'!
 fromFileNamed: aFileName
 	| fileName model |
 	fileName _ self withExtension: aFileName.
-	fileName asFileEntry readStream: [ :strm |
+	fileName asFileEntry readStreamDo: [ :strm |
 		model _ (SmartRefStream on: strm) next
 	].
 	model fileName: fileName.
@@ -1369,7 +1369,7 @@ selectedEntry
 		string: (self entries at: menuMorph selected)
 		attribute: (CharacterStyleReference new style: model styleSet autoCompletedStyle)), ' '! !
 
-!STECompleter class methodsFor: 'class initialization' stamp: 'jmv 7/17/2013 10:10'!
+!STECompleter class methodsFor: 'class initialization' stamp: 'jmv 5/31/2016 11:16'!
 initialize
 	"
 	STECompleter initialize
@@ -1393,7 +1393,7 @@ initialize
 	dirEntry allFilesDo: [ :fileEntry | | fileLevel |
 		fileLevel := fileEntry extension asInteger.
 		((fileLevel isNil not) and: [fileLevel <= level])
-		ifTrue: [ fileEntry readStream: [ :strm |
+		ifTrue: [ fileEntry readStreamDo: [ :strm |
 				fileEntry name print.
 				[ strm atEnd ] whileFalse: [
 					strm nextLine substrings do: [ :word | 
@@ -3781,9 +3781,9 @@ testStylesInPaste8
 		assert: (concatenation runs values allSatisfy: [ :attrs | attrs anySatisfy: [ :att | att class == ParagraphStyleReference ]])
 		description: 'Must have ParagraphStyle everywhere!!'! !
 
-!StyledTextModelTest methodsFor: 'as yet unclassified' stamp: 'bp 4/22/2012 12:14'!
+!StyledTextModelTest methodsFor: 'as yet unclassified' stamp: 'jmv 5/31/2016 10:34'!
 tearDown
-	(FmDirectoryEntry currentDirectory // 'StyledTextModelTest.object') delete! !
+	(DirectoryEntry currentDirectory // 'StyledTextModelTest.object') delete! !
 
 !StyledTextModelTest methodsFor: 'as yet unclassified' stamp: 'bp 4/22/2012 13:15'!
 testFromFileNamed
@@ -3795,13 +3795,13 @@ testFromFileNamed
 	model3 _ StyledTextModel fromFileNamed: 'StyledTextModelTest'.
 	self assert: model1 actualContents equals: model3 actualContents! !
 
-!StyledTextModelTest methodsFor: 'as yet unclassified' stamp: 'bp 4/22/2012 12:19'!
+!StyledTextModelTest methodsFor: 'as yet unclassified' stamp: 'jmv 5/31/2016 10:34'!
 testSave
 	| model |
 	model _ StyledTextModel new.
-	self deny:   (FmDirectoryEntry currentDirectory // 'StyledTextModelTest.object') exists.
+	self deny:   (DirectoryEntry currentDirectory // 'StyledTextModelTest.object') exists.
 	model saveAs: 'StyledTextModelTest'.
-	self assert: (FmDirectoryEntry currentDirectory // 'StyledTextModelTest.object') exists! !
+	self assert: (DirectoryEntry currentDirectory // 'StyledTextModelTest.object') exists! !
 
 !StyledTextTest methodsFor: 'tests' stamp: 'jmv 12/20/2011 12:41'!
 testAsStyledAsNonStyledSample5
