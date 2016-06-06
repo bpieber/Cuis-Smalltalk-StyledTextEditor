@@ -1,12 +1,12 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2781] on 31 May 2016 at 12:07:02.01749 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2794] on 6 June 2016 at 10:41:45.259934 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 25!
-!requires: 'RTFImporting' 1 nil nil!
-!requires: 'RTFTests' 1 nil nil!
-!requires: 'Morphic-Widgets-Extras' 1 nil nil!
-!requires: 'Cuis-Base' 42 2621 nil!
+!provides: 'StyledText' 1 26!
 !requires: 'RTFExporting' 1 nil nil!
+!requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
+!requires: 'RTFImporting' 1 nil nil!
+!requires: 'Morphic-Widgets-Extras' 1 nil nil!
+!requires: 'RTFTests' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
@@ -1938,20 +1938,31 @@ selectAllWithCurrentStyle
 
 	self selectAllWithStyle: self currentParagraphStyle! !
 
-!StyledTextEditor methodsFor: 'selecting' stamp: 'jmv 10/16/2013 20:10'!
+!StyledTextEditor methodsFor: 'selecting' stamp: 'jmv 6/6/2016 10:10'!
 selectAllWithStyle: aParagraphOrCharacterStyle
 
-	| i startIndexes stopIndexes |
+	| i startIndexes stopIndexes start stop includeInSelection wasLastIncludedInSelection |
 	i _ 1.
 	startIndexes _ OrderedCollection new.
 	stopIndexes _ OrderedCollection new.
+	start _ nil.
+	stop _ nil.
+	wasLastIncludedInSelection _ false.
 	model actualContents runs runsAndValuesDo: [ :count :attributes |
-		attributes do: [ :att |
-			(att isStyle and: [ att style == aParagraphOrCharacterStyle ])
-				ifTrue: [
-					startIndexes add: i.
-					stopIndexes add: i+count ]].
-		i _ i + count.].
+		includeInSelection _ attributes anySatisfy: [ :att | att isStyle and: [ att style == aParagraphOrCharacterStyle ]].
+		includeInSelection
+			ifTrue: [
+				wasLastIncludedInSelection
+					ifTrue: [ stop _ stop + count ]
+					ifFalse: [ start _ i. stop _ i+count ]] 
+			ifFalse: [
+				start ifNotNil: [
+					startIndexes add: start. stopIndexes add: stop.
+					start _ nil. stop _ nil ]].
+		i _ i + count.
+		wasLastIncludedInSelection _ includeInSelection ].
+	wasLastIncludedInSelection ifTrue: [
+		startIndexes add: start. stopIndexes add: stop ].
 	selectionStartBlocks _ startIndexes collect: [ :index | (textComposition characterBlockForIndex: index) ].
 	selectionStopBlocks _ stopIndexes collect: [ :index | (textComposition characterBlockForIndex: index) ].
 	self storeSelectionInComposition! !
