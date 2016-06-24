@@ -1,11 +1,11 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2794] on 6 June 2016 at 10:41:45.259934 am'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2835] on 24 June 2016 at 11:15:46.422445 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 26!
+!provides: 'StyledText' 1 27!
 !requires: 'RTFExporting' 1 nil nil!
-!requires: 'Cuis-Base' 42 2621 nil!
-!requires: 'ExtendedClipboard' 1 nil nil!
-!requires: 'RTFImporting' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
+!requires: 'Cuis-Base' 42 2621 nil!
+!requires: 'RTFImporting' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'RTFTests' 1 nil nil!
 !classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
@@ -1967,7 +1967,7 @@ selectAllWithStyle: aParagraphOrCharacterStyle
 	selectionStopBlocks _ stopIndexes collect: [ :index | (textComposition characterBlockForIndex: index) ].
 	self storeSelectionInComposition! !
 
-!StyledTextEditor methodsFor: 'commands' stamp: 'KenD 12/5/2015 08:28'!
+!StyledTextEditor methodsFor: 'commands' stamp: 'jmv 6/24/2016 11:14'!
 selectCharacterStyle
 	"Let user add or change character styles for the current selection, or for text to be typed."
 	"This is a user command, and generates undo"
@@ -1987,7 +1987,7 @@ selectCharacterStyle
 				^true ].
 			style = current
 				ifFalse: [ self applyAttribute: (CharacterStyleReference for: style) ]
-				ifTrue: [ self unapplyAttribute: (CharacterStyleReference for: style) ] ].
+				ifTrue: [ self unapplyAttributes: {CharacterStyleReference for: style} ] ].
 	^ true! !
 
 !StyledTextEditor methodsFor: 'commands' stamp: 'jmv 9/15/2009 09:27'!
@@ -1996,7 +1996,7 @@ selectCharacterStyle: aKeyboardEvent
 
 	^self selectCharacterStyle! !
 
-!StyledTextEditor methodsFor: 'commands' stamp: 'KenD 12/5/2015 08:38'!
+!StyledTextEditor methodsFor: 'commands' stamp: 'jmv 6/24/2016 11:14'!
 selectCurrentStyle
 	"Let user change styles for the current selection or pragraph."
 	"This is a user command, and generates undo"
@@ -2013,7 +2013,7 @@ selectCurrentStyle
 		ifNotNil: [ :style |
 			style = current
 				ifFalse: [ self applyAttribute: (ParagraphStyleReference for: style) ]
-				ifTrue: [ self unapplyAttribute: (ParagraphStyleReference for: style) ] ].
+				ifTrue: [ self unapplyAttributes: {ParagraphStyleReference for: style} ] ].
 	^ true! !
 
 !StyledTextEditor methodsFor: 'commands' stamp: 'jmv 9/15/2009 09:26'!
