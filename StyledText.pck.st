@@ -1,11 +1,11 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2933] on 6 September 2016 at 10:05:33 am'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2967] on 3 November 2016 at 12:10:14 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 28!
-!requires: 'Morphic-Widgets-Extras' 1 nil nil!
+!provides: 'StyledText' 1 29!
 !requires: 'ExtendedClipboard' 1 nil nil!
-!requires: 'RTFExporting' 1 nil nil!
 !requires: 'RTFTests' 1 nil nil!
+!requires: 'Morphic-Widgets-Extras' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
 !requires: 'Cuis-Base' 42 2621 nil!
 !classDefinition: #StyledTextModel category: #StyledText!
 TextModel subclass: #StyledTextModel
@@ -585,9 +585,15 @@ fileName
 fileName: aString
 	fileName _ aString! !
 
-!StyledTextModel methodsFor: 'testing' stamp: 'jmv 12/21/2010 23:22'!
-is: aSymbol
-	^ aSymbol == #ShoutEnabled or: [ super is: aSymbol ]! !
+!StyledTextModel methodsFor: 'Shout Styling' stamp: 'jmv 11/3/2016 11:36:02'!
+formatAndStyleWith: anSHTextStyler
+
+	| toStyle |
+	self actualContents paragraphStyleChunksDo: [ :interval :paragraphStyle |
+		paragraphStyle ifNotNil: [ paragraphStyle doesShout ifTrue: [
+			toStyle _ actualContents copyFrom: interval first to: interval last.
+			anSHTextStyler formatAndStyle: toStyle allowBackgroundStyleProcess: false.
+			actualContents replaceFrom: interval first to: interval last with: anSHTextStyler formattedText ]]]! !
 
 !StyledTextModel methodsFor: 'undoable commands' stamp: 'jmv 9/22/2011 15:06'!
 logUndoAndRemoveCharacterStylesIn: anInterval
@@ -600,11 +606,6 @@ logUndoAndRemoveCharacterStylesIn: anInterval
 		nextPut: command;
 		truncateAtPosition.	"To disable redo of previous commands, now invalidated."
 	command doOn: self! !
-
-!StyledTextModel methodsFor: 'Shout Styling' stamp: 'jmv 1/25/2011 16:15'!
-privateStyleWith: anSHTextStyler
-	self actualContents paragraphStyleChunksDo: [ :interval :paragraphStyle |
-		paragraphStyle ifNotNil: [ paragraphStyle doesShout ifTrue: [ anSHTextStyler privateStyle: interval ]]]! !
 
 !StyledTextModel methodsFor: 'undoable commands' stamp: 'jmv 12/29/2011 15:38'!
 removeReferencesToCharacterStyle: oldCharacterStyle
@@ -677,6 +678,10 @@ styleSetChanged
 	Update text and any views."
 	actualContents beStyledTextWith: styleSet.
 	self triggerEvent: #stylesChanged! !
+
+!StyledTextModel methodsFor: 'user interface support' stamp: 'jmv 11/3/2016 11:03:59'!
+textStylerClass
+	^SHTextStylerST80! !
 
 !StyledTextModel class methodsFor: 'as yet unclassified' stamp: 'jmv 5/31/2016 11:16'!
 fromFileNamed: aFileName
@@ -2817,13 +2822,11 @@ stepAt: millisecondSinceLast
 stepTime
 	^ 0  "every cycle"! !
 
-!FilteringDDLEditorMorph methodsFor: 'events' stamp: 'jmv 12/27/2012 15:00'!
+!FilteringDDLEditorMorph methodsFor: 'events' stamp: 'jmv 11/3/2016 11:42:30'!
 keyStroke: aKeyboardEvent
 	"Handle a keystroke event."
 
 	(self focusKeyboardFor: aKeyboardEvent)
-		ifTrue: [ ^ self ].
-	(self closeWindowFor: aKeyboardEvent)
 		ifTrue: [ ^ self ].
 
 	super keyStroke: aKeyboardEvent.

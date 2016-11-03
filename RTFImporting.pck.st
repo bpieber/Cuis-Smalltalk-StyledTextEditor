@@ -1,6 +1,6 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2933] on 6 September 2016 at 10:05:22 am'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2965] on 3 November 2016 at 11:55:11 am'!
 'Description Please enter a description for this package.'!
-!provides: 'RTFImporting' 1 3!
+!provides: 'RTFImporting' 1 4!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !classDefinition: #RTFException category: #RTFimporting!
@@ -186,7 +186,7 @@ RTFToken class
 !classDefinition: #RTFTokenizer category: #RTFimporting!
 Object subclass: #RTFTokenizer
 	instanceVariableNames: 'stream buffer chunkBuffer last next afterNext afterAfter'
-	classVariableNames: 'ControlSymbolSet EndOfArgumentSet EndOfKeywordSet'
+	classVariableNames: 'ControlSymbolSet EndOfKeywordSet'
 	poolDictionaries: ''
 	category: 'RTFimporting'!
 !classDefinition: 'RTFTokenizer class' category: #RTFimporting!
@@ -2293,10 +2293,6 @@ chunkBuffer
 controlSymbolSet
 	^ControlSymbolSet! !
 
-!RTFTokenizer methodsFor: 'private' stamp: 'mir 8/11/2006 20:53'!
-endOfArgumentSet
-	^EndOfArgumentSet! !
-
 !RTFTokenizer methodsFor: 'private' stamp: 'mir 8/11/2006 21:01'!
 endOfKeywordSet
 	^EndOfKeywordSet! !
@@ -2345,7 +2341,7 @@ on: aStream
 	
 ! !
 
-!RTFTokenizer methodsFor: 'private' stamp: 'mir 8/31/2006 12:27'!
+!RTFTokenizer methodsFor: 'private' stamp: 'jmv 11/3/2016 10:13:12'!
 parseChunk
 
 	"reads a string between two backslashes into buffer"
@@ -2380,7 +2376,7 @@ parseChunk
 						or: [(token at: index) = $-])
 						ifTrue: [
 							token := token copyFrom: index to: token size.
-							index := token indexOfAnyOf: self endOfArgumentSet.
+							index _ token findFirst: [ :c | c isDigit not and: [ c ~= $- ]].
 							(index = 0)
 								"if no separator or brace found, then whole chunk is a number"
 								ifTrue: [arg := token asNumber.
@@ -2522,7 +2518,7 @@ tokenClass
 	"the token class used by this tokenizer"
 	^RTFToken! !
 
-!RTFTokenizer class methodsFor: 'class initialization' stamp: 'jmv 9/5/2016 22:13:08'!
+!RTFTokenizer class methodsFor: 'class initialization' stamp: 'jmv 11/3/2016 10:13:35'!
 initialize
 	"RTFTokenizer initialize"
 
@@ -2535,11 +2531,7 @@ initialize
 		[:v | EndOfKeywordSet add: (Character numericValue: v)].
 
 	" \'hh is handled separately. it is converted to \sophieUtfHexDDD"
-	ControlSymbolSet _ CharacterSet newFrom: '|~-_:*{}'.
-
-	EndOfArgumentSet := CharacterSet newFrom: (Character allCharacters reject: [ :c | c isDigit or: [ #($- $.) includes: c ]]).
-	EndOfArgumentSet add: $.
-! !
+	ControlSymbolSet _ CharacterSet newFrom: '|~-_:*{}'! !
 
 !RTFTokenizer class methodsFor: 'instance creation' stamp: 'mir 8/11/2006 20:57'!
 newFromString: aString
