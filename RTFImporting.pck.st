@@ -1,6 +1,6 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2965] on 3 November 2016 at 11:55:11 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3022] on 3 January 2017 at 9:51:30 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'RTFImporting' 1 4!
+!provides: 'RTFImporting' 1 5!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !classDefinition: #RTFException category: #RTFimporting!
@@ -1932,7 +1932,7 @@ finishParagraph
 		nextPutAllString: String newLineString
 		withAttributes: attrs! !
 
-!RTFTextBuilder methodsFor: 'initialization' stamp: 'jmv 4/11/2011 21:39'!
+!RTFTextBuilder methodsFor: 'initialization' stamp: 'jmv 1/3/2017 21:08:34'!
 initialize
 	
 "	state := RTFSophieContentTreeBuilderState new."
@@ -1942,7 +1942,7 @@ initialize
 	is used mainly by the buildAddContents method"
 
 "	self buildResetCharFormat."
-	textStream _ TextStream on: (Text string: (String new: 400)).
+	textStream _ WriteStream on: (Text string: (String new: 400)).
 
 "	paragraphStarted := false."
 
