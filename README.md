@@ -7,7 +7,7 @@ This is the StyledTextEditor project for Cuis, brought to you by Bernhard Pieber
 
 Steps to install:
 
-- Install Cuis Smalltalk using Git, following https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/blob/master/Documentation/GettingStarted.md
+Install Cuis Smalltalk using Git, following https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/blob/master/Documentation/GettingStarted.md
 
 On the folder where you have ./Cuis-Smalltalk-Dev/ do
 ```
