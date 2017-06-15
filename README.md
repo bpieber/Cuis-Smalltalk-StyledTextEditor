@@ -7,20 +7,14 @@ This is the StyledTextEditor project for Cuis, brought to you by Bernhard Pieber
 
 Steps to install:
 
-If you have Git installed and configured you can use the following in a shell. (Disclaimer: I only tested it on OS X. I appreciate pull requests for other platforms.)
-```
-mkdir STE
-cd STE
-git clone https://github.com/bpieber/Cuis-Smalltalk-Dev.git
-Cuis-Smalltalk-Dev/bin/newImage.sh STE
+- Install Cuis Smalltalk using Git, following https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/blob/master/Documentation/GettingStarted.md
 
-git clone https://github.com/bpieber/Cuis-Smalltalk-StyledTextEditor.git
-Cuis-Smalltalk-StyledTextEditor/bin/prepareImage.sh STE
+On the folder where you have ./Cuis-Smalltalk-Dev/ do
 ```
-The above script creates a new image named STE and downloads a current Cog VM. It also adds the ClipboardExtendedPlugin to the VM.
-- Start the image by dragging the STE.image and drop it on the VM.
-- Execute the following Smalltalk code in a Workspace:
+git clone https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-StyledTextEditor.git
+```
 
+Then start Cuis, and in a Workspace evaluate:
 ```
 Feature require: 'StyledTextInstaller'
 ```
@@ -36,7 +30,7 @@ The editor includes features like
 - support for images
 - multiple level undo and redo
 - text completion using various glossaries including a dictionary of English with about 166.000 words
-- RTF clipboard (on OS X VMs with the ClipboardExtendedPlugin)
+- RTF clipboard (on OS X VMs with the ClipboardExtendedPlugin, included in the Pharo VMs)
 
 The Styled Text Editor is developed in Cuis with the plan to eventually port it to Squeak and Pharo. The development of the Styled Text Editor inspired many changes to Cuis itself, and It is the first package to use the brand new DVCS based development process for external packages for Cuis 4.0. 
 
