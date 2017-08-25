@@ -1,9 +1,9 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3022] on 3 January 2017 at 9:51:50 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3153] on 25 August 2017 at 12:08:33 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 30!
+!provides: 'StyledText' 1 31!
+!requires: 'RTFExporting' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
 !requires: 'RTFTests' 1 nil nil!
-!requires: 'RTFExporting' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
 !requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
@@ -1707,14 +1707,6 @@ fileReaderServicesForFile: filename suffix: suffix
 
 	^#()! !
 
-!StyledTextEditor class methodsFor: 'class initialization' stamp: 'KenD 2/3/2016 15:53'!
-initialize
-	"
-	StyledTextEditor initialize
-	"
-	super initialize.
-	FileList registerFileReader: self.! !
-
 !StyledTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 4/1/2016 13:42'!
 initializeMenu
 	"Initialize the yellow button pop-up menu and corresponding messages."
@@ -1780,14 +1772,6 @@ serviceSTEEdit
 		description: 'open this file with a Styled Text Editor'
 		buttonLabel: 'open STE')
 		argumentGetter: [ :fileList | fileList selectedFileEntry ]! !
-
-!StyledTextEditor class methodsFor: 'file reader registration' stamp: 'KenD 2/3/2016 16:08'!
-unload
-"
-	self unload.
-"
-
-	FileList unregisterFileReader: self ! !
 
 !StyledTextEditor class methodsFor: 'menu-world' stamp: 'KenD 4/1/2016 14:32'!
 worldMenuForOpenGroup
@@ -4748,5 +4732,4 @@ self changed: #list
 	selected: #sel
 	changeSelected: #sel:) autoDeselect: false; openInWorld
 "! !
-StyledTextEditor initialize!
 STECompleter initialize!
