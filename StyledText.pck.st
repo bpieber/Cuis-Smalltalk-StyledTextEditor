@@ -1,11 +1,11 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3153] on 25 August 2017 at 12:08:33 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3168] on 10 September 2017 at 4:35:39 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 31!
+!provides: 'StyledText' 1 33!
 !requires: 'RTFExporting' 1 nil nil!
-!requires: 'RTFImporting' 1 nil nil!
-!requires: 'RTFTests' 1 nil nil!
-!requires: 'Morphic-Widgets-Extras' 1 nil nil!
 !requires: 'Cuis-Base' 42 2621 nil!
+!requires: 'RTFImporting' 1 nil nil!
+!requires: 'Morphic-Widgets-Extras' 1 nil nil!
+!requires: 'RTFTests' 1 nil nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !classDefinition: #StyledTextModel category: #StyledText!
 TextModel subclass: #StyledTextModel
@@ -368,7 +368,7 @@ asStyledTextWith: aStyleSet
 "	self isStyledText ifTrue: [ ^self ]."
 	^self copy beStyledTextWith: aStyleSet! !
 
-!Text methodsFor: '*styledText' stamp: 'jmv 4/19/2014 11:07'!
+!Text methodsFor: '*styledText' stamp: 'jmv 9/10/2017 16:32:33'!
 beNonStyledText
 	"Modify the receiver so that it doesn't include any ParagraphStyle or CharacterStyle.
 	Turn them into TextFontFamilyAndSize, TextEmphasis, TextColor, and TextAlignment as appropriate.
@@ -377,7 +377,7 @@ beNonStyledText
 	runs mapValues: [ :attributes |
 		Array streamContents: [ :strm |
 			self withAttributeValues: attributes do: [
-					:familyName :pointSize :emphasis :color :alignment :characterStyle :paragraphStyle |
+					:familyName :pointSize :emphasis :color :alignment :characterStyle :paragraphStyle :backgroundColor |
 				familyName ifNotNil: [
 					strm nextPut: (TextFontFamilyAndSize familyName: familyName pointSize: pointSize) ].	
 				emphasis = 0 ifFalse: [
@@ -393,7 +393,7 @@ beNonStyledText
 	].
 	runs coalesce! !
 
-!Text methodsFor: '*styledText' stamp: 'jmv 4/19/2014 11:11'!
+!Text methodsFor: '*styledText' stamp: 'jmv 9/10/2017 16:33:08'!
 beStyledTextWith: aStyleSet
 	"Modify the receiver so that it doesn't include any TextFontFamilyAndSize, TextEmphasis, TextColor, TextAlignment. Turn all of them into ParagraphStyleReference or CharacterStyleReference as appropriate.
 	Keep any TextAttribute that doesn't fit into the Styles: TextAction (and subclasses) and TextAnchor.
@@ -422,7 +422,7 @@ beStyledTextWith: aStyleSet
 	newRunSegments do: [ :runArray |
 		self
 			withAttributeValues: runArray last 
-			do: [ :familyName :pointSize :emphasis :color :alignment :characterStyle :paragraphStyle |
+			do: [ :familyName :pointSize :emphasis :color :alignment :characterStyle :paragraphStyle :backgroundColor |
 				originalParagraphStyle _ paragraphStyle.
 				originalParagraphStyle ifNil: [
 					originalParagraphStyle _ familyName
@@ -438,7 +438,7 @@ beStyledTextWith: aStyleSet
 			attributes = nonFormattingAttributes
 				ifTrue: [ { ParagraphStyleReference for: thisParagraphStyle }, nonFormattingAttributes ]					"If only attribute is, for example, a TextAnchor (to a Form), then just add paragraph style"
 				ifFalse: [
-					self withAttributeValues: attributes do: [ :familyName :pointSize :emphasis :color :alignment :characterStyle :paragraphStyle |
+					self withAttributeValues: attributes do: [ :familyName :pointSize :emphasis :color :alignment :characterStyle :paragraphStyle :backgroundColor |
 						thisCharStyle _ characterStyle.
 						(thisCharStyle isNil and: [ familyName = originalParagraphStyle familyName and: [ pointSize = originalParagraphStyle pointSize and: [ 
 								emphasis = originalParagraphStyle emphasis and: [ color = originalParagraphStyle color ]]]])
@@ -585,15 +585,17 @@ fileName
 fileName: aString
 	fileName _ aString! !
 
-!StyledTextModel methodsFor: 'Shout Styling' stamp: 'jmv 11/3/2016 11:36:02'!
-formatAndStyleWith: anSHTextStyler
+!StyledTextModel methodsFor: 'Shout Styling' stamp: 'jmv 9/9/2017 16:15:15'!
+formatAndStyleIfNeededWith: anSHTextStyler
 
 	| toStyle |
-	self actualContents paragraphStyleChunksDo: [ :interval :paragraphStyle |
-		paragraphStyle ifNotNil: [ paragraphStyle doesShout ifTrue: [
-			toStyle _ actualContents copyFrom: interval first to: interval last.
-			anSHTextStyler formatAndStyle: toStyle allowBackgroundStyleProcess: false.
-			actualContents replaceFrom: interval first to: interval last with: anSHTextStyler formattedText ]]]! !
+	anSHTextStyler ifNotNil: [
+		(self shouldStyle: self actualContents with: anSHTextStyler) ifTrue: [
+			self actualContents paragraphStyleChunksDo: [ :interval :paragraphStyle |
+				paragraphStyle ifNotNil: [ paragraphStyle doesShout ifTrue: [
+					toStyle _ actualContents copyFrom: interval first to: interval last.
+					anSHTextStyler formatAndStyle: toStyle allowBackgroundStyleProcess: false.
+					actualContents replaceFrom: interval first to: interval last with: anSHTextStyler formattedText ]]]]]! !
 
 !StyledTextModel methodsFor: 'undoable commands' stamp: 'jmv 9/22/2011 15:06'!
 logUndoAndRemoveCharacterStylesIn: anInterval
@@ -654,11 +656,11 @@ saveAs: aName
 		refStream nextPut: self 
 	].! !
 
-!StyledTextModel methodsFor: 'Shout Styling' stamp: 'jmv 12/21/2010 23:48'!
-shoutAboutToStyle: aSHTextStyler
+!StyledTextModel methodsFor: 'Shout Styling' stamp: 'jmv 9/9/2017 16:12:55'!
+shouldStyle: text with: anSHTextStyler
 	"This is a notification that aSHTextStyler is about to re-style its text."
 
-	aSHTextStyler classOrMetaClass: nil.
+	anSHTextStyler classOrMetaClass: nil.
 	^true! !
 
 !StyledTextModel methodsFor: 'accessing' stamp: 'jmv 8/9/2011 14:40'!
