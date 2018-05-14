@@ -1,12 +1,12 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3287] on 4 April 2018 at 5:21:01 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3329] on 14 May 2018 at 1:08:12 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 34!
-!requires: 'RTFExporting' 1 nil nil!
+!provides: 'StyledText' 1 36!
+!requires: 'RTFImporting' 1 nil nil!
 !requires: 'Cuis-Base' 42 2621 nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
 !requires: 'RTFTests' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
-!requires: 'ExtendedClipboard' 1 nil nil!
-!requires: 'RTFImporting' 1 nil nil!
 SystemOrganization addCategory: #StyledText!
 SystemOrganization addCategory: #'StyledText-Morphic-Windows'!
 SystemOrganization addCategory: #'StyledText-Morphic'!
@@ -1499,6 +1499,131 @@ someStyleChanged
 	"Update keyboard shortcuts"
 	self buildCmdShortcuts! !
 
+!StyledTextEditor methodsFor: 'menu' stamp: 'jmv 5/14/2018 11:27:55'!
+getMenu
+	
+	^ (MenuMorph new defaultTarget: self)
+		addTitle: self class name;
+		addStayUpIcons;
+		addItemsFromDictionaries: `{
+			{
+				#label 			-> 		'Help...'.
+				#selector 		-> 		#openHelp.
+				#icon 			-> 		#helpIcon
+			} asDictionary.
+			nil.
+			{
+				#label 			-> 		'Save (s)'.
+				#selector 		-> 		#save.
+				#icon 			-> 		#saveIcon
+			} asDictionary.
+			{
+				#label 			-> 		'SaveAs...'.
+				#selector 		-> 		#saveAs.
+				#icon 			-> 		#saveIcon
+			} asDictionary.
+			nil.
+			{
+				#label 			-> 		'Find...(f)'.
+				#selector 		-> 		#find.
+				#icon 			-> 		#findIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Find Again (g)'.
+				#selector 		-> 		#findAgain.
+				#icon 			-> 		#systemIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Use Selection for Find (j)'.
+				#selector 		-> 		#setSearchString.
+				#icon 			-> 		#saveAsIcon
+			} asDictionary.
+			nil.
+			{
+				#label 			-> 		'Undo - multiple (z)'.
+				#selector 		-> 		#undo.
+				#icon 			-> 		#undoIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Redo - multiple (Z)'.
+				#selector 		-> 		#redo.
+				#icon 			-> 		#redoIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Undo / Redo history'.
+				#selector 		-> 		#offerUndoHistory.
+				#icon 			-> 		#changesIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Forget Undo / Redo history'.
+				#selector 		-> 		#flushUndoRedoCommands.
+				#icon 			-> 		#cancelIcon
+			} asDictionary.
+			nil.
+			{
+				#label 			-> 		'Copy (c)'.
+				#selector 		-> 		#copySelection.
+				#icon 			-> 		#copyIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Cut (x)'.
+				#selector 		-> 		#cut.
+				#icon 			-> 		#cutIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Paste (v)'.
+				#selector 		-> 		#paste.
+				#icon 			-> 		#pasteIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Paste without Format'.
+				#selector 		-> 		#pasteString.
+				#icon 			-> 		#pasteIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Paste...'.
+				#selector 		-> 		#pasteRecent.
+				#icon 			-> 		#worldIcon
+			} asDictionary.
+			nil.
+			{
+				#label 			-> 		'Select text with Paragraph Style'.
+				#selector 		-> 		#selectAllWithCurrentStyle.
+				#icon 			-> 		#selectAllIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Select text with Character Style'.
+				#selector 		-> 		#selectAllWithCurrentCharStyle.
+				#icon 			-> 		#selectAllIcon
+			} asDictionary.
+			nil.
+			{
+				#label 			-> 		'Change Paragraph Style...'.
+				#selector 		-> 		#selectCurrentStyle.
+				#icon 			-> 		#fontXGenericIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Change Character Style...'.	
+				#selector 		-> 		#selectCharacterStyle.
+				#icon 			-> 		#fontXGenericIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Remove Character Style'.
+				#selector 		-> 		#removeCharacterStyles.
+				#icon 			-> 		#fontXGenericIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Replace all uses of Paragraph Style...'.
+				#selector 		-> 		#replaceAllCurrentStyle.
+				#icon 			-> 		#fontXGenericIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Replace all uses of Character Style...'.
+				#selector 		-> 		#replaceAllCharacterStyle.
+				#icon 			-> 		#fontXGenericIcon
+			} asDictionary.
+		}`! !
+
 !StyledTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'jmv 6/13/2012 18:02'!
 cmdShortcutsSpec
 	"
@@ -1512,44 +1637,6 @@ cmdShortcutsSpec
 		#(		$j 	#selectCurrentStyle: 		'Select Paragraph Style')
 		#(		$k 	#selectCharacterStyle:	'Select Character Style')
 	)! !
-
-!StyledTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 4/1/2016 13:42'!
-initializeMenu
-	"Initialize the yellow button pop-up menu and corresponding messages."
-
-	"
-	Editor initialize
-	"
-	menu _ SelectionMenu fromArray: {
-		{'Help...'.									#openHelp}.
-		#-.
-		{'Save (s)'.									#save}.
-		{'SaveAs...'.								#saveAs}.
-		#-.
-		{'Find...(f)'.									#find}.
-		{'Find Again (g)'.							#findAgain}.
-		{'Use Selection for Find (h)'.				#setSearchString}.
-		#-.
-		{'Undo - multiple (z)'.						#undo}.
-		{'Redo - multiple (Z)'.						#redo}.
-		{'Undo / Redo history'.						#offerUndoHistory}.
-		{'Forget Undo / Redo history'.				#flushUndoRedoCommands}.
-		#-.
-		{'Copy (c)'.									#copySelection}.
-		{'Cut (x)'.									#cut}.
-		{'Paste (v)'.									#paste}.
-		{'Paste without Format'.					#pasteString}.
-		{'Paste...'.									#pasteRecent}.
-		#-.
-		{'Select text with Paragraph Style'.			#selectAllWithCurrentStyle}.
-		{'Select text with Character Style'.			#selectAllWithCurrentCharStyle}.
-		#-.
-		{'Change Paragraph Style...'.				#selectCurrentStyle}.
-		{'Change Character Style...'.				#selectCharacterStyle}.
-		{'Remove Character Style'.					#removeCharacterStyles}.
-		{'Replace all uses of Paragraph Style...'.	#replaceAllCurrentStyle}.
-		{'Replace all uses of Character Style...'.		#replaceAllCharacterStyle}.
-	}! !
 
 !StyledTextEditor class methodsFor: 'file reader registration' stamp: 'KenD 2/3/2016 16:01'!
 fileReaderServicesForFile: filename suffix: suffix
@@ -1588,28 +1675,17 @@ openFromFileEntry: fileEntry
 	model _ StyledTextModel fromFileNamed: fileEntry pathName.
 	^SystemWindow editFancierStyledText: model label: fileEntry name! !
 
-!StyledTextEditor class methodsFor: 'menu-world' stamp: 'KenD 4/1/2016 14:32'!
+!StyledTextEditor class methodsFor: 'menu-world' stamp: 'jmv 5/13/2018 19:19:10'!
 worldMenuForOpenGroup
-	^ Dictionary new
-		
-			at: #itemGroup
-			put: 10;
-		
-			at: #itemOrder
-			put: 10;
-		
-			at: #label
-			put: 'Styled Text Editor';
-		
-			at: #object
-			put: self;
-		
-			at: #selector
-			put: #open;
-		
-			at: #balloonText
-			put: 'A window for composing Styled text';
-		yourself.! !
+	^ `{
+			#itemGroup 	-> 		10.
+			#itemOrder 	-> 		10.
+			#label 			->		'Styled Text Editor'.
+			#object 			-> 		StyledTextEditor.
+			#selector 		-> 		#open.
+			#icon 			-> 		#textEditorIcon.
+			#balloonText 	-> 		'A window for composing Styled text'.
+		} asDictionary`! !
 
 !CharacterStyleReference methodsFor: 'comparing' stamp: 'jmv 9/21/2011 11:14'!
 = other 
@@ -2111,35 +2187,6 @@ scrollBarClass
 openBasicStyledTextEditor
 
 	SystemWindow editStyledText: StyledTextModel new label: 'Styled Text Editor'! !
-
-!PluggableStyledTextMorph class methodsFor: 'menu-world' stamp: 'jmv 2/20/2016 18:38'!
-openFancierStyledTextEditor
-
-	SystemWindow editFancierStyledText: StyledTextModel new label: 'Styled Text Editor'! !
-
-!PluggableStyledTextMorph class methodsFor: 'menu-world' stamp: 'jmv 2/20/2016 18:38'!
-worldMenu: aMenu menuGroup: aGroupSymbol
-	^ aGroupSymbol = #worldOpenMenu ifTrue: [
-		Dictionary new
-			
-				at: #itemGroup
-				put: 10;
-			
-				at: #itemOrder
-				put: 5;
-			
-				at: #label
-				put: 'Styled Text Editor';
-			
-				at: #object
-				put: self;
-			
-				at: #selector
-				put: #openFancierStyledTextEditor;
-			
-				at: #balloonText
-				put: 'A window for composing styled text';
-			yourself ].! !
 
 !PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 8/13/2013 12:24'!
 withModel: aStyledTextModel in: aLayoutMorph
