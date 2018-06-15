@@ -1,9 +1,9 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3329] on 14 May 2018 at 1:08:12 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3348] on 15 June 2018 at 10:24:15 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 36!
-!requires: 'RTFImporting' 1 nil nil!
-!requires: 'Cuis-Base' 42 2621 nil!
+!provides: 'StyledText' 1 37!
 !requires: 'ExtendedClipboard' 1 nil nil!
+!requires: 'Cuis-Base' 42 2621 nil!
+!requires: 'RTFImporting' 1 nil nil!
 !requires: 'RTFExporting' 1 nil nil!
 !requires: 'RTFTests' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
@@ -1319,7 +1319,7 @@ removeCharacterStyles
 	"Even if nothing done, emphasisHere might have changed"
 	morph possiblyChanged! !
 
-!StyledTextEditor methodsFor: 'commands' stamp: 'jmv 12/29/2011 15:39'!
+!StyledTextEditor methodsFor: 'commands' stamp: 'jmv 6/15/2018 10:21:48'!
 replaceAllCharacterStyle
 	"Let user add or change character styles for the current selection, or for text to be typed."
 	"This is a user command, and generates undo"
@@ -1331,7 +1331,7 @@ replaceAllCharacterStyle
 				ifTrue: [ '<on>' ]
 				ifFalse: [ '<off>' ]),  
 			pair second name, ' (', pair first asString, ')' ].
-	((SelectionMenu labelList: menuList lines: #() selections: styles) startUp)
+	((SelectionMenu labelList: menuList lines: #() selections: styles) startUpMenu)
 		ifNotNil: [ :style |
 			style isNullStyle ifTrue: [
 				model removeReferencesToCharacterStyle: current.
@@ -1343,7 +1343,7 @@ replaceAllCharacterStyle
 					self someStyleChanged ] ].
 	^ true! !
 
-!StyledTextEditor methodsFor: 'commands' stamp: 'jmv 9/19/2011 17:10'!
+!StyledTextEditor methodsFor: 'commands' stamp: 'jmv 6/15/2018 10:21:44'!
 replaceAllCurrentStyle
 	"Let user change styles for the current selection or pragraph."
 	"This is a user command, and generates undo"
@@ -1356,7 +1356,7 @@ replaceAllCurrentStyle
 				ifTrue: [ '<on>' ]
 				ifFalse: [ '<off>' ]),  
 			pair second name, ' (', pair first asString, ')' ].
-	((SelectionMenu labelList: menuList lines: #() selections: styles) startUp)
+	((SelectionMenu labelList: menuList lines: #() selections: styles) startUpMenu)
 		ifNotNil: [ :style |
 			style = current
 				ifFalse: [
