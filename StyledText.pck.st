@@ -1,11 +1,11 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3348] on 15 June 2018 at 10:24:15 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3449] on 20 September 2018 at 8:54:37 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 37!
-!requires: 'ExtendedClipboard' 1 nil nil!
-!requires: 'Cuis-Base' 42 2621 nil!
-!requires: 'RTFImporting' 1 nil nil!
+!provides: 'StyledText' 1 38!
 !requires: 'RTFExporting' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
+!requires: 'RTFImporting' 1 nil nil!
 !requires: 'RTFTests' 1 nil nil!
+!requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
 SystemOrganization addCategory: #StyledText!
 SystemOrganization addCategory: #'StyledText-Morphic-Windows'!
@@ -1675,9 +1675,9 @@ openFromFileEntry: fileEntry
 	model _ StyledTextModel fromFileNamed: fileEntry pathName.
 	^SystemWindow editFancierStyledText: model label: fileEntry name! !
 
-!StyledTextEditor class methodsFor: 'menu-world' stamp: 'jmv 5/13/2018 19:19:10'!
+!StyledTextEditor class methodsFor: 'menu-world' stamp: 'jmv 9/20/2018 08:53:38'!
 worldMenuForOpenGroup
-	^ `{
+	^ `{{
 			#itemGroup 	-> 		10.
 			#itemOrder 	-> 		10.
 			#label 			->		'Styled Text Editor'.
@@ -1685,7 +1685,7 @@ worldMenuForOpenGroup
 			#selector 		-> 		#open.
 			#icon 			-> 		#textEditorIcon.
 			#balloonText 	-> 		'A window for composing Styled text'.
-		} asDictionary`! !
+		} asDictionary}`! !
 
 !CharacterStyleReference methodsFor: 'comparing' stamp: 'jmv 9/21/2011 11:14'!
 = other 
