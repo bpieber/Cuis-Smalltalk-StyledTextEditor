@@ -1,12 +1,12 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3710] on 25 April 2019 at 10:15:03 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3728] on 5 May 2019 at 3:19:48 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 39!
-!requires: 'ExtendedClipboard' 1 nil nil!
-!requires: 'Cuis-Base' 42 2621 nil!
-!requires: 'RTFTests' 1 nil nil!
-!requires: 'RTFExporting' 1 nil nil!
+!provides: 'StyledText' 1 40!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
+!requires: 'RTFTests' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
+!requires: 'Cuis-Base' 42 2621 nil!
 SystemOrganization addCategory: #StyledText!
 SystemOrganization addCategory: #'StyledText-Morphic-Windows'!
 SystemOrganization addCategory: #'StyledText-Morphic'!
@@ -2202,7 +2202,7 @@ openBasicStyledTextEditor
 
 	SystemWindow editStyledText: StyledTextModel new label: 'Styled Text Editor'! !
 
-!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 8/13/2013 12:24'!
+!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 5/5/2019 15:00:05'!
 withModel: aStyledTextModel in: aLayoutMorph
 	| topRow paragraphStyleList characterStyleList textMorph m topRowHeight labelFont topRowElementsWidth |
 	textMorph _ self withModel: aStyledTextModel.
@@ -2222,7 +2222,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 "		borderWidth: topRowBorderWidth;"
 "		borderColor: (Color r: 80 g: 80 b: 80 range: 255)."
 
-	labelFont _ AbstractFont familyName: 'DejaVu' aroundPointSize: 10.
+	labelFont _ FontFamily familyName: 'DejaVu' aroundPointSize: 10.
 	m _ StringMorph contents: 'Paragraph Style'.
 	m font: labelFont emphasis: 1; color: Color white.
 	topRowElementsWidth _ m morphWidth.
@@ -4048,6 +4048,13 @@ testStylesInPaste6
 	self assert: concatenation runs values first first style == heading1 description: 'Should apply the "Heading 1" paragraph style to the first part'.
 	self deny: concatenation runs values second first style == heading1 description: 'Should not apply the "Heading 1" paragraph style to the second part'! !
 
+!STECompleter methodsFor: 'objects from disk' stamp: 'jmv 8/5/2013 10:44'!
+comeFullyUpOnReload: smartRefStream
+	"This is not the proper way to handle multiple dictionaries!!"
+	
+	words _ EnglishDict.
+	^ self! !
+
 !STECompleter methodsFor: 'entries' stamp: 'jmv 7/14/2011 13:58'!
 addEntriesTo: aStream
 	| s count capitalize |
@@ -4074,13 +4081,6 @@ clearWords
 !STECompleter methodsFor: 'initialization' stamp: 'jmv 7/14/2011 13:58'!
 initialize
 	words _ EnglishDict! !
-
-!STECompleter methodsFor: 'objects from disk' stamp: 'jmv 8/5/2013 10:44'!
-comeFullyUpOnReload: smartRefStream
-	"This is not the proper way to handle multiple dictionaries!!"
-	
-	words _ EnglishDict.
-	^ self! !
 
 !STECompleter class methodsFor: 'class initialization' stamp: 'jmv 5/31/2016 11:16'!
 initialize
