@@ -1,12 +1,12 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3728] on 5 May 2019 at 3:19:48 pm'!
+'From Cuis 5.0 [latest update: #3852] on 3 September 2019 at 8:58:15 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 40!
-!requires: 'Morphic-Widgets-Extras' 1 nil nil!
-!requires: 'RTFTests' 1 nil nil!
-!requires: 'ExtendedClipboard' 1 nil nil!
-!requires: 'RTFImporting' 1 nil nil!
-!requires: 'RTFExporting' 1 nil nil!
+!provides: 'StyledText' 1 41!
 !requires: 'Cuis-Base' 42 2621 nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
+!requires: 'Morphic-Widgets-Extras' 1 nil nil!
+!requires: 'RTFExporting' 1 nil nil!
+!requires: 'RTFImporting' 1 nil nil!
+!requires: 'RTFTests' 1 nil nil!
 SystemOrganization addCategory: #StyledText!
 SystemOrganization addCategory: #'StyledText-Morphic-Windows'!
 SystemOrganization addCategory: #'StyledText-Morphic'!
@@ -930,86 +930,92 @@ createFeaturesParagraphStyleSet
 	
 	self triggerEvent: #stylesChanged! !
 
-!StyleSet methodsFor: 'initialization examples' stamp: 'jmv 8/11/2011 11:00'!
+!StyleSet methodsFor: 'initialization examples' stamp: 'jmv 9/3/2019 08:29:03'!
 createSampleCharacterStyleSet
 	"Build one of the many possible sets of Styles. Maybe other methods like this will be added."
-	| green11Italic green14 red10Bold nullStyle completedText |
+	| greenItalic greenBig redBold nullStyle completedText basePointSize familyName |
 
-	green11Italic _ self characterStyleNamedOrNew: 'Green 11 Italic'.
-	green11Italic privateFamilyName: 'DejaVu' pointSize: 11 emphasis: AbstractFont italicCode color: Color green.
+	familyName _ FontFamily defaultFamilyName.
+	basePointSize _ FontFamily defaultPointSize.
 
-	green14 _ self characterStyleNamedOrNew: 'Green 14'.
-	green14 privateFamilyName: 'DejaVu' pointSize: 14 emphasis: 0 color: Color green.
+	greenItalic _ self characterStyleNamedOrNew: 'Green Italic'.
+	greenItalic privateFamilyName: familyName pointSize: basePointSize emphasis: AbstractFont italicCode color: Color green.
 
-	red10Bold _ self characterStyleNamedOrNew: 'Red 10 bold'.
-	red10Bold privateFamilyName: 'DejaVu' pointSize: 10 emphasis: AbstractFont boldCode color: Color red.
+	greenBig _ self characterStyleNamedOrNew: 'Green Big'.
+	greenBig privateFamilyName: familyName pointSize: basePointSize * 14//10 emphasis: 0 color: Color green.
+
+	redBold _ self characterStyleNamedOrNew: 'Red bold'.
+	redBold privateFamilyName: familyName pointSize: basePointSize emphasis: AbstractFont boldCode color: Color red.
 
 	completedText _ self characterStyleNamedOrNew: 'Completed Text'.
-	completedText privateFamilyName: 'DejaVu' pointSize: 12 emphasis: 0 color: Color green.
+	completedText privateFamilyName: familyName pointSize: basePointSize*12//10 emphasis: 0 color: Color green.
 
 	nullStyle _ CharacterStyle nullStyle.
 
 	characterStyles _ {
-		{$u.	green11Italic}.
-		{$i. 	green14}.
-		{$o.	red10Bold}.
+		{$u.	greenItalic}.
+		{$i. 	greenBig}.
+		{$o.	redBold}.
 		{$p.	completedText}.
 		{$n.	nullStyle}
 	}.
 	
 	self triggerEvent: #stylesChanged! !
 
-!StyleSet methodsFor: 'initialization examples' stamp: 'jmv 8/11/2011 11:00'!
+!StyleSet methodsFor: 'initialization examples' stamp: 'jmv 9/3/2019 08:56:58'!
 createSampleParagraphStyleSet
 	"Build one of the many possible sets of Styles. Maybe other methods like this will be added."
-	| heading1 heading2 heading3 emphasized normal numbered alphabetic bulleted smalltalkCode  |
+	| heading1 heading2 heading3 emphasized normal numbered alphabetic bulleted smalltalkCode  s familyName |
+
+	familyName _ FontFamily defaultFamilyName.
+	s _ FontFamily defaultPointSize.
 
 	normal _ self paragraphStyleNamedOrNew: 'Normal'.
-	normal privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: nil
-		alignment: CharacterScanner justifiedCode firstIndent: 30 restIndent: 10 rightIndent: 10
-		spaceBefore: 8 spaceAfter: 2.
+	normal privateFamilyName: familyName pointSize: s emphasis: 0 color: nil
+		alignment: CharacterScanner justifiedCode firstIndent: s*3 restIndent: s rightIndent: s
+		spaceBefore: s*8//10 spaceAfter: s*2//10.
 
 	emphasized _ self paragraphStyleNamedOrNew: 'Emphasized'.
-	emphasized privateFamilyName: 'DejaVu' pointSize: 10 emphasis: AbstractFont boldCode color: nil
-		alignment: CharacterScanner justifiedCode firstIndent: 60 restIndent: 60 rightIndent: 60
-		spaceBefore: 10 spaceAfter: 2.
+	emphasized privateFamilyName: familyName pointSize: s emphasis: AbstractFont boldCode color: nil
+		alignment: CharacterScanner justifiedCode firstIndent: s*6 restIndent: s*6 rightIndent: s*6
+		spaceBefore: s spaceAfter: s*2//10.
 
 	heading1 _ self paragraphStyleNamedOrNew: 'Heading 1'.
-	heading1 privateFamilyName: 'DejaVu' pointSize: 22 emphasis: 0 color: nil
+	heading1 privateFamilyName: familyName pointSize: s*3 emphasis: 0 color: nil
 		alignment: CharacterScanner centeredCode firstIndent: 0 restIndent: 0 rightIndent: 0
-		spaceBefore: 34 spaceAfter: 18.
+		spaceBefore: s*3 spaceAfter: s*2.
 
 	heading2 _ self paragraphStyleNamedOrNew: 'Heading 2'.
-	heading2 privateFamilyName: 'DejaVu' pointSize: 17 emphasis: AbstractFont boldCode color: nil
+	heading2 privateFamilyName: familyName pointSize: s*2 emphasis: AbstractFont boldCode color: nil
 		alignment: CharacterScanner centeredCode firstIndent: 0 restIndent: 0 rightIndent: 0
-		spaceBefore: 24 spaceAfter: 8.
+		spaceBefore: s*2 spaceAfter: 2.
 
 	heading3 _ self paragraphStyleNamedOrNew: 'Heading 3'.
-	heading3 privateFamilyName: 'DejaVu' pointSize: 14 emphasis: AbstractFont italicCode color: nil
+	heading3 privateFamilyName: familyName pointSize: s*15//10 emphasis: AbstractFont italicCode color: nil
 		alignment: CharacterScanner centeredCode firstIndent: 0 restIndent: 0 rightIndent: 0
-		spaceBefore: 18 spaceAfter: 4.
+		spaceBefore: s*15//10 spaceAfter: s//2.
 
 	numbered _ self paragraphStyleNamedOrNew: 'Numbered List'.
-	numbered privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: nil
-		alignment: CharacterScanner justifiedCode firstIndent: 10 restIndent: 50 rightIndent: 10
-		spaceBefore: 8 spaceAfter: 2;
+	numbered privateFamilyName: familyName pointSize: s emphasis: 0 color: nil
+		alignment: CharacterScanner justifiedCode firstIndent: s restIndent: s*5 rightIndent: s
+		spaceBefore: s*8//10 spaceAfter: s*2//10;
 			privateListBulletPattern: '%%%. '.
 
 	alphabetic _ self paragraphStyleNamedOrNew: 'Alphabetic List'.
-	alphabetic privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: nil
-		alignment: CharacterScanner justifiedCode firstIndent: 10 restIndent: 30 rightIndent: 10
-		spaceBefore: 8 spaceAfter: 2;
+	alphabetic privateFamilyName: familyName pointSize: s emphasis: 0 color: nil
+		alignment: CharacterScanner justifiedCode firstIndent: s restIndent: s*3 rightIndent: s
+		spaceBefore: s*8//10 spaceAfter: s*2//10;
 			privateListBulletPattern: 'z) '.
 
 	bulleted _ self paragraphStyleNamedOrNew: 'Bulleted List'.
-	bulleted privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: nil
-		alignment: CharacterScanner justifiedCode firstIndent: 10 restIndent: 30 rightIndent: 10
-		spaceBefore: 8 spaceAfter: 2;
+	bulleted privateFamilyName: familyName pointSize: s emphasis: 0 color: nil
+		alignment: CharacterScanner justifiedCode firstIndent: s restIndent: s*3 rightIndent: s
+		spaceBefore: s*8//10 spaceAfter: s*2//10;
 			privateListBulletPattern: '° '.
 
 	smalltalkCode _ self paragraphStyleNamedOrNew: 'Smalltalk code'.
-	smalltalkCode privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: nil
-		alignment: CharacterScanner leftFlushCode firstIndent: 10 restIndent: 10 rightIndent: 10
+	smalltalkCode privateFamilyName: familyName pointSize: s emphasis: 0 color: nil
+		alignment: CharacterScanner leftFlushCode firstIndent: s restIndent: s rightIndent: s
 		spaceBefore: 0 spaceAfter: 0;
 			doShout.
 
@@ -2202,7 +2208,7 @@ openBasicStyledTextEditor
 
 	SystemWindow editStyledText: StyledTextModel new label: 'Styled Text Editor'! !
 
-!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 5/5/2019 15:00:05'!
+!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 9/3/2019 08:14:24'!
 withModel: aStyledTextModel in: aLayoutMorph
 	| topRow paragraphStyleList characterStyleList textMorph m topRowHeight labelFont topRowElementsWidth |
 	textMorph _ self withModel: aStyledTextModel.
@@ -2213,7 +2219,8 @@ withModel: aStyledTextModel in: aLayoutMorph
 	aLayoutMorph separation: 0.
 	topRow _ ToolbarMorph newRow separation: 10@4.
 
-	topRowHeight _ 32.
+	labelFont _ Preferences standardButtonFont.
+	topRowHeight _ labelFont lineSpacing * 2.
 	topRow
 		color: (Form 
 			verticalGradient: topRowHeight
@@ -2222,7 +2229,6 @@ withModel: aStyledTextModel in: aLayoutMorph
 "		borderWidth: topRowBorderWidth;"
 "		borderColor: (Color r: 80 g: 80 b: 80 range: 255)."
 
-	labelFont _ FontFamily familyName: 'DejaVu' aroundPointSize: 10.
 	m _ StringMorph contents: 'Paragraph Style'.
 	m font: labelFont emphasis: 1; color: Color white.
 	topRowElementsWidth _ m morphWidth.
@@ -2624,11 +2630,11 @@ setIndex: index
 		i _ (model perform: getListSelector) indexOf: ( self getList at: i ) ].
 	super setIndex: i! !
 
-!PluggableFilteringDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 12/27/2012 15:06'!
+!PluggableFilteringDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 9/3/2019 08:15:56'!
 initialize
 	| labelFont |
 	super initialize.
-	labelFont _ AbstractFont familyName: 'DejaVu' aroundPointSize: 10.
+	labelFont _ Preferences standardListFont.
 	editorMorph _ FilteringDDLEditorMorph contents: self label font: labelFont emphasis: 1.
 	editorMorph keyboardFocusWatcher: self.
 	self addMorph: editorMorph! !
