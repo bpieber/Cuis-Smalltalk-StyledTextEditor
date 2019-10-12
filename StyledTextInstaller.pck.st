@@ -1,6 +1,6 @@
 'From Cuis 4.2 of 25 July 2013 [latest update: #2710] on 1 April 2016 at 2:13:03.062542 pm'!
 'Description '!
-!provides: 'StyledTextInstaller' 1 7!
+!provides: 'StyledTextInstaller' 1 8!
 !requires: 'VectorGraphics' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
 !requires: 'StyledTextNotebook' 1 nil nil!
@@ -126,8 +126,7 @@ initialize
 	"
 	StyledTextInstaller initialize
 	"
+	FontFamily readAdditionalTrueTypeFonts.
 	STETheme beCurrent.
 	self new openExamples! !
-FontFamily readAdditionalTrueTypeFonts!
-FontFamily defaultFamilyName: 'DejaVu Sans'!
 StyledTextInstaller initialize!
