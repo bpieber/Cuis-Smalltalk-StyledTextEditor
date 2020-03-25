@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #3852] on 3 September 2019 at 8:58:15 am'!
+'From Cuis 5.0 [latest update: #4074] on 25 March 2020 at 6:49:53 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 41!
+!provides: 'StyledText' 1 42!
 !requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
@@ -1672,8 +1672,8 @@ cmdShortcutsSpec
 		#(		$k 	#selectCharacterStyle:	'Select Character Style')
 	)! !
 
-!StyledTextEditor class methodsFor: 'file reader registration' stamp: 'KenD 2/3/2016 16:01'!
-fileReaderServicesForFile: filename suffix: suffix
+!StyledTextEditor class methodsFor: 'file reader registration' stamp: 'jmv 3/24/2020 10:06:29'!
+fileReaderServicesForFileEntry: filename suffix: suffix
 	"FileList buttons that open a CodeFileBrowserWindow on contents."
 
 	(#('object' 'ste') includes: suffix) ifTrue: [
@@ -2208,7 +2208,7 @@ openBasicStyledTextEditor
 
 	SystemWindow editStyledText: StyledTextModel new label: 'Styled Text Editor'! !
 
-!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 9/3/2019 08:14:24'!
+!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 3/24/2020 10:37:35'!
 withModel: aStyledTextModel in: aLayoutMorph
 	| topRow paragraphStyleList characterStyleList textMorph m topRowHeight labelFont topRowElementsWidth |
 	textMorph _ self withModel: aStyledTextModel.
@@ -2234,7 +2234,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 	topRowElementsWidth _ m morphWidth.
 	topRow
 		addMorph: m
-		layoutSpec: (((LayoutSpec morphHeightFixedWidth: topRowElementsWidth) minorDirectionPadding: #center) minorDirectionPadding: #center).
+		layoutSpec: (((LayoutSpec fixedWidth: topRowElementsWidth fixedHeight: m morphHeight) minorDirectionPadding: #center) minorDirectionPadding: #center).
 	paragraphStyleList _ PluggableFilteringDropDownListMorph
 			model: textMorph
 			listGetter: #paragraphStyleNamesAndShortcuts
@@ -2243,7 +2243,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 	paragraphStyleList borderWidth: 0"; height: ddlHeight".
 	topRow
 		addMorph: paragraphStyleList
-		layoutSpec: (((LayoutSpec morphHeightFixedWidth: topRowElementsWidth+50) minorDirectionPadding: #center) minorDirectionPadding: #center).
+		layoutSpec: (((LayoutSpec fixedWidth: topRowElementsWidth+50 fixedHeight: topRowHeight-4) minorDirectionPadding: #center) minorDirectionPadding: #center).
 	textMorph when: #possiblyChanged send: #modelChanged to: paragraphStyleList.
 
 	m _ RectangleLikeMorph new.
@@ -2254,7 +2254,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 	m font: labelFont emphasis: 1; color: Color white.
 	topRow
 		addMorph: m
-		layoutSpec: (((LayoutSpec morphHeightFixedWidth: topRowElementsWidth) minorDirectionPadding: #center) minorDirectionPadding: #center).
+		layoutSpec: (((LayoutSpec fixedWidth: topRowElementsWidth fixedHeight: m morphHeight) minorDirectionPadding: #center) minorDirectionPadding: #center).
 	characterStyleList _ PluggableFilteringDropDownListMorph 
 			model:textMorph
 			listGetter: #characterStyleNamesAndShortcuts
@@ -2263,7 +2263,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 	characterStyleList borderWidth: 0"; height: ddlHeight". 
 	topRow
 		addMorph: characterStyleList
-		layoutSpec: (((LayoutSpec morphHeightFixedWidth: topRowElementsWidth+50) minorDirectionPadding: #center) minorDirectionPadding: #center).
+		layoutSpec: (((LayoutSpec fixedWidth: topRowElementsWidth+50 fixedHeight: topRowHeight-4) minorDirectionPadding: #center) minorDirectionPadding: #center).
 	textMorph when: #possiblyChanged send: #modelChanged to: characterStyleList.
 
 	aLayoutMorph
