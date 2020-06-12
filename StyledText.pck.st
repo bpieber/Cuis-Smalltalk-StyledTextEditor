@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4212] on 8 June 2020 at 12:00:43 pm'!
+'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:48:03 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 43!
+!provides: 'StyledText' 1 44!
 !requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
@@ -701,18 +701,21 @@ paragraphStyleNamesAndShortcuts
 paragraphStyles
 	^paragraphStyles! !
 
-!StyleSet methodsFor: 'initialization examples' stamp: 'bp 12/9/2011 02:26'!
+!StyleSet methodsFor: 'initialization examples' stamp: 'jmv 6/11/2020 16:42:18'!
 createDocumentationCharacterStyleSet
 	"Build one of the many possible sets of Styles. Maybe other methods like this will be added."
-	| emphasised className completedText nullStyle |
+	| emphasised className completedText nullStyle familyName |
+
+	familyName _ FontFamily defaultFamilyName.
+
 	emphasised _ self characterStyleNamedOrNew: 'Emphasized'.
-	emphasised privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: Color blue.
+	emphasised privateFamilyName: familyName pointSize: 11 emphasis: 0 color: Color blue.
 
 	className _ self characterStyleNamedOrNew: 'Class Name'.
-	className privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: Color magenta.
+	className privateFamilyName: familyName pointSize: 11 emphasis: 0 color: Color magenta.
 
 	completedText _ self characterStyleNamedOrNew: 'Completed Text'.
-	completedText privateFamilyName: 'DejaVu' pointSize: 12 emphasis: 0 color: Color green.
+	completedText privateFamilyName: familyName pointSize: 12 emphasis: 0 color: Color green.
 
 	nullStyle _ CharacterStyle nullStyle.
 
@@ -725,35 +728,36 @@ createDocumentationCharacterStyleSet
 	
 	self triggerEvent: #stylesChanged! !
 
-!StyleSet methodsFor: 'initialization examples' stamp: 'bp 12/9/2011 02:27'!
+!StyleSet methodsFor: 'initialization examples' stamp: 'jmv 6/11/2020 16:35:44'!
 createDocumentationParagraphStyleSet
 	"Build one of the many possible sets of Styles. Maybe other methods like this will be added."
-	| figure indent heading1 heading2 heading3 text |
+	| figure indent heading1 heading2 heading3 text familyName |
 	
 	indent _ 10.
+	familyName _ FontFamily defaultFamilyName.
 
 	text _ self paragraphStyleNamedOrNew: 'Text'.
-	text privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: nil
+	text privateFamilyName: familyName pointSize: 11 emphasis: 0 color: nil
 		alignment: CharacterScanner leftFlushCode firstIndent: indent + 20 restIndent: indent rightIndent: indent
 		spaceBefore: 2 spaceAfter: 2.
 
 	figure _ self paragraphStyleNamedOrNew: 'Figure'.
-	figure privateFamilyName: 'DejaVu' pointSize: 5 emphasis: 0 color: nil
+	figure privateFamilyName: familyName pointSize: 5 emphasis: 0 color: nil
 		alignment: CharacterScanner leftFlushCode firstIndent: indent restIndent: indent rightIndent: indent
 		spaceBefore: 0 spaceAfter: 0.
 		
 	heading1 _ self paragraphStyleNamedOrNew: 'Heading 1'.
-	heading1 privateFamilyName: 'DejaVu' pointSize: 22 emphasis: AbstractFont boldCode color: nil
+	heading1 privateFamilyName: familyName pointSize: 22 emphasis: AbstractFont boldCode color: nil
 		alignment: CharacterScanner leftFlushCode firstIndent: indent restIndent: indent rightIndent: indent
 		spaceBefore: 20 spaceAfter: 10.
 
 	heading2 _ self paragraphStyleNamedOrNew: 'Heading 2'.
-	heading2 privateFamilyName: 'DejaVu' pointSize: 17 emphasis: AbstractFont boldCode color: Color red
+	heading2 privateFamilyName: familyName pointSize: 17 emphasis: AbstractFont boldCode color: Color red
 		alignment: CharacterScanner leftFlushCode firstIndent: indent restIndent: indent rightIndent: indent
 		spaceBefore: 24 spaceAfter: 10.
 
 	heading3 _ self paragraphStyleNamedOrNew: 'Heading 3'.
-	heading3 privateFamilyName: 'DejaVu' pointSize: 11 emphasis: AbstractFont boldCode color: nil
+	heading3 privateFamilyName: familyName pointSize: 11 emphasis: AbstractFont boldCode color: nil
 		alignment: CharacterScanner leftFlushCode firstIndent: indent restIndent: indent rightIndent: indent
 		spaceBefore: 22 spaceAfter: 3.
 
@@ -766,13 +770,14 @@ createDocumentationParagraphStyleSet
 	
 	self triggerEvent: #stylesChanged! !
 
-!StyleSet methodsFor: 'initialization examples' stamp: 'bp 10/29/2011 16:47'!
+!StyleSet methodsFor: 'initialization examples' stamp: 'jmv 6/11/2020 16:36:00'!
 createDramaCharacterStyleSet
 	"Build one of the many possible sets of Styles. Maybe other methods like this will be added."
-	| completedText nullStyle |
+	| completedText nullStyle familyName |
 
+	familyName _ FontFamily defaultFamilyName.
 	completedText _ self characterStyleNamedOrNew: 'Completed Text'.
-	completedText privateFamilyName: 'DejaVu' pointSize: 12 emphasis: 0 color: Color green.
+	completedText privateFamilyName: familyName pointSize: 12 emphasis: 0 color: Color green.
 
 	nullStyle _ CharacterStyle nullStyle.
 
@@ -783,45 +788,46 @@ createDramaCharacterStyleSet
 	
 	self triggerEvent: #stylesChanged! !
 
-!StyleSet methodsFor: 'initialization examples' stamp: 'bp 10/29/2011 16:47'!
+!StyleSet methodsFor: 'initialization examples' stamp: 'jmv 6/11/2020 16:36:36'!
 createDramaParagraphStyleSet
 	"Build one of the many possible sets of Styles. Maybe other methods like this will be added."
-	| figure leftIndent act scene sceneDescription sceneInstruction speaker text |
+	| figure leftIndent act scene sceneDescription sceneInstruction speaker text familyName |
 	
 	leftIndent _ 20.
+	familyName _ FontFamily defaultFamilyName.
 
 	figure _ self paragraphStyleNamedOrNew: 'Figure'.
-	figure privateFamilyName: 'DejaVu' pointSize: 5 emphasis: 0 color: nil
+	figure privateFamilyName: familyName pointSize: 5 emphasis: 0 color: nil
 		alignment: CharacterScanner leftFlushCode firstIndent: leftIndent restIndent: leftIndent rightIndent: 10
 		spaceBefore: 0 spaceAfter: 0.
 		
 	act _ self paragraphStyleNamedOrNew: 'Act'.
-	act privateFamilyName: 'DejaVu' pointSize: 22 emphasis: AbstractFont boldCode color: nil
+	act privateFamilyName: familyName pointSize: 22 emphasis: AbstractFont boldCode color: nil
 		alignment: CharacterScanner leftFlushCode firstIndent: leftIndent restIndent: leftIndent rightIndent: 0
 		spaceBefore: 20 spaceAfter: 10.
 
 	scene _ self paragraphStyleNamedOrNew: 'Scene'.
-	scene privateFamilyName: 'DejaVu' pointSize: 17 emphasis: AbstractFont boldCode color: Color red
+	scene privateFamilyName: familyName pointSize: 17 emphasis: AbstractFont boldCode color: Color red
 		alignment: CharacterScanner leftFlushCode firstIndent: leftIndent restIndent: leftIndent rightIndent: 0
 		spaceBefore: 24 spaceAfter: 10.
 
 	sceneDescription _ self paragraphStyleNamedOrNew: 'Scene Description'.
-	sceneDescription privateFamilyName: 'DejaVu' pointSize: 11 emphasis: AbstractFont boldCode color: Color blue
+	sceneDescription privateFamilyName: familyName pointSize: 11 emphasis: AbstractFont boldCode color: Color blue
 		alignment: CharacterScanner leftFlushCode firstIndent: leftIndent restIndent: leftIndent rightIndent: 10
 		spaceBefore: 2 spaceAfter: 2.
 
 	sceneInstruction _ self paragraphStyleNamedOrNew: 'Scene Instruction'.
-	sceneInstruction privateFamilyName: 'DejaVu' pointSize: 11 emphasis: AbstractFont italicCode color: Color blue
+	sceneInstruction privateFamilyName: familyName pointSize: 11 emphasis: AbstractFont italicCode color: Color blue
 		alignment: CharacterScanner leftFlushCode firstIndent: leftIndent restIndent: leftIndent rightIndent: 10
 		spaceBefore: 2 spaceAfter: 2.
 
 	speaker _ self paragraphStyleNamedOrNew: 'Speaker'.
-	speaker privateFamilyName: 'DejaVu' pointSize: 11 emphasis: AbstractFont boldCode color: nil
+	speaker privateFamilyName: familyName pointSize: 11 emphasis: AbstractFont boldCode color: nil
 		alignment: CharacterScanner leftFlushCode firstIndent: leftIndent restIndent: leftIndent rightIndent: 10
 		spaceBefore: 22 spaceAfter: 3.
 
 	text _ self paragraphStyleNamedOrNew: 'Text'.
-	text privateFamilyName: 'DejaVu' pointSize: 11 emphasis: AbstractFont italicCode color: nil
+	text privateFamilyName: familyName pointSize: 11 emphasis: AbstractFont italicCode color: nil
 		alignment: CharacterScanner leftFlushCode firstIndent: leftIndent + 20 restIndent: leftIndent +20 rightIndent: 10
 		spaceBefore: 2 spaceAfter: 2.
 
@@ -837,19 +843,20 @@ createDramaParagraphStyleSet
 	
 	self triggerEvent: #stylesChanged! !
 
-!StyleSet methodsFor: 'initialization examples' stamp: 'bp 12/11/2011 01:36'!
+!StyleSet methodsFor: 'initialization examples' stamp: 'jmv 6/11/2020 16:37:03'!
 createFeaturesCharacterStyleSet
 	"Build one of the many possible sets of Styles. Maybe other methods like this will be added."
-	| title featureType nullStyle completedText |
+	| title featureType nullStyle completedText familyName |
 
+	familyName _ FontFamily defaultFamilyName.
 	title _ self characterStyleNamedOrNew: 'Title'.
-	title privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: Color blue.
+	title privateFamilyName: familyName pointSize: 11 emphasis: 0 color: Color blue.
 
 	featureType _ self characterStyleNamedOrNew: 'Feature Type'.
-	featureType privateFamilyName: 'DejaVu' pointSize: 10 emphasis: AbstractFont boldCode color: Color red.
+	featureType privateFamilyName: familyName pointSize: 10 emphasis: AbstractFont boldCode color: Color red.
 
 	completedText _ self characterStyleNamedOrNew: 'Completed Text'.
-	completedText privateFamilyName: 'DejaVu' pointSize: 12 emphasis: 0 color: Color green.
+	completedText privateFamilyName: familyName pointSize: 12 emphasis: 0 color: Color green.
 
 	nullStyle _ CharacterStyle nullStyle.
 
@@ -862,56 +869,58 @@ createFeaturesCharacterStyleSet
 	
 	self triggerEvent: #stylesChanged! !
 
-!StyleSet methodsFor: 'initialization examples' stamp: 'bp 10/29/2011 15:41'!
+!StyleSet methodsFor: 'initialization examples' stamp: 'jmv 6/11/2020 16:38:53'!
 createFeaturesParagraphStyleSet
 	"Build one of the many possible sets of Styles. Maybe other methods like this will be added."
-	| heading1 heading2 heading3 emphasized normal numbered alphabetic bulleted smalltalkCode  |
+	| heading1 heading2 heading3 emphasized normal numbered alphabetic bulleted smalltalkCode  familyName |
+
+	familyName _ FontFamily defaultFamilyName.
 
 	normal _ self paragraphStyleNamedOrNew: 'Normal'.
-	normal privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: nil
+	normal privateFamilyName: familyName pointSize: 11 emphasis: 0 color: nil
 		alignment: CharacterScanner leftFlushCode firstIndent: 30 restIndent: 10 rightIndent: 10
 		spaceBefore: 8 spaceAfter: 2.
 
 	emphasized _ self paragraphStyleNamedOrNew: 'Emphasized'.
-	emphasized privateFamilyName: 'DejaVu' pointSize: 10 emphasis: AbstractFont boldCode color: nil
+	emphasized privateFamilyName: familyName pointSize: 10 emphasis: AbstractFont boldCode color: nil
 		alignment: CharacterScanner justifiedCode firstIndent: 60 restIndent: 60 rightIndent: 60
 		spaceBefore: 10 spaceAfter: 2.
 
 	heading1 _ self paragraphStyleNamedOrNew: 'Heading 1'.
-	heading1 privateFamilyName: 'DejaVu' pointSize: 22 emphasis: 0 color: nil
+	heading1 privateFamilyName: familyName pointSize: 22 emphasis: 0 color: nil
 		alignment: CharacterScanner centeredCode firstIndent: 0 restIndent: 0 rightIndent: 0
 		spaceBefore: 34 spaceAfter: 18.
 
 	heading2 _ self paragraphStyleNamedOrNew: 'Heading 2'.
-	heading2 privateFamilyName: 'DejaVu' pointSize: 17 emphasis: AbstractFont boldCode color: nil
+	heading2 privateFamilyName: familyName pointSize: 17 emphasis: AbstractFont boldCode color: nil
 		alignment: CharacterScanner leftFlushCode firstIndent: 0 restIndent: 0 rightIndent: 0
 		spaceBefore: 24 spaceAfter: 8.
 
 	heading3 _ self paragraphStyleNamedOrNew: 'Heading 3'.
-	heading3 privateFamilyName: 'DejaVu' pointSize: 14 emphasis: AbstractFont italicCode color: nil
+	heading3 privateFamilyName: familyName pointSize: 14 emphasis: AbstractFont italicCode color: nil
 		alignment: CharacterScanner leftFlushCode firstIndent: 0 restIndent: 0 rightIndent: 0
 		spaceBefore: 18 spaceAfter: 4.
 
 	numbered _ self paragraphStyleNamedOrNew: 'Numbered List'.
-	numbered privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: nil
+	numbered privateFamilyName: familyName pointSize: 11 emphasis: 0 color: nil
 		alignment: CharacterScanner justifiedCode firstIndent: 10 restIndent: 50 rightIndent: 10
 		spaceBefore: 8 spaceAfter: 2;
 			privateListBulletPattern: '%%%. '.
 
 	alphabetic _ self paragraphStyleNamedOrNew: 'Alphabetic List'.
-	alphabetic privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: nil
+	alphabetic privateFamilyName: familyName pointSize: 11 emphasis: 0 color: nil
 		alignment: CharacterScanner justifiedCode firstIndent: 10 restIndent: 30 rightIndent: 10
 		spaceBefore: 8 spaceAfter: 2;
 			privateListBulletPattern: 'z) '.
 
 	bulleted _ self paragraphStyleNamedOrNew: 'Bulleted List'.
-	bulleted privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: nil
+	bulleted privateFamilyName: familyName pointSize: 11 emphasis: 0 color: nil
 		alignment: CharacterScanner justifiedCode firstIndent: 10 restIndent: 30 rightIndent: 10
 		spaceBefore: 8 spaceAfter: 2;
 			privateListBulletPattern: '° '.
 
 	smalltalkCode _ self paragraphStyleNamedOrNew: 'Smalltalk code'.
-	smalltalkCode privateFamilyName: 'DejaVu' pointSize: 11 emphasis: 0 color: nil
+	smalltalkCode privateFamilyName: familyName pointSize: 11 emphasis: 0 color: nil
 		alignment: CharacterScanner leftFlushCode firstIndent: 10 restIndent: 10 rightIndent: 10
 		spaceBefore: 0 spaceAfter: 0;
 			doShout.
@@ -4184,10 +4193,11 @@ emphasis
 familyName
 	^familyName! !
 
-!CharacterStyle methodsFor: 'accessing' stamp: 'jmv 12/19/2011 13:40'!
+!CharacterStyle methodsFor: 'accessing' stamp: 'jmv 6/11/2020 16:47:34'!
 font
 	| base |
-	base _ (AbstractFont familyName: familyName pointSize: pointSize) ifNil: [ AbstractFont default baseFont ].
+	base _ (FontFamily familyName: familyName pointSize: pointSize)
+		ifNil: [ FontFamily defaultFamilyAndPointSize baseFont ].
 	^base emphasized: emphasis! !
 
 !CharacterStyle methodsFor: 'accessing' stamp: 'jmv 4/6/2011 16:18'!

@@ -1,8 +1,11 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1976] on 19 April 2014 at 11:12:07.79669 am'!
+'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:47:03 am'!
 'Description Please enter a description for this package.'!
-!provides: 'RTFTests' 1 1!
-!requires: 'RTFImporting' 1 nil nil!
+!provides: 'RTFTests' 1 2!
 !requires: 'RTFExporting' 1 nil nil!
+!requires: 'RTFImporting' 1 nil nil!
+SystemOrganization addCategory: #RTFtests!
+
+
 !classDefinition: #RTFConversionTest category: #RTFtests!
 TestCase subclass: #RTFConversionTest
 	instanceVariableNames: ''
@@ -642,7 +645,7 @@ textSample2
 		(Text string: 'This text has no tyle set', String newLineString),
 		(Text string: 'This is right', String newLineString attribute: TextAlignment rightFlush)! !
 
-!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 4/11/2011 20:06'!
+!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 6/11/2020 16:34:31'!
 textSample3
 	"
 	| text |
@@ -650,17 +653,19 @@ textSample3
 	text edit.
 	Clipboard default storeObject: text
 	"
+	| familyName |
+	familyName _ FontFamily defaultFamilyName.
 	^ (
 		(Text string: 'normal '),
-		(Text string: 'bold ' attributes: {(TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 17). TextEmphasis bold}),
-		(Text string: 'italic ' attributes: {(TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 6). TextEmphasis italic}),
-		(Text string: 'boldGreen ' attributes: {(TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 12). TextEmphasis bold. TextColor green}),
+		(Text string: 'bold ' attributes: {(TextFontFamilyAndSize familyName: familyName pointSize: 17). TextEmphasis bold}),
+		(Text string: 'italic ' attributes: {(TextFontFamilyAndSize familyName: familyName pointSize: 6). TextEmphasis italic}),
+		(Text string: 'boldGreen ' attributes: {(TextFontFamilyAndSize familyName: familyName pointSize: 12). TextEmphasis bold. TextColor green}),
 		(Text string: 'red ' attributes: {TextColor red}),
 		(Text string: 'underlined ' attribute: (TextEmphasis underlined)),
 		(Text string: 'normal ' attributes: #())
 	)! !
 
-!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 4/19/2014 11:11'!
+!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 6/11/2020 16:35:02'!
 textSample4
 	"
 	| text |
@@ -668,13 +673,15 @@ textSample4
 	text edit.
 	Clipboard default storeObject: text
 	"
+	| familyName |
+	familyName _ FontFamily defaultFamilyName.
 	^ (
 		(Text string: 'normal '),
-		(Text string: 'bold ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 17). TextEmphasis bold }),
-		(Text string: 'italic ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 6). TextEmphasis italic }),
-		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 12). TextEmphasis bold. TextColor green }),
-		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 12). TextEmphasis bold. TextColor green }),
-		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: 'DejaVu' pointSize: 12). TextEmphasis bold. TextColor green }),
+		(Text string: 'bold ' attributes: { (TextFontFamilyAndSize familyName: familyName pointSize: 17). TextEmphasis bold }),
+		(Text string: 'italic ' attributes: { (TextFontFamilyAndSize familyName: familyName pointSize: 6). TextEmphasis italic }),
+		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: familyName pointSize: 12). TextEmphasis bold. TextColor green }),
+		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: familyName pointSize: 12). TextEmphasis bold. TextColor green }),
+		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: familyName pointSize: 12). TextEmphasis bold. TextColor green }),
 		(Text string: 'red ' attributes: {TextColor red}),
 		(Text string: 'underlined ' attribute: (TextEmphasis underlined)),
 		(Text string: 'struckThrough ' attribute: (TextEmphasis struckThrough)),
