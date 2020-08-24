@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:48:03 am'!
+'From Cuis 5.0 [latest update: #4362] on 24 August 2020 at 12:22:41 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 44!
+!provides: 'StyledText' 1 45!
 !requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
@@ -1975,15 +1975,17 @@ drawOn: aCanvas
 
 	self drawSTELookOn: aCanvas! !
 
-!FancyDraggeableButtonMorph methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:16'!
+!FancyDraggeableButtonMorph methodsFor: 'drawing' stamp: 'jmv 8/23/2020 21:17:53'!
 drawSTELookOn: aCanvas
 
+	| isWide |
+	isWide _ owner morphWidth > owner morphHeight.
 	aCanvas
-		roundRect: (((0@0 extent: extent) insetBy: (owner morphBoundsInWorld isWide ifTrue: [0@4] ifFalse: [4@0])) )
+		roundRect: (((0@0 extent: extent) insetBy: (isWide ifTrue: [0@4] ifFalse: [4@0])) )
 		color: (Color black)
 		radius: 4.
 	aCanvas
-		roundRect: (((-1@0 extent: extent) insetBy: (owner morphBoundsInWorld isWide ifTrue: [0@4] ifFalse: [5@0 corner: 4@0])) )
+		roundRect: (((-1@0 extent: extent) insetBy: (isWide ifTrue: [0@4] ifFalse: [5@0 corner: 4@0])) )
 		color: (self isPressed ifTrue: [Color red] ifFalse: [Color gray: 0.86])
 		radius: 4.! !
 
@@ -2217,7 +2219,7 @@ openBasicStyledTextEditor
 
 	SystemWindow editStyledText: StyledTextModel new label: 'Styled Text Editor'! !
 
-!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 6/8/2020 10:52:03'!
+!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 8/23/2020 21:30:53'!
 withModel: aStyledTextModel in: aLayoutMorph
 	| topRow paragraphStyleList characterStyleList textMorph m topRowHeight labelFont topRowElementsWidth |
 	textMorph _ self withModel: aStyledTextModel.
@@ -2252,7 +2254,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 	paragraphStyleList borderWidth: 0"; height: ddlHeight".
 	topRow
 		addMorph: paragraphStyleList
-		layoutSpec: (((LayoutSpec fixedWidth: topRowElementsWidth+50 fixedHeight: topRowHeight-4) offAxisEdgeWeight: #center) offAxisEdgeWeight: #center).
+		layoutSpec: (((LayoutSpec fixedWidth: topRowElementsWidth+120 fixedHeight: topRowHeight-4) offAxisEdgeWeight: #center) offAxisEdgeWeight: #center).
 	textMorph when: #possiblyChanged send: #modelChanged to: paragraphStyleList.
 
 	m _ RectangleLikeMorph new.
@@ -2272,7 +2274,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 	characterStyleList borderWidth: 0"; height: ddlHeight". 
 	topRow
 		addMorph: characterStyleList
-		layoutSpec: (((LayoutSpec fixedWidth: topRowElementsWidth+50 fixedHeight: topRowHeight-4) offAxisEdgeWeight: #center) offAxisEdgeWeight: #center).
+		layoutSpec: (((LayoutSpec fixedWidth: topRowElementsWidth+120 fixedHeight: topRowHeight-4) offAxisEdgeWeight: #center) offAxisEdgeWeight: #center).
 	textMorph when: #possiblyChanged send: #modelChanged to: characterStyleList.
 
 	aLayoutMorph
@@ -2301,12 +2303,15 @@ drawOn: aCanvas
 		color: (Color gray: 0.95)
 		radius: 4! !
 
-!FancyScrollBar methodsFor: 'scrolling' stamp: 'jmv 3/5/2013 08:20'!
+!FancyScrollBar methodsFor: 'scrolling' stamp: 'jmv 8/23/2020 21:11:25'!
 sliderGrabbedAt: handPositionRelativeToSlider
 
+	| b |
 	grabPosition _ handPositionRelativeToSlider.
+	b _ slider displayBounds insetBy: (extent x > extent y ifTrue: [0@3] ifFalse: [3@0]).
 	sliderShadow
-		morphBoundsInWorld: (slider morphBoundsInWorld insetBy: (extent x > extent y ifTrue: [0@3] ifFalse: [3@0]));
+		morphPositionInWorld: b origin;
+		morphExtentInWorld: b extent;
 		show! !
 
 !FancyScrollBar class methodsFor: 'constants' stamp: 'jmv 8/13/2013 12:29'!
@@ -2314,10 +2319,10 @@ scrollbarThickness
 
 	^super scrollbarThickness + 11! !
 
-!PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 2/25/2013 15:21'!
+!PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 8/23/2020 21:07:30'!
 basicOpenList
 	| xtraWidth xtraHeight bounds |
-	bounds _ self morphBoundsInWorld.
+	bounds _ self displayBounds.
 	listMorph _ PluggableActOnReturnKeyListMorph
 		model: self
 		listGetter: #getList
@@ -2472,25 +2477,27 @@ model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter:
 	getIndexSelector _ getSelectionSel.
 	setIndexSelector _ setSelectionSel.! !
 
-!PluggableDropDownListMorph methodsFor: 'layout' stamp: 'jmv 12/20/2012 12:57'!
+!PluggableDropDownListMorph methodsFor: 'layout' stamp: 'jmv 8/23/2020 21:15:58'!
 layoutSubmorphs
 	| e innerBounds |
 	"innerBounds _ self innerBounds".
-	innerBounds _ self morphBoundsInWorld insetBy: borderWidth.
+	innerBounds _ (self morphPositionInWorld extent: self morphExtentInWorld) insetBy: borderWidth.
 	e _ innerBounds height.
-	downButton morphBoundsInWorld: (innerBounds bottomRight - e extent: e)! !
+	downButton 
+		morphPositionInWorld: innerBounds bottomRight - e;
+		morphExtentInWorld: e asPoint! !
 
-!PluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 12/20/2012 13:24'!
+!PluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 8/23/2020 21:07:34'!
 mouseLeave: evt
 	super mouseLeave: evt.
-	(listMorph isNil or: [ (listMorph morphBoundsInWorld containsPoint: evt eventPosition) not])
+	(listMorph isNil or: [ (listMorph displayBounds containsPoint: evt eventPosition) not])
 		ifTrue: [
 			"Do the call even if the list is not there, as this also clears selection in subclass with entry field"
 			self closeList ]! !
 
-!PluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 12/27/2012 15:02'!
+!PluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 8/23/2020 21:07:36'!
 mouseLeaveList: evt
-	(self morphBoundsInWorld containsPoint: evt eventPosition)
+	(self displayBounds containsPoint: evt eventPosition)
 		ifFalse: [ self closeList ]! !
 
 !PluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 6/3/2011 14:44'!
@@ -2648,14 +2655,16 @@ initialize
 	editorMorph keyboardFocusWatcher: self.
 	self addMorph: editorMorph! !
 
-!PluggableFilteringDropDownListMorph methodsFor: 'layout' stamp: 'jmv 12/20/2012 13:11'!
+!PluggableFilteringDropDownListMorph methodsFor: 'layout' stamp: 'jmv 8/23/2020 21:18:50'!
 layoutSubmorphs
 	| b innerBounds |
 	super layoutSubmorphs.
 	"innerBounds _ self innerBounds".
-	innerBounds _ self morphBoundsInWorld insetBy: borderWidth.
+	innerBounds _ (self morphPositionInWorld extent: self morphExtentInWorld) insetBy: borderWidth.
 	b _ innerBounds insetBy: 8@4.
-	editorMorph morphBoundsInWorld: (b topLeft extent: b extent - (downButton morphWidth@0))! !
+	editorMorph
+		morphPositionInWorld: b topLeft;
+		morphExtentInWorld: b extent - (downButton morphWidth@0)! !
 
 !ToolbarMorph methodsFor: 'hacks' stamp: 'jmv 8/4/2014 08:37'!
 adoptWidgetsColor: paneColor
