@@ -1,6 +1,6 @@
 'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:47:03 am'!
 'Description Please enter a description for this package.'!
-!provides: 'RTFTests' 1 2!
+!provides: 'RTFTests' 1 3!
 !requires: 'RTFExporting' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
 SystemOrganization addCategory: #RTFtests!
@@ -696,7 +696,7 @@ textSample5
 	text edit.
 	Clipboard default storeObject: text
 	"
-	^'Hello', (Text withForm: (EllipseMorph new imageForm: 32)), 'world'! !
+	^'Hello', (Text withForm: (WidgetMorph new imageForm: 32)), 'world'! !
 
 !RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 11/22/2011 15:00'!
 textSample6
