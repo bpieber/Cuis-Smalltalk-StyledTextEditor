@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4425] on 24 October 2020 at 5:08:26 pm'!
+'From Cuis 5.0 [latest update: #4528] on 30 January 2021 at 12:59:56 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 47!
+!provides: 'StyledText' 1 49!
 !requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
@@ -939,7 +939,7 @@ createFeaturesParagraphStyleSet
 	
 	self triggerEvent: #stylesChanged! !
 
-!StyleSet methodsFor: 'initialization examples' stamp: 'jmv 9/3/2019 08:29:03'!
+!StyleSet methodsFor: 'initialization examples' stamp: 'jmv 1/30/2021 12:39:26'!
 createSampleCharacterStyleSet
 	"Build one of the many possible sets of Styles. Maybe other methods like this will be added."
 	| greenItalic greenBig redBold nullStyle completedText basePointSize familyName |
@@ -953,7 +953,7 @@ createSampleCharacterStyleSet
 	greenBig _ self characterStyleNamedOrNew: 'Green Big'.
 	greenBig privateFamilyName: familyName pointSize: basePointSize * 14//10 emphasis: 0 color: Color green.
 
-	redBold _ self characterStyleNamedOrNew: 'Red bold'.
+	redBold _ self characterStyleNamedOrNew: 'Red Bold'.
 	redBold privateFamilyName: familyName pointSize: basePointSize emphasis: AbstractFont boldCode color: Color red.
 
 	completedText _ self characterStyleNamedOrNew: 'Completed Text'.
@@ -2125,18 +2125,20 @@ setSelectionIndex: anInteger
 	currentIndex _ anInteger.
 	^ false! !
 
-!PluggableActOnReturnKeyListMorph methodsFor: 'geometry' stamp: 'jmv 2/25/2013 15:19'!
+!PluggableActOnReturnKeyListMorph methodsFor: 'geometry' stamp: 'jmv 1/30/2021 12:46:40'!
 updateScrollBarsBounds
 	
 	| t |
-	hideScrollBars ifTrue: [^self].
+	hideScrollBars = #hide ifTrue: [^self].
 	t _ self scrollBarClass scrollbarThickness.
-	scrollBar
-		morphPosition: extent x - t - borderWidth - 4 @ borderWidth;
-		morphExtent: t @ (self vScrollBarHeight-4).
+	(hideScrollBars = #hideVertical)
+	ifFalse: [
+		scrollBar
+			morphPosition: extent x - t - borderWidth - 4 @ borderWidth
+			extent: t @ (self vScrollBarHeight-4) ].
 	hScrollBar
-		morphPosition: borderWidth @ (extent y - t - borderWidth - 4);
-		morphExtent: self hScrollBarWidth - 4@t! !
+		morphPosition: borderWidth @ (extent y - t - borderWidth - 4)
+		extent: self hScrollBarWidth - 4@t! !
 
 !PluggableActOnReturnKeyListMorph methodsFor: 'geometry' stamp: 'jmv 2/25/2013 15:26'!
 viewableExtent
@@ -4128,7 +4130,7 @@ initialize
 		^self 
 	].
 	dirEntry allFilesDo: [ :fileEntry | | fileLevel |
-		fileLevel := fileEntry extension asInteger.
+		fileLevel := fileEntry extension findPositiveInteger.
 		((fileLevel isNil not) and: [fileLevel <= level])
 		ifTrue: [ fileEntry readStreamDo: [ :strm |
 				fileEntry name print.
@@ -4525,45 +4527,45 @@ styles: aDictionary
 text
 	^textStream contents! !
 
-!StyledTextBuilder class methodsFor: 'examples' stamp: 'jmv 8/10/2011 10:44'!
+!StyledTextBuilder class methodsFor: 'examples' stamp: 'jmv 1/30/2021 12:38:05'!
 example1
 	"
 	StyledTextBuilder example1
 	"
-	| model heading3 green14 red10Bold green11Italic t |
+	| model heading3 greenBig redBold greenItalic t |
 	model _ StyledTextModel new.
 	heading3 _ model styleSet paragraphStyleNamed: 'Heading 3'.
-	green14 _ model styleSet characterStyleNamed: 'Green 14'.
-	red10Bold _ model styleSet characterStyleNamed: 'Red 10 bold'.
-	green11Italic _ model styleSet characterStyleNamed: 'Green 11 Italic'.
+	greenBig _ model styleSet characterStyleNamed: 'Green Big'.
+	redBold _ model styleSet characterStyleNamed: 'Red Bold'.
+	greenItalic _ model styleSet characterStyleNamed: 'Green Italic'.
 	t _ Text
 			buildWithStyles: ({
 				#H3 -> heading3.
-				#g14 -> green14.
-				#r10b -> red10Bold.
-				#g11i -> green11Italic
+				#gBig -> greenBig.
+				#rb -> redBold.
+				#gi -> greenItalic
 				} as: Dictionary)
 			contents: [ :builder |
-				builder , 'Starts as Heading 3. But later gets' < #g14 , ' big and green' , ' and stays like that. Then' >< #r10b , ' red & bold and inside this,' < #g11i , ' green and italic' > ' for a while. Later' > ' back to Heading 3.' / #H3].
+				builder , 'Starts as Heading 3. But later gets' < #gBig , ' big and green' , ' and stays like that. Then' >< #rb , ' red & bold and inside this,' < #gi , ' green and italic' > ' for a while. Later' > ' back to Heading 3.' / #H3].
 
 	model contents: t.
 	SystemWindow editFancierStyledText: model label: 'Styled Text Editor'! !
 
-!StyledTextBuilder class methodsFor: 'examples' stamp: 'jmv 8/10/2011 10:43'!
+!StyledTextBuilder class methodsFor: 'examples' stamp: 'jmv 1/30/2021 12:47:59'!
 example2
 	"
 	StyledTextBuilder example2
 	"
-	|model heading1 heading2 heading3 emphasized normal green14 red10Bold green11Italic t |
+	|model heading1 heading2 heading3 emphasized normal greenBig redBold greenItalic t |
 	model _ StyledTextModel new.
 	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
 	heading2 _ model styleSet paragraphStyleNamed: 'Heading 2'.
 	heading3 _ model styleSet paragraphStyleNamed: 'Heading 3'.
 	emphasized _ model styleSet paragraphStyleNamed: 'Emphasized'.
 	normal _ model styleSet paragraphStyleNamed: 'Normal'.
-	green14 _ model styleSet characterStyleNamed: 'Green 14'.
-	red10Bold _ model styleSet characterStyleNamed: 'Red 10 bold'.
-	green11Italic _ model styleSet characterStyleNamed: 'Green 11 Italic'.
+	greenBig _ model styleSet characterStyleNamed: 'Green Big'.
+	redBold _ model styleSet characterStyleNamed: 'Red Bold'.
+	greenItalic _ model styleSet characterStyleNamed: 'Green Italic'.
 	t _ Text
 			buildWithStyles: ({
 				#H1 -> heading1.
@@ -4571,18 +4573,18 @@ example2
 				#H3 -> heading3.
 				#E -> emphasized.
 				#N -> normal.
-				#g14 -> green14.
-				#r10b -> red10Bold.
-				#g11i -> green11Italic
+				#gBig -> greenBig.
+				#rb -> redBold.
+				#gi -> greenItalic
 				} as: Dictionary)
 			contents: [ :builder |
 				builder,
 					'This is the main title' / #H1,
 					'This is the title of level 2' / #H2,
 					'This is title 3' / #H3,
-					'Then, we have some normal text. But later gets' < #g14 , ' big and green' , ' and stays like that. Then' >< #r10b , ' red & bold and inside this,' < #g11i , ' green and italic' > ' for a while.' > ' Lets make this look like a paragraph, i.e. add enough text so that we''l be using more than one display line. Is this enough? Who knows... Let''s add a bit more. Maybe this is enough.' / #N,
+					'Then, we have some normal text. But later gets' < #gBig , ' big and green' , ' and stays like that. Then' >< #rb , ' red & bold and inside this,' < #gi , ' green and italic' > ' for a while.' > ' Lets make this look like a paragraph, i.e. add enough text so that we''l be using more than one display line. Is this enough? Who knows... Let''s add a bit more. Maybe this is enough.' / #N,
 					'This is an emphasized paragraph. It uses a Paragraph Style, not a Character Style, and therefore it has the same style all over the paragraph' / #E,
-					'This' < #r10b, ' is' > ' again a' < #g14, ' title 2' >/ #H2,
+					'This' < #rb, ' is' > ' again a' < #gBig, ' title 2' >/ #H2,
 					'And now another paragraph. This one may be smaller than previous ones' / #N ].
 	model contents: t.
 	SystemWindow editFancierStyledText: model label: 'Styled Text Editor'! !
