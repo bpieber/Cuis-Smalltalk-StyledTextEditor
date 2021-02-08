@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4528] on 30 January 2021 at 12:59:56 pm'!
+'From Cuis 5.0 [latest update: #4529] on 8 February 2021 at 5:55:59 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 49!
+!provides: 'StyledText' 1 50!
 !requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
@@ -2056,51 +2056,6 @@ iconColor
 			self mouseIsOver
 				ifTrue: [ Color gray: 0.75 ]
 				ifFalse: [ Color white ]].! !
-
-!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'KenD 12/4/2015 21:19'!
-updateDownButtonImage
-	"update the receiver's as a downButton.  put a new image inside"
-
-	icon _ BitBltCanvas buildArrowOfDirection: #down size: ScrollBar scrollbarThickness.
-	"##FIXME@@ arrowWithGradientOfDirection: #down."
-	actionSelector _ #scrollDown.
-	self
-		roundButtonStyle: false;
-		redrawNeeded! !
-
-!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'KenD 12/4/2015 21:16'!
-updateLeftButtonImage
-	"update the receiver's as a downButton.  put a new image inside"
-
-	icon _ BitBltCanvas buildArrowOfDirection: #left size: ScrollBar scrollbarThickness. 
-	"@@FIXME@@ arrowWithGradientOfDirection: #left."
-	actionSelector _ #scrollUp.
-	self
-		roundButtonStyle: false;
-		redrawNeeded! !
-
-!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'KenD 12/4/2015 21:20'!
-updateRightButtonImage
-	"update the receiver's as a downButton.  put a new image inside"
-
-	icon _ BitBltCanvas buildArrowOfDirection: #right size: ScrollBar scrollbarThickness.
-
-	"##FIXME@@ arrowWithGradientOfDirection: #right."
-	actionSelector _ #scrollDown.
-	self
-		roundButtonStyle: false;
-		redrawNeeded! !
-
-!FancyButtonMorph methodsFor: 'scrollbar button' stamp: 'KenD 12/4/2015 21:18'!
-updateUpButtonImage
-	"update the receiver's as a upButton. put a new image inside"
-
-	icon _ BitBltCanvas buildArrowOfDirection: #up size: ScrollBar scrollbarThickness.. 
-	"@@FIXME@@ arrowWithGradientOfDirection: #up"
-	actionSelector _ #scrollUp.
-	self
-		roundButtonStyle: false;
-		redrawNeeded! !
 
 !PluggableActOnReturnKeyListMorph methodsFor: 'model access' stamp: 'jmv 3/13/2012 10:10'!
 getCurrentSelectionIndex
