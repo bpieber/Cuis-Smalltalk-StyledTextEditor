@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4529] on 8 February 2021 at 5:55:59 pm'!
+'From Cuis 5.0 [latest update: #4681] on 19 July 2021 at 5:43:50 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 50!
+!provides: 'StyledText' 1 51!
 !requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
@@ -86,26 +86,6 @@ LayoutMorph subclass: #STEMainMorph
 STEMainMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #FancyDraggeableButtonMorph category: 'StyledText-Morphic-Windows'!
-DraggeableButtonMorph subclass: #FancyDraggeableButtonMorph
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'StyledText-Morphic-Windows'!
-!classDefinition: 'FancyDraggeableButtonMorph class' category: 'StyledText-Morphic-Windows'!
-FancyDraggeableButtonMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #FancyButtonMorph category: 'StyledText-Morphic-Windows'!
-PluggableButtonMorph subclass: #FancyButtonMorph
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'StyledText-Morphic-Windows'!
-!classDefinition: 'FancyButtonMorph class' category: 'StyledText-Morphic-Windows'!
-FancyButtonMorph class
-	instanceVariableNames: ''!
-
 !classDefinition: #PluggableActOnReturnKeyListMorph category: 'StyledText-Morphic-Windows'!
 PluggableListMorph subclass: #PluggableActOnReturnKeyListMorph
 	instanceVariableNames: 'currentIndex'
@@ -124,16 +104,6 @@ TextModelMorph subclass: #PluggableStyledTextMorph
 	category: 'StyledText-Morphic-Windows'!
 !classDefinition: 'PluggableStyledTextMorph class' category: 'StyledText-Morphic-Windows'!
 PluggableStyledTextMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #FancyScrollBar category: 'StyledText-Morphic-Windows'!
-ScrollBar subclass: #FancyScrollBar
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'StyledText-Morphic-Windows'!
-!classDefinition: 'FancyScrollBar class' category: 'StyledText-Morphic-Windows'!
-FancyScrollBar class
 	instanceVariableNames: ''!
 
 !classDefinition: #PluggableDropDownListMorph category: 'StyledText-Morphic-Windows'!
@@ -303,17 +273,8 @@ This example shows how attributes such as ParagraphStyleReference, that must be 
 (Text string: 'This text has no tsyle set', String cStringr)
 ) edit!
 
-!FancyDraggeableButtonMorph commentStamp: '<historical>' prior: 0!
-for STE scrollbars!
-
-!FancyButtonMorph commentStamp: '<historical>' prior: 0!
-For STE drop down list and fancy scrollbars!
-
 !PluggableStyledTextMorph commentStamp: '<historical>' prior: 0!
 To be used with StyledTextEditors!
-
-!FancyScrollBar commentStamp: '<historical>' prior: 0!
-A Fancy Scrollbar for STE.!
 
 !PluggableDropDownListMorph commentStamp: '<historical>' prior: 0!
 A widget that shows the current value, and can open the full list for user selection.!
@@ -2002,61 +1963,6 @@ stepAt: millisecondSinceLast
 stepTime
 	^ 0  "every cycle"! !
 
-!FancyDraggeableButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:14'!
-drawOn: aCanvas
-
-	self drawSTELookOn: aCanvas! !
-
-!FancyDraggeableButtonMorph methodsFor: 'drawing' stamp: 'jmv 8/23/2020 21:17:53'!
-drawSTELookOn: aCanvas
-
-	| isWide |
-	isWide _ owner morphWidth > owner morphHeight.
-	aCanvas
-		roundRect: (((0@0 extent: extent) insetBy: (isWide ifTrue: [0@4] ifFalse: [4@0])) )
-		color: (Color black)
-		radius: 4.
-	aCanvas
-		roundRect: (((-1@0 extent: extent) insetBy: (isWide ifTrue: [0@4] ifFalse: [5@0 corner: 4@0])) )
-		color: (self isPressed ifTrue: [Color red] ifFalse: [Color gray: 0.86])
-		radius: 4.! !
-
-!FancyDraggeableButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:37'!
-iconColor
-
-	^ self isPressed
-		ifTrue: [ Color red ]
-		ifFalse: [
-			self mouseIsOver
-				ifTrue: [ Color gray: 0.75 ]
-				ifFalse: [ Color white ]].! !
-
-!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 8/4/2014 08:39'!
-drawOn: aCanvas
-			
-	self isRoundButton
-		ifTrue: [
-			aCanvas drawButtonIconFromCurrentMorph ifFalse: [
-				self drawRoundGradientLookOn: aCanvas ]]
-		ifFalse: [
-			self drawSTELookOn: aCanvas.
-			aCanvas drawButtonIconFromCurrentMorph ]! !
-
-!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 11/30/2014 18:51'!
-drawSTELookOn: aCanvas
-
-	aCanvas image: (BitBltCanvas steButtonForm: extent) at:0@0! !
-
-!FancyButtonMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:37'!
-iconColor
-
-	^ self isPressed
-		ifTrue: [ Color red ]
-		ifFalse: [
-			self mouseIsOver
-				ifTrue: [ Color gray: 0.75 ]
-				ifFalse: [ Color white ]].! !
-
 !PluggableActOnReturnKeyListMorph methodsFor: 'model access' stamp: 'jmv 3/13/2012 10:10'!
 getCurrentSelectionIndex
 	^currentIndex ifNil: [ super getCurrentSelectionIndex ]! !
@@ -2080,12 +1986,12 @@ setSelectionIndex: anInteger
 	currentIndex _ anInteger.
 	^ false! !
 
-!PluggableActOnReturnKeyListMorph methodsFor: 'geometry' stamp: 'jmv 1/30/2021 12:46:40'!
+!PluggableActOnReturnKeyListMorph methodsFor: 'geometry' stamp: 'jmv 7/19/2021 16:09:47'!
 updateScrollBarsBounds
 	
 	| t |
 	hideScrollBars = #hide ifTrue: [^self].
-	t _ self scrollBarClass scrollbarThickness.
+	t _ ScrollBar scrollbarThickness.
 	(hideScrollBars = #hideVertical)
 	ifFalse: [
 		scrollBar
@@ -2145,10 +2051,6 @@ returnPressed
 		ifNotNil: [ self realChangeModelSelection ]
 		ifNil: [ self delete ]! !
 
-!PluggableActOnReturnKeyListMorph methodsFor: 'initialization' stamp: 'jmv 4/12/2012 22:05'!
-scrollBarClass
-	^FancyScrollBar! !
-
 !PluggableActOnReturnKeyListMorph methodsFor: 'updating' stamp: 'jmv 4/4/2018 17:03:59'!
 verifyContents
 	super verifyContents.
@@ -2199,16 +2101,12 @@ paragraphStyleNamesAndShortcuts
 possiblyChanged
 	self triggerEvent: #possiblyChanged! !
 
-!PluggableStyledTextMorph methodsFor: 'initialization' stamp: 'jmv 4/12/2012 22:06'!
-scrollBarClass
-	^FancyScrollBar! !
-
 !PluggableStyledTextMorph class methodsFor: 'menu-world' stamp: 'jmv 2/20/2016 18:40'!
 openBasicStyledTextEditor
 
 	SystemWindow editStyledText: StyledTextModel new label: 'Styled Text Editor'! !
 
-!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 8/23/2020 21:30:53'!
+!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 7/19/2021 16:16:43'!
 withModel: aStyledTextModel in: aLayoutMorph
 	| topRow paragraphStyleList characterStyleList textMorph m topRowHeight labelFont topRowElementsWidth |
 	textMorph _ self withModel: aStyledTextModel.
@@ -2247,7 +2145,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 	textMorph when: #possiblyChanged send: #modelChanged to: paragraphStyleList.
 
 	m _ WidgetMorph new.
-	m color: Color transparent.
+	m color: Color transparent; borderColor: Color transparent.
 	topRow addMorph: m layoutSpec: (LayoutSpec fixedWidth: 8).
 
 	m _ LabelMorph contents: 'Character Style'.
@@ -2271,42 +2169,6 @@ withModel: aStyledTextModel in: aLayoutMorph
 		addMorph: textMorph layoutSpec: (LayoutSpec new).
 
 	^aLayoutMorph! !
-
-!FancyScrollBar methodsFor: 'initialization' stamp: 'jmv 4/12/2012 22:12'!
-buttonClass
-	^FancyButtonMorph! !
-
-!FancyScrollBar methodsFor: 'initialization' stamp: 'jmv 4/12/2012 22:23'!
-sliderClass
-	^FancyDraggeableButtonMorph! !
-
-!FancyScrollBar methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:19'!
-drawOn: aCanvas
-
-	aCanvas
-		roundRect: (0@0 extent: extent)
-		color: (Color gray: 0.4)
-		radius: 4.
-	aCanvas
-		roundRect: (1@1 extent: extent-2)
-		color: (Color gray: 0.95)
-		radius: 4! !
-
-!FancyScrollBar methodsFor: 'scrolling' stamp: 'jmv 8/23/2020 21:11:25'!
-sliderGrabbedAt: handPositionRelativeToSlider
-
-	| b |
-	grabPosition _ handPositionRelativeToSlider.
-	b _ slider displayBounds insetBy: (extent x > extent y ifTrue: [0@3] ifFalse: [3@0]).
-	sliderShadow
-		morphPositionInWorld: b origin;
-		morphExtentInWorld: b extent;
-		show! !
-
-!FancyScrollBar class methodsFor: 'constants' stamp: 'jmv 8/13/2013 12:29'!
-scrollbarThickness
-
-	^super scrollbarThickness + 11! !
 
 !PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 8/23/2020 21:07:30'!
 basicOpenList
@@ -2437,7 +2299,7 @@ handlesMouseOver: anEvent
 isListOpen
 	^ listMorph notNil! !
 
-!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'KenD 12/4/2015 21:21'!
+!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 7/19/2021 17:38:25'!
 initialize
 	| icon |
 	super initialize.
@@ -2449,7 +2311,7 @@ initialize
 		ifFalse: [ BitBltCanvas arrowOfDirection: #down size: ScrollBar scrollbarThickness ]
 		ifTrue: [ BitBltCanvas buildArrowOfDirection: #down size: ScrollBar scrollbarThickness].
 			 "@@FIXME@@ arrowWithGradientOfDirection: #down"
-	downButton _ FancyButtonMorph new.
+	downButton _ PluggableButtonMorph new.
 	downButton
 		model: self;
 		roundButtonStyle: false;
