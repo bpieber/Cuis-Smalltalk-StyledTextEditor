@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4681] on 19 July 2021 at 5:43:50 pm'!
+'From Cuis 5.0 [latest update: #4720] on 30 July 2021 at 5:58:20 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 51!
+!provides: 'StyledText' 1 52!
 !requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
@@ -2239,25 +2239,18 @@ drawOn: aCanvas
 		ifTrue: [ self drawSTELookOn: aCanvas ]
 		ifFalse: [ self drawBasicLookOn: aCanvas ]! !
 
-!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:31'!
+!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 7/29/2021 09:39:48'!
 drawSTELookOn: aCanvas
-	| gh |
-"sin gradiente el borde!!"
-	gh _ extent y-8 max: extent y//2.
+
+	"Gradients removed!!"
 	aCanvas
 		roundRect: (0@0 extent: extent)
 		color: (Color gray: 0.4)
-		radius: 4
-		gradientTop: 0.9
-		gradientBottom: 0.6
-		gradientHeight: gh.
+		radius: 4.
 	aCanvas
 		roundRect: (1@1 extent: extent-2)
 		color: (Color gray: 0.95)
-		radius: 4
-		gradientTop: 0.99
-		gradientBottom: 0.96
-		gradientHeight: gh.
+		radius: 4.
 	self drawLabelOn: aCanvas ! !
 
 !PluggableDropDownListMorph methodsFor: 'model' stamp: 'jmv 9/9/2010 15:12'!
