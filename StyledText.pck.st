@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4967] on 9 November 2021 at 5:32:46 pm'!
+'From Cuis 5.0 [latest update: #5004] on 21 December 2021 at 3:40:51 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 53!
+!provides: 'StyledText' 1 54!
 !requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
@@ -1935,13 +1935,11 @@ self assert: aParagraphStyle notNil.
 adoptWidgetsColor: paneColor
 	"We hold a Form in the color instance variable..."! !
 
-!ToolbarMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2013 20:23'!
+!ToolbarMorph methodsFor: 'drawing' stamp: 'jmv 12/21/2021 15:09:53'!
 drawOn: aCanvas
 	aCanvas
 		fillRectangle: (0@0 extent: self morphExtent)
-		tilingWith: color
-		sourceRect: color boundingBox
-		rule: Form paint! !
+		color: color! !
 
 !STEMainMorph methodsFor: 'stepping' stamp: 'jmv 2/27/2016 20:07'!
 stepAt: millisecondSinceLast
@@ -2106,7 +2104,7 @@ openBasicStyledTextEditor
 
 	SystemWindow editStyledText: StyledTextModel new label: 'Styled Text Editor'! !
 
-!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 7/19/2021 16:16:43'!
+!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 12/21/2021 15:39:43'!
 withModel: aStyledTextModel in: aLayoutMorph
 	| topRow paragraphStyleList characterStyleList textMorph m topRowHeight labelFont topRowElementsWidth |
 	textMorph _ self withModel: aStyledTextModel.
@@ -2120,10 +2118,13 @@ withModel: aStyledTextModel in: aLayoutMorph
 	labelFont _ Preferences standardButtonFont.
 	topRowHeight _ labelFont lineSpacing * 2.
 	topRow
+		color: (Color r: 189 g: 214 b: 199 range: 255).
+	"
 		color: (Form 
 			verticalGradient: topRowHeight
 			topColor:  (Color r: 189 g: 214 b: 199 range: 255)
 			bottomColor:  (Color r: 115 g: 134 b: 125 range: 255))..
+"
 "		borderWidth: topRowBorderWidth;"
 "		borderColor: (Color r: 80 g: 80 b: 80 range: 255)."
 

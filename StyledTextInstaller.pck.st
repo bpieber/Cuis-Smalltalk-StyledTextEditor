@@ -131,5 +131,6 @@ initialize
 	"
 	FontFamily readAdditionalTrueTypeFonts.
 	STETheme beCurrent.
-	self new openExamples! !
+	UISupervisor whenUIinSafeState: [
+		self new openExamples].! !
 StyledTextInstaller initialize!
