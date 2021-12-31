@@ -1,6 +1,6 @@
 'From Cuis 5.0 [latest update: #5004] on 21 December 2021 at 3:40:51 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 54!
+!provides: 'StyledText' 1 55!
 !requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
@@ -2145,7 +2145,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 		layoutSpec: (((LayoutSpec fixedWidth: topRowElementsWidth+120 fixedHeight: topRowHeight-4) offAxisEdgeWeight: #center) offAxisEdgeWeight: #center).
 	textMorph when: #possiblyChanged send: #modelChanged to: paragraphStyleList.
 
-	m _ WidgetMorph new.
+	m _ BoxedMorph new.
 	m color: Color transparent; borderColor: Color transparent.
 	topRow addMorph: m layoutSpec: (LayoutSpec fixedWidth: 8).
 
