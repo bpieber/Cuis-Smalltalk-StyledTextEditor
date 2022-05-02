@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #5004] on 21 December 2021 at 3:40:51 pm'!
+'From Cuis 6.0 [latest update: #5129] on 2 May 2022 at 12:04:35 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 55!
+!provides: 'StyledText' 1 56!
 !requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
@@ -1301,20 +1301,20 @@ quit: aKeyboardEvent
 		clearAllClassState: false.
 	^true! !
 
-!StyledTextEditor methodsFor: 'commands' stamp: 'jmv 10/16/2013 20:10'!
+!StyledTextEditor methodsFor: 'commands' stamp: 'jmv 5/2/2022 12:03:17'!
 removeCharacterStyles
 	"Let user remove character styles for the current selection."
 	"This is a user command, and generates undo"
-	| anythingDone |
+	| anythingDone interval |
 	emphasisHere _ emphasisHere reject: [ :att |
 		att class == CharacterStyleReference ].
 
 	anythingDone _ false.
-	self selectionIntervalsDo: [ :interval |
-		interval notEmpty ifTrue: [
-			anythingDone _ true.
-			model logUndoAndRemoveCharacterStylesIn: interval.
-			textComposition recomposeFrom: interval first to: interval last delta: 0 ]].
+	interval _ self selectionInterval.
+	interval notEmpty ifTrue: [
+		anythingDone _ true.
+		model logUndoAndRemoveCharacterStylesIn: interval.
+		textComposition recomposeFrom: interval first to: interval last delta: 0 ].
 
 	anythingDone ifTrue: [
 		self recomputeSelection.	"Needed so visible selection is updated to reflect new visual extent of selection"
@@ -2754,7 +2754,7 @@ testEmptyTextClick
 	self assert: block width = 0.
 	self assert: block left = style firstIndent.! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 10/16/2013 22:11'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 5/2/2022 12:01:12'!
 testEmptyTrailingLine
 	"Test that the special case of an artificial empty last line behaves as normal lines.
 	StyledTextEditorTest new testEmptyTrailingLine
@@ -2775,19 +2775,19 @@ testEmptyTrailingLine
 	canvas _ form1 getCanvas.
 	textComposition setModel: (model contents: emptyText); extentForComposing: 300@300.
 	textComposition composeAll.
-	textComposition selectionStartBlocks: {textComposition defaultCharacterBlock} selectionStopBlocks: {textComposition defaultCharacterBlock}.
+	textComposition selectionStartBlock: textComposition defaultCharacterBlock selectionStopBlock: textComposition defaultCharacterBlock.
 	canvas textComposition: textComposition bounds:  (10@10 extent: 300@300) color: Color black selectionColor: Color blue.
 
 	canvas _ form2 getCanvas.
 	textComposition  setModel: (model contents: notEmptyText); extentForComposing: 300@300.
 	textComposition composeAll.
-	textComposition selectionStartBlocks: {textComposition defaultCharacterBlock} selectionStopBlocks: {textComposition defaultCharacterBlock}.
+	textComposition selectionStartBlock: textComposition defaultCharacterBlock selectionStopBlock: textComposition defaultCharacterBlock.
 	canvas textComposition: textComposition bounds:  (10@10 extent: 300@300) color: Color black selectionColor: Color blue.
 
 	form1 addDeltasFrom: form2.
 	self assert: form1 primCountBits = 0 description: 'Incorrect text cursor for empty text.'! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 1/3/2017 21:30:10'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 5/2/2022 12:01:43'!
 testEmptyTrailingLineNumberedStyle
 	"Test that the special case of an artificial empty last line behaves as normal lines.
 	StyledTextEditorTest new testEmptyTrailingLineNumberedStyle
@@ -2822,13 +2822,13 @@ testEmptyTrailingLineNumberedStyle
 	"Set model again, so editor emhasisHere is considered."
 	textComposition setModel: (model contents: emptyText); extentForComposing: 300@300.
 	textComposition composeAll.
-	textComposition selectionStartBlocks: {textComposition defaultCharacterBlock} selectionStopBlocks: {textComposition defaultCharacterBlock}.
+	textComposition selectionStartBlock: textComposition defaultCharacterBlock selectionStopBlock: textComposition defaultCharacterBlock.
 	canvas textComposition: textComposition bounds:  (10@10 extent: 300@300) color: Color black selectionColor: Color blue.
 
 	canvas _ form2 getCanvas.
 	textComposition setModel: (model contents: notEmptyText); extentForComposing: 300@300.
 	textComposition composeAll.
-	textComposition selectionStartBlocks: {textComposition defaultCharacterBlock} selectionStopBlocks: {textComposition defaultCharacterBlock}.
+	textComposition selectionStartBlock: textComposition defaultCharacterBlock selectionStopBlock: textComposition defaultCharacterBlock.
 	canvas textComposition: textComposition bounds:  (10@10 extent: 300@300) color: Color black selectionColor: Color blue.
 
 	form1 addDeltasFrom: form2.
