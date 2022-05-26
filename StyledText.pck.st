@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #5129] on 2 May 2022 at 12:04:35 pm'!
+'From Cuis 6.0 [latest update: #5202] on 26 May 2022 at 12:49:33 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 56!
+!provides: 'StyledText' 1 57!
 !requires: 'Cuis-Base' 42 2621 nil!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
@@ -326,34 +326,6 @@ Advantages of this approach:
 	listGetter: #list 
 	indexGetter: #sel 
 	indexSetter: #sel:) openInWorld!
-
-!CharacterStyleReference methodsFor: 'printing' stamp: 'jmv 4/6/2011 18:12'!
-printOn: strm
-	super printOn: strm.
-	strm nextPutAll: ': '.
-	characterStyle shortPrintOn: strm! !
-
-!ParagraphStyleReference methodsFor: 'printing' stamp: 'jmv 4/7/2011 17:06'!
-printOn: strm
-	super printOn: strm.
-	strm nextPutAll: ': ('.
-	paragraphStyle name printOn: strm.
-	strm nextPutAll: ') '.
-	paragraphStyle shortPrintOn: strm! !
-
-!STECompleter methodsFor: 'objects from disk' stamp: 'jmv 8/5/2013 10:45'!
-objectForDataStream: refStrm
-
-	^self shallowCopy clearWords; yourself! !
-
-!CharacterStyle methodsFor: 'accessing' stamp: 'jmv 8/26/2009 22:52'!
-name
-	^name! !
-
-!CharacterStyle methodsFor: 'accessing' stamp: 'jmv 8/26/2009 22:52'!
-printOn: aStream
-	super printOn: aStream.
-	aStream space; nextPutAll: self name! !
 
 !StyledTextModel methodsFor: 'accessing' stamp: 'jmv 8/11/2011 11:27'!
 actualContents: aTextOrString
@@ -1691,6 +1663,12 @@ worldMenuForOpenGroup
 			#balloonText 	-> 		'A window for composing Styled text'.
 		} asDictionary}`! !
 
+!CharacterStyleReference methodsFor: 'printing' stamp: 'jmv 4/6/2011 18:12'!
+printOn: strm
+	super printOn: strm.
+	strm nextPutAll: ': '.
+	characterStyle shortPrintOn: strm! !
+
 !CharacterStyleReference methodsFor: 'comparing' stamp: 'jmv 9/21/2011 11:14'!
 = other 
 	^ (other class == self class) 
@@ -1779,6 +1757,14 @@ self assert: aCharacterStyle notNil.
 	attribute _ self new.
 	attribute style: aCharacterStyle.
 	^attribute! !
+
+!ParagraphStyleReference methodsFor: 'printing' stamp: 'jmv 4/7/2011 17:06'!
+printOn: strm
+	super printOn: strm.
+	strm nextPutAll: ': ('.
+	paragraphStyle name printOn: strm.
+	strm nextPutAll: ') '.
+	paragraphStyle shortPrintOn: strm! !
 
 !ParagraphStyleReference methodsFor: 'comparing' stamp: 'jmv 9/21/2011 11:12'!
 = other 
@@ -3815,7 +3801,7 @@ testStylesInPaste4
 	self assert: concatenation runs values first first style name = 'Heading 1'.
 	self assert: concatenation runs values second first style name = 'Imported '! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:47'!
+!StyledTextTest methodsFor: 'tests' stamp: 'jmv 5/26/2022 12:18:55'!
 testStylesInPaste5
 	"
 	self new testStylesInPaste5
@@ -3842,7 +3828,7 @@ testStylesInPaste5
 	"Now we give an text without styles to the Clipboard, and we test that it does include some paragraph style when it comes back"
 	ExtendedClipboardInterface current
 		clearClipboard;
-		addClipboardData: simpleText asString asUtf8 dataFormat: 'public.utf8-plain-text'.
+		addClipboardData: simpleText asString asUtf8Bytes dataFormat: 'public.utf8-plain-text'.
 	editor paste.
 	concatenation _ editor text.
 	self assert: concatenation runs runs size = 1 description: 'Should apply same attributes to the whole text'.
@@ -3891,6 +3877,11 @@ comeFullyUpOnReload: smartRefStream
 	
 	words _ EnglishDict.
 	^ self! !
+
+!STECompleter methodsFor: 'objects from disk' stamp: 'jmv 8/5/2013 10:45'!
+objectForDataStream: refStrm
+
+	^self shallowCopy clearWords; yourself! !
 
 !STECompleter methodsFor: 'entries' stamp: 'jmv 7/14/2011 13:58'!
 addEntriesTo: aStream
@@ -4022,9 +4013,18 @@ font
 		ifNil: [ FontFamily defaultFamilyAndPointSize baseFont ].
 	^base emphasized: emphasis! !
 
+!CharacterStyle methodsFor: 'accessing' stamp: 'jmv 8/26/2009 22:52'!
+name
+	^name! !
+
 !CharacterStyle methodsFor: 'accessing' stamp: 'jmv 4/6/2011 16:18'!
 pointSize
 	^pointSize! !
+
+!CharacterStyle methodsFor: 'accessing' stamp: 'jmv 8/26/2009 22:52'!
+printOn: aStream
+	super printOn: aStream.
+	aStream space; nextPutAll: self name! !
 
 !CharacterStyle methodsFor: 'accessing' stamp: 'jmv 4/7/2011 11:11'!
 shortDescription
