@@ -1,8 +1,7 @@
 'From Cuis 5.0 [latest update: #4681] on 19 July 2021 at 5:43:36 pm'!
 'Description '!
-!provides: 'StyledTextInstaller' 1 9!
+!provides: 'StyledTextInstaller' 1 10!
 !requires: 'StyledText' 1 nil nil!
-!requires: 'VectorGraphics' 1 nil nil!
 !requires: 'Morphic-Widgets-Extras' 1 nil nil!
 !requires: 'StyledTextNotebook' 1 nil nil!
 !requires: 'StyledTextWiki' 1 nil nil!
