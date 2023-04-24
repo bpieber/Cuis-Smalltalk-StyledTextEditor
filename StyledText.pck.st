@@ -1,10 +1,10 @@
-'From Cuis 6.0 [latest update: #5202] on 26 May 2022 at 12:49:33 pm'!
+'From Cuis 6.0 [latest update: #5718] on 25 March 2023 at 8:26:01 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 57!
-!requires: 'Cuis-Base' 42 2621 nil!
-!requires: 'ExtendedClipboard' 1 nil nil!
-!requires: 'Morphic-Widgets-Extras' 1 nil nil!
+!provides: 'StyledText' 1 59!
+!requires: 'Cuis-Base' 60 5718 nil!
+!requires: 'ExtendedClipboard' 1 15 nil!
 !requires: 'RTFExporting' 1 nil nil!
+!requires: 'UI-Entry' 1 35 nil!
 !requires: 'RTFImporting' 1 nil nil!
 !requires: 'RTFTests' 1 nil nil!
 SystemOrganization addCategory: 'StyledText'!
@@ -106,18 +106,18 @@ TextModelMorph subclass: #PluggableStyledTextMorph
 PluggableStyledTextMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableDropDownListMorph category: 'StyledText-Morphic-Windows'!
-PluggableMorph subclass: #PluggableDropDownListMorph
+!classDefinition: #STEPluggableDropDownListMorph category: 'StyledText-Morphic-Windows'!
+PluggableMorph subclass: #STEPluggableDropDownListMorph
 	instanceVariableNames: 'listMorph getListSelector getIndexSelector setIndexSelector label downButton'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Morphic-Windows'!
-!classDefinition: 'PluggableDropDownListMorph class' category: 'StyledText-Morphic-Windows'!
-PluggableDropDownListMorph class
+!classDefinition: 'STEPluggableDropDownListMorph class' category: 'StyledText-Morphic-Windows'!
+STEPluggableDropDownListMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #PluggableFilteringDropDownListMorph category: 'StyledText-Morphic-Windows'!
-PluggableDropDownListMorph subclass: #PluggableFilteringDropDownListMorph
+STEPluggableDropDownListMorph subclass: #PluggableFilteringDropDownListMorph
 	instanceVariableNames: 'editorMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -127,7 +127,7 @@ PluggableFilteringDropDownListMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #FilteringDDLEditorMorph category: 'StyledText-Morphic-Windows'!
-OneLineEditorMorph subclass: #FilteringDDLEditorMorph
+TextEntryMorph subclass: #FilteringDDLEditorMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -276,7 +276,7 @@ This example shows how attributes such as ParagraphStyleReference, that must be 
 !PluggableStyledTextMorph commentStamp: '<historical>' prior: 0!
 To be used with StyledTextEditors!
 
-!PluggableDropDownListMorph commentStamp: '<historical>' prior: 0!
+!STEPluggableDropDownListMorph commentStamp: '<historical>' prior: 0!
 A widget that shows the current value, and can open the full list for user selection.!
 
 !PluggableFilteringDropDownListMorph commentStamp: '<historical>' prior: 0!
@@ -850,7 +850,7 @@ createFeaturesParagraphStyleSet
 	bulleted privateFamilyName: familyName pointSize: 11 emphasis: 0 color: nil
 		alignment: CharacterScanner justifiedCode firstIndent: 10 restIndent: 30 rightIndent: 10
 		spaceBefore: 8 spaceAfter: 2;
-			privateListBulletPattern: '° '.
+			privateListBulletPattern: 'Â° '.
 
 	smalltalkCode _ self paragraphStyleNamedOrNew: 'Smalltalk code'.
 	smalltalkCode privateFamilyName: familyName pointSize: 11 emphasis: 0 color: nil
@@ -953,7 +953,7 @@ createSampleParagraphStyleSet
 	bulleted privateFamilyName: familyName pointSize: s emphasis: 0 color: nil
 		alignment: CharacterScanner justifiedCode firstIndent: s restIndent: s*3 rightIndent: s
 		spaceBefore: s*8//10 spaceAfter: s*2//10;
-			privateListBulletPattern: '° '.
+			privateListBulletPattern: 'Â° '.
 
 	smalltalkCode _ self paragraphStyleNamedOrNew: 'Smalltalk code'.
 	smalltalkCode privateFamilyName: familyName pointSize: s emphasis: 0 color: nil
@@ -2157,7 +2157,7 @@ withModel: aStyledTextModel in: aLayoutMorph
 
 	^aLayoutMorph! !
 
-!PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 8/23/2020 21:07:30'!
+!STEPluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 8/23/2020 21:07:30'!
 basicOpenList
 	| xtraWidth xtraHeight bounds |
 	bounds _ self displayBounds.
@@ -2183,24 +2183,24 @@ basicOpenList
 	xtraHeight > 0 ifTrue: [
 		listMorph morphHeight: (listMorph morphHeight + xtraHeight min: 100) ]! !
 
-!PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 9/10/2010 15:31'!
+!STEPluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 9/10/2010 15:31'!
 closeList
 	listMorph ifNotNil: [
 		listMorph delete.
 		listMorph _ nil ]! !
 
-!PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 2/14/2013 12:41'!
+!STEPluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 2/14/2013 12:41'!
 openList
 	self basicOpenList.
 	self world activeHand newKeyboardFocus: listMorph! !
 
-!PluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 8/16/2010 16:01'!
+!STEPluggableDropDownListMorph methodsFor: 'private' stamp: 'jmv 8/16/2010 16:01'!
 openOrCloseList
 	self isListOpen
 		ifFalse: [ self openList ]
 		ifTrue: [ self closeList ]! !
 
-!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:29'!
+!STEPluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 2/14/2013 13:29'!
 drawBasicLookOn: aCanvas
 
 	aCanvas
@@ -2211,14 +2211,14 @@ drawBasicLookOn: aCanvas
 		baseColorForBorder: borderColor.
 	self drawLabelOn: aCanvas ! !
 
-!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 4/25/2019 10:10:34'!
+!STEPluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 4/25/2019 10:10:34'!
 drawLabelOn: aCanvas 
 
 	| f |
 	f _ Preferences standardButtonFont.
 	aCanvas drawString: label at: 0@(extent y // 2) + (8@ f lineSpacing negated // 2) font: f color: Color black! !
 
-!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:19'!
+!STEPluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:19'!
 drawOn: aCanvas
 
 	"Theme current steButtons"
@@ -2226,7 +2226,7 @@ drawOn: aCanvas
 		ifTrue: [ self drawSTELookOn: aCanvas ]
 		ifFalse: [ self drawBasicLookOn: aCanvas ]! !
 
-!PluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 7/29/2021 09:39:48'!
+!STEPluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 7/29/2021 09:39:48'!
 drawSTELookOn: aCanvas
 
 	"Gradients removed!!"
@@ -2240,20 +2240,20 @@ drawSTELookOn: aCanvas
 		radius: 4.
 	self drawLabelOn: aCanvas ! !
 
-!PluggableDropDownListMorph methodsFor: 'model' stamp: 'jmv 9/9/2010 15:12'!
+!STEPluggableDropDownListMorph methodsFor: 'model' stamp: 'jmv 9/9/2010 15:12'!
 getIndex
 	^model ifNil: [ 0 ] ifNotNil: [ model perform: getIndexSelector ]! !
 
-!PluggableDropDownListMorph methodsFor: 'model' stamp: 'jmv 9/16/2009 13:45'!
+!STEPluggableDropDownListMorph methodsFor: 'model' stamp: 'jmv 9/16/2009 13:45'!
 getList
 	^model perform: getListSelector! !
 
-!PluggableDropDownListMorph methodsFor: 'model' stamp: 'jmv 6/3/2011 14:43'!
+!STEPluggableDropDownListMorph methodsFor: 'model' stamp: 'jmv 6/3/2011 14:43'!
 modelChanged
 	self getLabel.
 	self changed: self! !
 
-!PluggableDropDownListMorph methodsFor: 'accessing' stamp: 'jmv 4/6/2011 19:03'!
+!STEPluggableDropDownListMorph methodsFor: 'accessing' stamp: 'jmv 4/6/2011 19:03'!
 getLabel
 	| i |
 	i _ self getIndex.
@@ -2261,25 +2261,25 @@ getLabel
 		ifTrue: [ '-none-' ]
 		ifFalse: [ self getList at: i ].! !
 
-!PluggableDropDownListMorph methodsFor: 'accessing' stamp: 'jmv 9/10/2010 08:37'!
+!STEPluggableDropDownListMorph methodsFor: 'accessing' stamp: 'jmv 9/10/2010 08:37'!
 label
 	^ label! !
 
-!PluggableDropDownListMorph methodsFor: 'testing' stamp: 'jmv 9/9/2010 14:25'!
+!STEPluggableDropDownListMorph methodsFor: 'testing' stamp: 'jmv 9/9/2010 14:25'!
 handlesMouseDown: evt
 	"So our #mouseDown: method is called"
 	^ true! !
 
-!PluggableDropDownListMorph methodsFor: 'testing' stamp: 'jmv 9/9/2010 14:25'!
+!STEPluggableDropDownListMorph methodsFor: 'testing' stamp: 'jmv 9/9/2010 14:25'!
 handlesMouseOver: anEvent
 	"So our #mouseLeave: method is called"
 	^ true! !
 
-!PluggableDropDownListMorph methodsFor: 'testing' stamp: 'jmv 1/27/2011 16:11'!
+!STEPluggableDropDownListMorph methodsFor: 'testing' stamp: 'jmv 1/27/2011 16:11'!
 isListOpen
 	^ listMorph notNil! !
 
-!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 7/19/2021 17:38:25'!
+!STEPluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 7/19/2021 17:38:25'!
 initialize
 	| icon |
 	super initialize.
@@ -2300,7 +2300,7 @@ initialize
 		action: #openOrCloseList.
 	self addMorph: downButton.! !
 
-!PluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 9/16/2009 11:29'!
+!STEPluggableDropDownListMorph methodsFor: 'initialization' stamp: 'jmv 9/16/2009 11:29'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
 
 	self model: anObject.
@@ -2308,7 +2308,7 @@ model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter:
 	getIndexSelector _ getSelectionSel.
 	setIndexSelector _ setSelectionSel.! !
 
-!PluggableDropDownListMorph methodsFor: 'layout' stamp: 'jmv 8/23/2020 21:15:58'!
+!STEPluggableDropDownListMorph methodsFor: 'layout' stamp: 'jmv 8/23/2020 21:15:58'!
 layoutSubmorphs
 	| e innerBounds |
 	"innerBounds _ self innerBounds".
@@ -2318,7 +2318,7 @@ layoutSubmorphs
 		morphPositionInWorld: innerBounds bottomRight - e;
 		morphExtentInWorld: e asPoint! !
 
-!PluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 8/23/2020 21:07:34'!
+!STEPluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 8/23/2020 21:07:34'!
 mouseLeave: evt
 	super mouseLeave: evt.
 	(listMorph isNil or: [ (listMorph displayBounds containsPoint: evt eventPosition) not])
@@ -2326,12 +2326,12 @@ mouseLeave: evt
 			"Do the call even if the list is not there, as this also clears selection in subclass with entry field"
 			self closeList ]! !
 
-!PluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 8/23/2020 21:07:36'!
+!STEPluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 8/23/2020 21:07:36'!
 mouseLeaveList: evt
 	(self displayBounds containsPoint: evt eventPosition)
 		ifFalse: [ self closeList ]! !
 
-!PluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 6/3/2011 14:44'!
+!STEPluggableDropDownListMorph methodsFor: 'events' stamp: 'jmv 6/3/2011 14:44'!
 setIndex: index
 	model perform: setIndexSelector with: index.
 	"self changed: #getIndex." "No chance to actually see it, it is closed too quickly"
@@ -2339,7 +2339,7 @@ setIndex: index
 	self changed: self.
 	self closeList! !
 
-!PluggableDropDownListMorph class methodsFor: 'instance creation' stamp: 'jmv 9/16/2009 11:30'!
+!STEPluggableDropDownListMorph class methodsFor: 'instance creation' stamp: 'jmv 9/16/2009 11:30'!
 model: anObject listGetter: getListSel indexGetter: getSelectionSel indexSetter: setSelectionSel
 
 	^self new
@@ -3289,49 +3289,49 @@ testOldInstanceDeserialization
 	oldFormat _ '      class structure	   
 Dictionary      0	   AssociationObject        ?SequenceableCollection        ?StyledTextModel       	actionMapactualContents ?Point       xy ?RunArray       runsvalues	lastIndexlastRun
 lastOffsetcanJoinMessage ?ActiveModel       
-   ¥ ?Symbol        ?ArrayedCollection        ?Number        ?	TextModel       
-   ¥
-   ° ?Text       stringruns ?	Rectangle       origincorner ?ProtoObject        ?	Magnitude        ?MessageSend       receiverselector	arguments ?String        ?LargePositiveInteger        ?
+   Â¥ ?Symbol        ?ArrayedCollection        ?Number        ?	TextModel       
+   Â¥
+   Â° ?Text       stringruns ?	Rectangle       origincorner ?ProtoObject        ?	Magnitude        ?MessageSend       receiverselector	arguments ?String        ?LargePositiveInteger        ?
 Collection        ?Array        ?Integer       superclasses        0 ?
    L
   " ?
    c
-  Ì ?
-   Š
-  ² ?
-   Î
+  ÃŒ ?
+   Î³
+  Â² ?
+   ÃŽ
    L ?
-   î
+   Ã®
   { ?
   D
    L ?
   d
-  ’ ?
+  âˆ˜ ?
   {
    c ?
-  œ
+  â†ª
   ? ?
-  ²
+  Â²
   D ?
-  ×
+  Ã—
   { ?
-  ù
+  Ã¹
    L ?
   "nil ?
   ?
    L ?
   X
    L ?
-  ’
+  âˆ˜
   { ?
-  ¨
-  û ?
-  Ì
+  Å¡
+  Ã» ?
+  ÃŒ
    L ?
-  æ
+  Ã¦
   { ?
-  û
-  œ Š×This is a text î             X
+  Ã»
+  â†ª Î³Ã—This is a text Ã®             X
   ecanJoin:and:    !!
 
 '.

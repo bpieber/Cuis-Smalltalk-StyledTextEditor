@@ -1,10 +1,9 @@
-'From Cuis 5.0 [latest update: #4681] on 19 July 2021 at 5:43:36 pm'!
+'From Cuis 6.0 [latest update: #5718] on 25 March 2023 at 8:20:03 pm'!
 'Description '!
-!provides: 'StyledTextInstaller' 1 10!
+!provides: 'StyledTextInstaller' 1 11!
 !requires: 'StyledText' 1 nil nil!
-!requires: 'Morphic-Widgets-Extras' 1 nil nil!
-!requires: 'StyledTextNotebook' 1 nil nil!
 !requires: 'StyledTextWiki' 1 nil nil!
+!requires: 'StyledTextNotebook' 1 nil nil!
 SystemOrganization addCategory: 'StyledTextInstaller'!
 
 
@@ -123,12 +122,11 @@ saveStyledTextEditorDocumentation
 	"self new saveStyledTextEditorDocumentation"
 	self save: 'Styled Text Editor Documentation'! !
 
-!StyledTextInstaller class methodsFor: 'class initialization' stamp: 'jmv 7/17/2013 09:55'!
+!StyledTextInstaller class methodsFor: 'class initialization' stamp: 'Install-StyledTextInstaller 3/25/2023 20:16:31'!
 initialize
 	"
 	StyledTextInstaller initialize
 	"
-	FontFamily readAdditionalTrueTypeFonts.
 	STETheme beCurrent.
 	UISupervisor whenUIinSafeState: [
 		self new openExamples].! !
