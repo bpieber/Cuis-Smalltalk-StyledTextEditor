@@ -1,11 +1,11 @@
-'From Cuis 6.0 [latest update: #5718] on 25 March 2023 at 8:26:01 pm'!
+'From Cuis 6.0 [latest update: #5797] on 8 May 2023 at 10:45:14 am'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 59!
+!provides: 'StyledText' 1 60!
 !requires: 'Cuis-Base' 60 5718 nil!
 !requires: 'ExtendedClipboard' 1 15 nil!
 !requires: 'RTFExporting' 1 nil nil!
-!requires: 'UI-Entry' 1 35 nil!
 !requires: 'RTFImporting' 1 nil nil!
+!requires: 'UI-Entry' 1 35 nil!
 !requires: 'RTFTests' 1 nil nil!
 SystemOrganization addCategory: 'StyledText'!
 SystemOrganization addCategory: 'StyledText-Morphic-Windows'!
@@ -4436,7 +4436,7 @@ asStyledTextWith: aStyleSet
 "	self isStyledText ifTrue: [ ^self ]."
 	^self copy beStyledTextWith: aStyleSet! !
 
-!Text methodsFor: '*styledText' stamp: 'jmv 9/10/2017 16:32:33'!
+!Text methodsFor: '*styledText' stamp: 'jmv 5/8/2023 10:35:20'!
 beNonStyledText
 	"Modify the receiver so that it doesn't include any ParagraphStyle or CharacterStyle.
 	Turn them into TextFontFamilyAndSize, TextEmphasis, TextColor, and TextAlignment as appropriate.
@@ -4452,8 +4452,9 @@ beNonStyledText
 					strm nextPut: (TextEmphasis new emphasisCode: emphasis) ].
 				color ifNotNil: [
 					strm nextPut: (TextColor color: color) ].
-				alignment = 0 ifFalse: [
-					strm nextPut: (TextAlignment new alignment: alignment) ]].
+				alignment notNil ifTrue: [
+					alignment = 0 ifFalse: [
+						strm nextPut: (TextAlignment new alignment: alignment) ]]].
 			attributes do: [ :attribute |
 				attribute isForFormatting ifFalse: [
 					strm nextPut: attribute ]]
@@ -4461,7 +4462,7 @@ beNonStyledText
 	].
 	runs coalesce! !
 
-!Text methodsFor: '*styledText' stamp: 'jmv 9/10/2017 16:33:08'!
+!Text methodsFor: '*styledText' stamp: 'jmv 5/8/2023 10:39:47'!
 beStyledTextWith: aStyleSet
 	"Modify the receiver so that it doesn't include any TextFontFamilyAndSize, TextEmphasis, TextColor, TextAlignment. Turn all of them into ParagraphStyleReference or CharacterStyleReference as appropriate.
 	Keep any TextAttribute that doesn't fit into the Styles: TextAction (and subclasses) and TextAnchor.
@@ -4469,15 +4470,15 @@ beStyledTextWith: aStyleSet
 	
 	"1) break runs so that each Cr char is at the end of a run"
 	| s prevParagraphEnd paragraphEnd newRunSegments thisParagraphStyle thisCharStyle newRunArray nonFormattingAttributes originalParagraphStyle |
-	prevParagraphEnd _ 0.
-	s _ self size.
+	prevParagraphEnd := 0.
+	s := self size.
 	s = 0 ifTrue: [ ^self ].
 
-	newRunSegments _ OrderedCollection new.
+	newRunSegments := OrderedCollection new.
 	[ prevParagraphEnd < s ] whileTrue: [
-		paragraphEnd _ string indexOf: Character newLineCharacter startingAt: prevParagraphEnd+1 ifAbsent: [ s ].
+		paragraphEnd := string indexOf: Character newLineCharacter startingAt: prevParagraphEnd+1 ifAbsent: [ s ].
 		newRunSegments add: (runs copyFrom: prevParagraphEnd+1 to: paragraphEnd).
-		prevParagraphEnd _ paragraphEnd ].
+		prevParagraphEnd := paragraphEnd ].
 	
 	"2) For each Cr, create a a Paragraph attribute for the current attributes at it"
 	
@@ -4486,43 +4487,43 @@ beStyledTextWith: aStyleSet
 	b) If it doesn't end with a Cr, use the Paragraph attribute from the next run. Build a CharAttr.
 		Replace the relevant attributes with the ParaAtt + the CharAtt"
 
-	newRunArray _ nil.
+	newRunArray := nil.
 	newRunSegments do: [ :runArray |
 		self
 			withAttributeValues: runArray last 
 			do: [ :familyName :pointSize :emphasis :color :alignment :characterStyle :paragraphStyle :backgroundColor |
-				originalParagraphStyle _ paragraphStyle.
+				originalParagraphStyle := paragraphStyle.
 				originalParagraphStyle ifNil: [
-					originalParagraphStyle _ familyName
+					originalParagraphStyle := familyName
 						ifNil: [ (aStyleSet defaultStyle) ]
 						ifNotNil: [ ParagraphStyle new
-							privateFamilyName: familyName pointSize: pointSize emphasis: emphasis color: color alignment: alignment ]]].
+							privateFamilyName: familyName pointSize: pointSize emphasis: emphasis color: color alignment: (alignment ifNil: [0]) ]]].
 
-		thisParagraphStyle _ aStyleSet equivalentOrSameNamePSTo: originalParagraphStyle orAddVolatile: 'Imported '.
+		thisParagraphStyle := aStyleSet equivalentOrSameNamePSTo: originalParagraphStyle orAddVolatile: 'Imported '.
 		"thisParagraphStyle _ aStyleSet equivalentPSTo: thisParagraphStyle orAddVolatile: 'Imported '."
 
 		runArray mapValues: [ :attributes |
-			nonFormattingAttributes _ attributes reject: [ :attr | attr isForFormatting ].
+			nonFormattingAttributes := attributes reject: [ :attr | attr isForFormatting ].
 			attributes = nonFormattingAttributes
 				ifTrue: [ { ParagraphStyleReference for: thisParagraphStyle }, nonFormattingAttributes ]					"If only attribute is, for example, a TextAnchor (to a Form), then just add paragraph style"
 				ifFalse: [
 					self withAttributeValues: attributes do: [ :familyName :pointSize :emphasis :color :alignment :characterStyle :paragraphStyle :backgroundColor |
-						thisCharStyle _ characterStyle.
+						thisCharStyle := characterStyle.
 						(thisCharStyle isNil and: [ familyName = originalParagraphStyle familyName and: [ pointSize = originalParagraphStyle pointSize and: [ 
 								emphasis = originalParagraphStyle emphasis and: [ color = originalParagraphStyle color ]]]])
 							ifTrue: [ { ParagraphStyleReference for: thisParagraphStyle }, nonFormattingAttributes ]
 							ifFalse: [
 								thisCharStyle ifNil: [
-									thisCharStyle _ CharacterStyle new
+									thisCharStyle := CharacterStyle new
 										privateFamilyName: familyName pointSize: pointSize emphasis: emphasis color: color].
 
-								thisCharStyle _ aStyleSet equivalentOrSameNameCSTo: thisCharStyle orAddVolatile: 'Imported '.
+								thisCharStyle := aStyleSet equivalentOrSameNameCSTo: thisCharStyle orAddVolatile: 'Imported '.
 								"thisCharStyle _ aStyleSet equivalentCSTo: thisCharStyle orAddVolatile: 'Imported '."
 
 								{ ParagraphStyleReference for: thisParagraphStyle.
 								CharacterStyleReference for: thisCharStyle },
 								nonFormattingAttributes ]]]].
-			newRunArray _ newRunArray ifNil: [ runArray ] ifNotNil: [ newRunArray, runArray ]].
+			newRunArray := newRunArray ifNil: [ runArray ] ifNotNil: [ newRunArray, runArray ]].
 	self privateSetRuns: newRunArray.
 	runs coalesce! !
 
