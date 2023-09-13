@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:48:38 am'!
+'From Cuis 6.0 [latest update: #6025] on 12 September 2023 at 5:08:08 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'RTFImporting' 1 6!
+!provides: 'RTFImporting' 1 7!
 !requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 SystemOrganization addCategory: #RTFimporting!
@@ -285,14 +285,6 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 Not a real Unicode implementation. Just compatibility for Sophie-RTF. Answers instances of Character (i.e. ISO-8859-15).
 Based on http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-15.TXT!
 
-!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:21'!
-name
-	^name! !
-
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
-name
-	^name! !
-
 !RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/14/2006 16:25'!
 addScannedString
 	| scannedString |
@@ -471,6 +463,10 @@ family
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:31'!
 family: f
 	family := f! !
+
+!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:21'!
+name
+	^name! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:21'!
 name: fn
@@ -1515,6 +1511,10 @@ basedon: bo
 	basedon := bo! !
 
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
+name
+	^name! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
 name: n
 	name := n! !
 
@@ -1570,20 +1570,20 @@ resetStyle: builder
 addToText: aString
 	self addToText: aString specialAttributes: nil! !
 
-!RTFTextBuilder methodsFor: 'private' stamp: 'jmv 4/11/2011 21:58'!
+!RTFTextBuilder methodsFor: 'private' stamp: 'bp 9/12/2023 17:06:45'!
 addToText: aString specialAttributes: nonFormattingAttributesOrNil
 	"nonFormattingAttributesOrNil should only contains attributes that answer false to #isForFormatting"
 	| attributes emphasis |
 
-	attributes _ Array streamContents: [ :strm |
+	attributes := Array streamContents: [ :strm |
 		fontFamilyName ifNotNil: [
-			fontPointSize ifNotNil: [
-				strm nextPut: (TextFontFamilyAndSize
-					familyName: fontFamilyName pointSize: fontPointSize) ]].
-		emphasis _ 0.
-		bold ifTrue: [ emphasis _ emphasis + 1 ].
-		italic ifTrue: [ emphasis _ emphasis + 2 ].
-		underline ifTrue: [ emphasis _ emphasis + 4 ].
+			strm nextPut: (TextFontFamily familyName: fontFamilyName) ].
+		fontPointSize ifNotNil: [
+			strm nextPut: (TextFontSize pointSize: fontPointSize) ].
+		emphasis := 0.
+		bold ifTrue: [ emphasis := emphasis + 1 ].
+		italic ifTrue: [ emphasis := emphasis + 2 ].
+		underline ifTrue: [ emphasis := emphasis + 4 ].
 		emphasis > 0 ifTrue: [
 			strm nextPut: (TextEmphasis new emphasisCode: emphasis) ].
 		currentFgColor ifNotNil: [
@@ -1674,7 +1674,7 @@ convertAndSkip: string
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 9/5/2016 20:30:31'!
 buildAddBullet
-	self addUnicodeContents: (RTFUnicode codePoint: 16r2022 or: $°) asString! !
+	self addUnicodeContents: (RTFUnicode codePoint: 16r2022 or: $Â°) asString! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 9/5/2016 20:30:34'!
 buildAddDoubleLeftQuote

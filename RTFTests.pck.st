@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:47:03 am'!
+'From Cuis 6.0 [latest update: #6025] on 12 September 2023 at 5:08:13 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'RTFTests' 1 4!
+!provides: 'RTFTests' 1 5!
 !requires: 'RTFExporting' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
 SystemOrganization addCategory: #RTFtests!
@@ -645,7 +645,7 @@ textSample2
 		(Text string: 'This text has no tyle set', String newLineString),
 		(Text string: 'This is right', String newLineString attribute: TextAlignment rightFlush)! !
 
-!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 6/11/2020 16:34:31'!
+!RTFConversionTest class methodsFor: 'text samples' stamp: 'bp 9/12/2023 17:04:00'!
 textSample3
 	"
 	| text |
@@ -654,18 +654,18 @@ textSample3
 	Clipboard default storeObject: text
 	"
 	| familyName |
-	familyName _ FontFamily defaultFamilyName.
+	familyName := FontFamily defaultFamilyName.
 	^ (
 		(Text string: 'normal '),
-		(Text string: 'bold ' attributes: {(TextFontFamilyAndSize familyName: familyName pointSize: 17). TextEmphasis bold}),
-		(Text string: 'italic ' attributes: {(TextFontFamilyAndSize familyName: familyName pointSize: 6). TextEmphasis italic}),
-		(Text string: 'boldGreen ' attributes: {(TextFontFamilyAndSize familyName: familyName pointSize: 12). TextEmphasis bold. TextColor green}),
+		(Text string: 'bold ' attributes: {(TextFontFamily familyName: familyName). (TextFontSize pointSize: 17). TextEmphasis bold}),
+		(Text string: 'italic ' attributes: {(TextFontFamily familyName: familyName). (TextFontSize pointSize: 6). TextEmphasis italic}),
+		(Text string: 'boldGreen ' attributes: {(TextFontFamily familyName: familyName). (TextFontSize pointSize: 12). TextEmphasis bold. TextColor green}),
 		(Text string: 'red ' attributes: {TextColor red}),
 		(Text string: 'underlined ' attribute: (TextEmphasis underlined)),
 		(Text string: 'normal ' attributes: #())
 	)! !
 
-!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 6/11/2020 16:35:02'!
+!RTFConversionTest class methodsFor: 'text samples' stamp: 'bp 9/12/2023 17:05:10'!
 textSample4
 	"
 	| text |
@@ -674,14 +674,14 @@ textSample4
 	Clipboard default storeObject: text
 	"
 	| familyName |
-	familyName _ FontFamily defaultFamilyName.
+	familyName := FontFamily defaultFamilyName.
 	^ (
 		(Text string: 'normal '),
-		(Text string: 'bold ' attributes: { (TextFontFamilyAndSize familyName: familyName pointSize: 17). TextEmphasis bold }),
-		(Text string: 'italic ' attributes: { (TextFontFamilyAndSize familyName: familyName pointSize: 6). TextEmphasis italic }),
-		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: familyName pointSize: 12). TextEmphasis bold. TextColor green }),
-		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: familyName pointSize: 12). TextEmphasis bold. TextColor green }),
-		(Text string: 'boldGreen ' attributes: { (TextFontFamilyAndSize familyName: familyName pointSize: 12). TextEmphasis bold. TextColor green }),
+		(Text string: 'bold ' attributes: { (TextFontFamily familyName: familyName). (TextFontSize pointSize: 17). TextEmphasis bold }),
+		(Text string: 'italic ' attributes: { (TextFontFamily familyName: familyName). (TextFontSize pointSize: 6). TextEmphasis italic }),
+		(Text string: 'boldGreen ' attributes: { (TextFontFamily familyName: familyName). (TextFontSize pointSize: 12). TextEmphasis bold. TextColor green }),
+		(Text string: 'boldGreen ' attributes: { (TextFontFamily familyName: familyName). (TextFontSize pointSize: 12). TextEmphasis bold. TextColor green }),
+		(Text string: 'boldGreen ' attributes: { (TextFontFamily familyName: familyName). (TextFontSize pointSize: 12). TextEmphasis bold. TextColor green }),
 		(Text string: 'red ' attributes: {TextColor red}),
 		(Text string: 'underlined ' attribute: (TextEmphasis underlined)),
 		(Text string: 'struckThrough ' attribute: (TextEmphasis struckThrough)),
@@ -706,9 +706,9 @@ textSample6
 	text edit.
 	Clipboard default storeObject: text
 	"
-	^'Tom· ag¸ita, Òand˙. —and˙. 
-Ω¥Æ•®¯ÂﬂÉ©›≤ﬁ¨≠Á¶µ.
-º¥Æ¡®ÿ≈ÕŒœ©”‘ﬁ“≠«¶–¬' asText! !
+	^'Tom√° ag√ºita, √±and√∫. √ëand√∫. 
+≈ì≈Ω¬Æ¬•≈°√∏√•ﬂÉ¬©›≤ﬁ¨¬≠Á¶µ.
+≈í≈Ω¬Æh√ò√Ö√ç√éœ©√ì√î√û“≠«¶√ê√Ç' asText! !
 
 !RTFTokenTest methodsFor: 'as yet unclassified' stamp: 'MR 5/24/2006 12:10'!
 testCreateBlockClose
