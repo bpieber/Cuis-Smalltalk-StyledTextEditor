@@ -1,19 +1,19 @@
-'From Cuis 6.0 [latest update: #5718] on 25 March 2023 at 8:20:03 pm'!
+'From Cuis 6.0 [latest update: #6031] on 16 September 2023 at 4:13:40 pm'!
 'Description '!
 !provides: 'StyledTextInstaller' 1 11!
 !requires: 'StyledText' 1 nil nil!
 !requires: 'StyledTextWiki' 1 nil nil!
 !requires: 'StyledTextNotebook' 1 nil nil!
-SystemOrganization addCategory: 'StyledTextInstaller'!
+SystemOrganization addCategory: #StyledTextInstaller!
 
 
-!classDefinition: #StyledTextInstaller category: 'StyledTextInstaller'!
+!classDefinition: #StyledTextInstaller category: #StyledTextInstaller!
 Object subclass: #StyledTextInstaller
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledTextInstaller'!
-!classDefinition: 'StyledTextInstaller class' category: 'StyledTextInstaller'!
+!classDefinition: 'StyledTextInstaller class' category: #StyledTextInstaller!
 StyledTextInstaller class
 	instanceVariableNames: ''!
 

@@ -1,4 +1,4 @@
-'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:47:03 am'!
+'From Cuis 6.0 [latest update: #6031] on 16 September 2023 at 4:13:25 pm'!
 'Description Please enter a description for this package.'!
 !provides: 'RTFTests' 1 4!
 !requires: 'RTFExporting' 1 nil nil!
@@ -706,9 +706,9 @@ textSample6
 	text edit.
 	Clipboard default storeObject: text
 	"
-	^'Tomá agüita, ñandú. Ñandú. 
-½´®¥¨øåßƒ©İ²Ş¬­ç¦µ.
-¼´®Á¨ØÅÍÎÏ©ÓÔŞÒ­Ç¦ĞÂ' asText! !
+	^'TomÃ¡ agÃ¼ita, Ã±andÃº. Ã‘andÃº. 
+Å“Å½Â®Â¥Å¡Ã¸Ã¥ßƒÂ©İ²Ş¬Â­ç¦µ.
+Å’Å½Â®hÃ˜Ã…ÃÃÏ©Ã“Ã”ÃÒ­Ç¦ÃÃ‚' asText! !
 
 !RTFTokenTest methodsFor: 'as yet unclassified' stamp: 'MR 5/24/2006 12:10'!
 testCreateBlockClose

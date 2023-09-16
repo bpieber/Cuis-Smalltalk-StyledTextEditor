@@ -1,238 +1,238 @@
-'From Cuis 6.0 [latest update: #5797] on 8 May 2023 at 10:45:14 am'!
+'From Cuis 6.0 [latest update: #6031] on 16 September 2023 at 4:13:32 pm'!
 'Description Please enter a description for this package.'!
 !provides: 'StyledText' 1 60!
 !requires: 'Cuis-Base' 60 5718 nil!
 !requires: 'ExtendedClipboard' 1 15 nil!
 !requires: 'RTFExporting' 1 nil nil!
-!requires: 'RTFImporting' 1 nil nil!
 !requires: 'UI-Entry' 1 35 nil!
+!requires: 'RTFImporting' 1 nil nil!
 !requires: 'RTFTests' 1 nil nil!
-SystemOrganization addCategory: 'StyledText'!
-SystemOrganization addCategory: 'StyledText-Morphic-Windows'!
-SystemOrganization addCategory: 'StyledText-Morphic'!
-SystemOrganization addCategory: 'StyledText-Themes'!
-SystemOrganization addCategory: 'StyledText-Tests'!
-SystemOrganization addCategory: 'StyledText-Completion'!
-SystemOrganization addCategory: 'StyledText-RTF-importing'!
+SystemOrganization addCategory: #StyledText!
+SystemOrganization addCategory: #'StyledText-Morphic-Windows'!
+SystemOrganization addCategory: #'StyledText-Morphic'!
+SystemOrganization addCategory: #'StyledText-Themes'!
+SystemOrganization addCategory: #'StyledText-Tests'!
+SystemOrganization addCategory: #'StyledText-Completion'!
+SystemOrganization addCategory: #'StyledText-RTF-importing'!
 
 
-!classDefinition: #StyledTextModel category: 'StyledText'!
+!classDefinition: #StyledTextModel category: #StyledText!
 TextModel subclass: #StyledTextModel
 	instanceVariableNames: 'styleSet fileName'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText'!
-!classDefinition: 'StyledTextModel class' category: 'StyledText'!
+!classDefinition: 'StyledTextModel class' category: #StyledText!
 StyledTextModel class
 	instanceVariableNames: ''!
 
-!classDefinition: #StyleSet category: 'StyledText'!
+!classDefinition: #StyleSet category: #StyledText!
 ActiveModel subclass: #StyleSet
 	instanceVariableNames: 'paragraphStyles characterStyles volatileParaStyles volatileCharStyles'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText'!
-!classDefinition: 'StyleSet class' category: 'StyledText'!
+!classDefinition: 'StyleSet class' category: #StyledText!
 StyleSet class
 	instanceVariableNames: ''!
 
-!classDefinition: #StyledTextEditor category: 'StyledText'!
+!classDefinition: #StyledTextEditor category: #StyledText!
 TextEditor subclass: #StyledTextEditor
 	instanceVariableNames: 'cmdShortcuts cmdActions'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText'!
-!classDefinition: 'StyledTextEditor class' category: 'StyledText'!
+!classDefinition: 'StyledTextEditor class' category: #StyledText!
 StyledTextEditor class
 	instanceVariableNames: ''!
 
-!classDefinition: #CharacterStyleReference category: 'StyledText'!
+!classDefinition: #CharacterStyleReference category: #StyledText!
 TextAttribute subclass: #CharacterStyleReference
 	instanceVariableNames: 'characterStyle'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText'!
-!classDefinition: 'CharacterStyleReference class' category: 'StyledText'!
+!classDefinition: 'CharacterStyleReference class' category: #StyledText!
 CharacterStyleReference class
 	instanceVariableNames: ''!
 
-!classDefinition: #ParagraphStyleReference category: 'StyledText'!
+!classDefinition: #ParagraphStyleReference category: #StyledText!
 TextAttribute subclass: #ParagraphStyleReference
 	instanceVariableNames: 'paragraphStyle'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText'!
-!classDefinition: 'ParagraphStyleReference class' category: 'StyledText'!
+!classDefinition: 'ParagraphStyleReference class' category: #StyledText!
 ParagraphStyleReference class
 	instanceVariableNames: ''!
 
-!classDefinition: #ToolbarMorph category: 'StyledText-Morphic-Windows'!
+!classDefinition: #ToolbarMorph category: #'StyledText-Morphic-Windows'!
 LayoutMorph subclass: #ToolbarMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Morphic-Windows'!
-!classDefinition: 'ToolbarMorph class' category: 'StyledText-Morphic-Windows'!
+!classDefinition: 'ToolbarMorph class' category: #'StyledText-Morphic-Windows'!
 ToolbarMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #STEMainMorph category: 'StyledText-Morphic'!
+!classDefinition: #STEMainMorph category: #'StyledText-Morphic'!
 LayoutMorph subclass: #STEMainMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Morphic'!
-!classDefinition: 'STEMainMorph class' category: 'StyledText-Morphic'!
+!classDefinition: 'STEMainMorph class' category: #'StyledText-Morphic'!
 STEMainMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableActOnReturnKeyListMorph category: 'StyledText-Morphic-Windows'!
+!classDefinition: #PluggableActOnReturnKeyListMorph category: #'StyledText-Morphic-Windows'!
 PluggableListMorph subclass: #PluggableActOnReturnKeyListMorph
 	instanceVariableNames: 'currentIndex'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Morphic-Windows'!
-!classDefinition: 'PluggableActOnReturnKeyListMorph class' category: 'StyledText-Morphic-Windows'!
+!classDefinition: 'PluggableActOnReturnKeyListMorph class' category: #'StyledText-Morphic-Windows'!
 PluggableActOnReturnKeyListMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableStyledTextMorph category: 'StyledText-Morphic-Windows'!
+!classDefinition: #PluggableStyledTextMorph category: #'StyledText-Morphic-Windows'!
 TextModelMorph subclass: #PluggableStyledTextMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Morphic-Windows'!
-!classDefinition: 'PluggableStyledTextMorph class' category: 'StyledText-Morphic-Windows'!
+!classDefinition: 'PluggableStyledTextMorph class' category: #'StyledText-Morphic-Windows'!
 PluggableStyledTextMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #STEPluggableDropDownListMorph category: 'StyledText-Morphic-Windows'!
+!classDefinition: #STEPluggableDropDownListMorph category: #'StyledText-Morphic-Windows'!
 PluggableMorph subclass: #STEPluggableDropDownListMorph
 	instanceVariableNames: 'listMorph getListSelector getIndexSelector setIndexSelector label downButton'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Morphic-Windows'!
-!classDefinition: 'STEPluggableDropDownListMorph class' category: 'StyledText-Morphic-Windows'!
+!classDefinition: 'STEPluggableDropDownListMorph class' category: #'StyledText-Morphic-Windows'!
 STEPluggableDropDownListMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #PluggableFilteringDropDownListMorph category: 'StyledText-Morphic-Windows'!
+!classDefinition: #PluggableFilteringDropDownListMorph category: #'StyledText-Morphic-Windows'!
 STEPluggableDropDownListMorph subclass: #PluggableFilteringDropDownListMorph
 	instanceVariableNames: 'editorMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Morphic-Windows'!
-!classDefinition: 'PluggableFilteringDropDownListMorph class' category: 'StyledText-Morphic-Windows'!
+!classDefinition: 'PluggableFilteringDropDownListMorph class' category: #'StyledText-Morphic-Windows'!
 PluggableFilteringDropDownListMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #FilteringDDLEditorMorph category: 'StyledText-Morphic-Windows'!
+!classDefinition: #FilteringDDLEditorMorph category: #'StyledText-Morphic-Windows'!
 TextEntryMorph subclass: #FilteringDDLEditorMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Morphic-Windows'!
-!classDefinition: 'FilteringDDLEditorMorph class' category: 'StyledText-Morphic-Windows'!
+!classDefinition: 'FilteringDDLEditorMorph class' category: #'StyledText-Morphic-Windows'!
 FilteringDDLEditorMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #STETheme category: 'StyledText-Themes'!
+!classDefinition: #STETheme category: #'StyledText-Themes'!
 Theme subclass: #STETheme
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Themes'!
-!classDefinition: 'STETheme class' category: 'StyledText-Themes'!
+!classDefinition: 'STETheme class' category: #'StyledText-Themes'!
 STETheme class
 	instanceVariableNames: ''!
 
-!classDefinition: #StyledTextEditorTest category: 'StyledText-Tests'!
+!classDefinition: #StyledTextEditorTest category: #'StyledText-Tests'!
 TestCase subclass: #StyledTextEditorTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Tests'!
-!classDefinition: 'StyledTextEditorTest class' category: 'StyledText-Tests'!
+!classDefinition: 'StyledTextEditorTest class' category: #'StyledText-Tests'!
 StyledTextEditorTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #StyledTextModelTest category: 'StyledText-Tests'!
+!classDefinition: #StyledTextModelTest category: #'StyledText-Tests'!
 TestCase subclass: #StyledTextModelTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Tests'!
-!classDefinition: 'StyledTextModelTest class' category: 'StyledText-Tests'!
+!classDefinition: 'StyledTextModelTest class' category: #'StyledText-Tests'!
 StyledTextModelTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #StyledTextTest category: 'StyledText-Tests'!
+!classDefinition: #StyledTextTest category: #'StyledText-Tests'!
 TestCase subclass: #StyledTextTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Tests'!
-!classDefinition: 'StyledTextTest class' category: 'StyledText-Tests'!
+!classDefinition: 'StyledTextTest class' category: #'StyledText-Tests'!
 StyledTextTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #STECompleter category: 'StyledText-Completion'!
+!classDefinition: #STECompleter category: #'StyledText-Completion'!
 AutoCompleter subclass: #STECompleter
 	instanceVariableNames: 'words'
 	classVariableNames: 'EnglishDict'
 	poolDictionaries: ''
 	category: 'StyledText-Completion'!
-!classDefinition: 'STECompleter class' category: 'StyledText-Completion'!
+!classDefinition: 'STECompleter class' category: #'StyledText-Completion'!
 STECompleter class
 	instanceVariableNames: ''!
 
-!classDefinition: #RTFStyledTextBuilder category: 'StyledText-RTF-importing'!
+!classDefinition: #RTFStyledTextBuilder category: #'StyledText-RTF-importing'!
 RTFTextBuilder subclass: #RTFStyledTextBuilder
 	instanceVariableNames: 'paragraphStyleInUse characterStyleInUse'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-RTF-importing'!
-!classDefinition: 'RTFStyledTextBuilder class' category: 'StyledText-RTF-importing'!
+!classDefinition: 'RTFStyledTextBuilder class' category: #'StyledText-RTF-importing'!
 RTFStyledTextBuilder class
 	instanceVariableNames: ''!
 
-!classDefinition: #CharacterStyle category: 'StyledText'!
+!classDefinition: #CharacterStyle category: #StyledText!
 Object subclass: #CharacterStyle
 	instanceVariableNames: 'name familyName pointSize emphasis color'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText'!
-!classDefinition: 'CharacterStyle class' category: 'StyledText'!
+!classDefinition: 'CharacterStyle class' category: #StyledText!
 CharacterStyle class
 	instanceVariableNames: ''!
 
-!classDefinition: #ParagraphStyle category: 'StyledText'!
+!classDefinition: #ParagraphStyle category: #StyledText!
 CharacterStyle subclass: #ParagraphStyle
 	instanceVariableNames: 'alignment tabsArray firstIndent restIndent rightIndent spaceBefore spaceAfter listBulletPattern doesShout'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText'!
-!classDefinition: 'ParagraphStyle class' category: 'StyledText'!
+!classDefinition: 'ParagraphStyle class' category: #StyledText!
 ParagraphStyle class
 	instanceVariableNames: ''!
 
-!classDefinition: #StyledTextBuilder category: 'StyledText'!
+!classDefinition: #StyledTextBuilder category: #StyledText!
 Object subclass: #StyledTextBuilder
 	instanceVariableNames: 'styleDict text characterStyleStack textStream'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText'!
-!classDefinition: 'StyledTextBuilder class' category: 'StyledText'!
+!classDefinition: 'StyledTextBuilder class' category: #StyledText!
 StyledTextBuilder class
 	instanceVariableNames: ''!
 
-!classDefinition: #SampleListModel category: 'StyledText-Tests'!
+!classDefinition: #SampleListModel category: #'StyledText-Tests'!
 Object subclass: #SampleListModel
 	instanceVariableNames: 'sel'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledText-Tests'!
-!classDefinition: 'SampleListModel class' category: 'StyledText-Tests'!
+!classDefinition: 'SampleListModel class' category: #'StyledText-Tests'!
 SampleListModel class
 	instanceVariableNames: ''!
 

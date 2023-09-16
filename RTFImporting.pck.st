@@ -1,4 +1,4 @@
-'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:48:38 am'!
+'From Cuis 6.0 [latest update: #6031] on 16 September 2023 at 4:13:18 pm'!
 'Description Please enter a description for this package.'!
 !provides: 'RTFImporting' 1 6!
 !requires: 'ExtendedClipboard' 1 nil nil!
@@ -285,14 +285,6 @@ newline is a Mac-hack. No newlines are expected in a RTF, but Mac makes escaped 
 Not a real Unicode implementation. Just compatibility for Sophie-RTF. Answers instances of Character (i.e. ISO-8859-15).
 Based on http://www.unicode.org/Public/MAPPINGS/ISO8859/8859-15.TXT!
 
-!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:21'!
-name
-	^name! !
-
-!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
-name
-	^name! !
-
 !RTFChunkScanner methodsFor: 'private' stamp: 'mir 8/14/2006 16:25'!
 addScannedString
 	| scannedString |
@@ -471,6 +463,10 @@ family
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/5/2006 01:31'!
 family: f
 	family := f! !
+
+!RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:21'!
+name
+	^name! !
 
 !RTFFontInfo methodsFor: 'accessing' stamp: 'tat 5/3/2006 02:21'!
 name: fn
@@ -1515,6 +1511,10 @@ basedon: bo
 	basedon := bo! !
 
 !RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
+name
+	^name! !
+
+!RTFStylesheet methodsFor: 'accessing' stamp: 'tat 5/5/2006 14:49'!
 name: n
 	name := n! !
 
@@ -1674,7 +1674,7 @@ convertAndSkip: string
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 9/5/2016 20:30:31'!
 buildAddBullet
-	self addUnicodeContents: (RTFUnicode codePoint: 16r2022 or: $°) asString! !
+	self addUnicodeContents: (RTFUnicode codePoint: 16r2022 or: $Â°) asString! !
 
 !RTFTextBuilder methodsFor: 'building-characters' stamp: 'jmv 9/5/2016 20:30:34'!
 buildAddDoubleLeftQuote

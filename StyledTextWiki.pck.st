@@ -1,52 +1,43 @@
-'From Cuis 5.0 [latest update: #4967] on 9 November 2021 at 5:32:59 pm'!
+'From Cuis 6.0 [latest update: #6031] on 16 September 2023 at 4:13:53 pm'!
 'Description Please enter a description for this package.'!
 !provides: 'StyledTextWiki' 1 2!
 !requires: 'StyledText' 1 nil nil!
-SystemOrganization addCategory: 'StyledTextWiki'!
+SystemOrganization addCategory: #StyledTextWiki!
 
 
-!classDefinition: #StyledTextWiki category: 'StyledTextWiki'!
+!classDefinition: #StyledTextWiki category: #StyledTextWiki!
 Object subclass: #StyledTextWiki
 	instanceVariableNames: 'textModel pages currentPage'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledTextWiki'!
-!classDefinition: 'StyledTextWiki class' category: 'StyledTextWiki'!
+!classDefinition: 'StyledTextWiki class' category: #StyledTextWiki!
 StyledTextWiki class
 	instanceVariableNames: ''!
 
-!classDefinition: #StyledTextWikiEditor category: 'StyledTextWiki'!
+!classDefinition: #StyledTextWikiEditor category: #StyledTextWiki!
 Object subclass: #StyledTextWikiEditor
 	instanceVariableNames: 'wiki textModel textMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledTextWiki'!
-!classDefinition: 'StyledTextWikiEditor class' category: 'StyledTextWiki'!
+!classDefinition: 'StyledTextWikiEditor class' category: #StyledTextWiki!
 StyledTextWikiEditor class
 	instanceVariableNames: ''!
 
-!classDefinition: #StyledTextWikiPage category: 'StyledTextWiki'!
+!classDefinition: #StyledTextWikiPage category: #StyledTextWiki!
 Object subclass: #StyledTextWikiPage
 	instanceVariableNames: 'wiki text'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'StyledTextWiki'!
-!classDefinition: 'StyledTextWikiPage class' category: 'StyledTextWiki'!
+!classDefinition: 'StyledTextWikiPage class' category: #StyledTextWiki!
 StyledTextWikiPage class
 	instanceVariableNames: ''!
 
 
 !StyledTextWikiEditor commentStamp: 'bp 12/18/2011 18:09' prior: 0!
 (StyledTextWikiEditor wiki: StyledTextWiki new) morphicWindow openInWorld!
-
-!StyledTextWikiPage methodsFor: 'as yet unclassified' stamp: 'jmv 3/14/2012 08:27'!
-name
-	| string |
-	string _ self text asString lines first.
-	string size > 30 ifTrue: [
-		string _ string copyFrom: 1 to: 30 ].
-	string ifEmpty: [ ^ '(Empty page)' ].
-	^ string! !
 
 !StyledTextWiki methodsFor: 'as yet unclassified' stamp: 'bp 10/24/2010 16:58'!
 currentPage
@@ -169,6 +160,15 @@ updateCurrentPage
 !StyledTextWikiEditor class methodsFor: 'as yet unclassified' stamp: 'bp 10/24/2010 16:56'!
 wiki: aStyledTextWiki
 	^self new setWiki: aStyledTextWiki! !
+
+!StyledTextWikiPage methodsFor: 'as yet unclassified' stamp: 'jmv 3/14/2012 08:27'!
+name
+	| string |
+	string _ self text asString lines first.
+	string size > 30 ifTrue: [
+		string _ string copyFrom: 1 to: 30 ].
+	string ifEmpty: [ ^ '(Empty page)' ].
+	^ string! !
 
 !StyledTextWikiPage methodsFor: 'as yet unclassified' stamp: 'jmv 1/13/2012 14:03'!
 setWiki: aStyledTextWiki
