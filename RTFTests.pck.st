@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #6025] on 12 September 2023 at 5:08:13 pm'!
+'From Cuis 6.0 [latest update: #6032] on 17 September 2023 at 6:19:19 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'RTFTests' 1 5!
+!provides: 'RTFTests' 1 6!
 !requires: 'RTFExporting' 1 nil nil!
 !requires: 'RTFImporting' 1 nil nil!
 SystemOrganization addCategory: #RTFtests!
@@ -698,7 +698,7 @@ textSample5
 	"
 	^'Hello', (Text withForm: (BoxedMorph new imageForm: 32)), 'world'! !
 
-!RTFConversionTest class methodsFor: 'text samples' stamp: 'jmv 11/22/2011 15:00'!
+!RTFConversionTest class methodsFor: 'text samples' stamp: 'bp 9/17/2023 18:19:11'!
 textSample6
 	"
 	| text |
@@ -706,9 +706,10 @@ textSample6
 	text edit.
 	Clipboard default storeObject: text
 	"
+	"UnicodeString fromCodePoints: (#(84 111 109 225 32 97 103 252 105 116 97 44 32 241 97 110 100 250 46 32 209 97 110 100 250 46 32 10 189 180 174 165 168 248 229 223 131 169 221 178 222 172 173 231 166 181 46 10 188 180 174 193 168 216 197 205 206 207 169 211 212 222 210 173 199 166 208 194) collect: [:iso885915code | Character unicodeCodePoints at: iso885915code +1])"
 	^'Tomá agüita, ñandú. Ñandú. 
-œŽ®¥šøå߃©ݲެ­禵.
-ŒŽ®hØÅÍÎϩÓÔÞҭǦÐÂ' asText! !
+ œŽ®¥šøåßℤ©Ý²Þ¬­çŠµ.
+ ŒŽ®ÁšØÅÍÎÏ©ÓÔÞÒ­ÇŠÐÂ' asText! !
 
 !RTFTokenTest methodsFor: 'as yet unclassified' stamp: 'MR 5/24/2006 12:10'!
 testCreateBlockClose
