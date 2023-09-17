@@ -1,4 +1,4 @@
-'From Cuis 6.0 [latest update: #6031] on 17 September 2023 at 3:01:53 pm'!
+'From Cuis 6.0 [latest update: #6032] on 17 September 2023 at 4:26:43 pm'!
 'Description Please enter a description for this package.'!
 !provides: 'StyledText' 1 62!
 !requires: 'Cuis-Base' 60 5718 nil!
@@ -3250,37 +3250,37 @@ testAsStyledAsNonStyledSample5
 	self assert: (unstyled attributesAt: 7) first class = TextAnchor.	"Or test is broken"
 	self assert: ((styled attributesAt: 7) anySatisfy: [ :att | att class = TextAnchor])! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 10/16/2013 21:43'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 16:23:57'!
 testCharacterStyleConcatenation
 	"
 	self new testCharacterStyleConcatenation
 	"
 	| model normal normalText1 red10Bold simpleColoredText normalText3 concatenation5 concatenation6 |
-	model _ StyledTextModel new.
-	normal _ model styleSet paragraphStyleNamed: 'Normal'.
-	normalText1 _ Text string: 'This is just ' attribute: (ParagraphStyleReference for: normal).
-	red10Bold _ model styleSet characterStyleNamed: 'Red 10 bold'.
-	simpleColoredText _ Text string: 'colored' attribute: (CharacterStyleReference for: red10Bold).
-	normalText3 _ Text string: ' normal text', String newLineString attribute: (ParagraphStyleReference for: normal).	"End with a newLine, so our paragraph style is applied all over the resulting paragraph"
-	concatenation5 _ normalText1, simpleColoredText, normalText3.
+	model := StyledTextModel new.
+	normal := model styleSet paragraphStyleNamed: 'Normal'.
+	normalText1 := Text string: 'This is just ' attribute: (ParagraphStyleReference for: normal).
+	red10Bold := model styleSet characterStyleNamed: 'Red Bold'.
+	simpleColoredText := Text string: 'colored' attribute: (CharacterStyleReference for: red10Bold).
+	normalText3 := Text string: ' normal text', String newLineString attribute: (ParagraphStyleReference for: normal).	"End with a newLine, so our paragraph style is applied all over the resulting paragraph"
+	concatenation5 := normalText1, simpleColoredText, normalText3.
 
 	self assert: concatenation5 runs runs size = 3 description: 'Should have 3 parts with distinct CharacterStyles'.
 	self assert: concatenation5 runs runs first = normalText1 size description: 'Should apply no character style to the first part'.
 	self assert: concatenation5 runs values first size = 1 description: 'Should apply no character style to the first part'.
 
-	self assert: concatenation5 runs runs second = simpleColoredText size description: 'Should apply "Red 10 bold" style to the second part'.
-	self assert: concatenation5 runs values second size = 2 description: 'Should apply "Red 10 bold" style to the second part'.
-	self assert: concatenation5 runs values second second style == red10Bold description: 'Should apply "Red 10 bold" style to the second part'.
+	self assert: concatenation5 runs runs second = simpleColoredText size description: 'Should apply "Red Bold" style to the second part'.
+	self assert: concatenation5 runs values second size = 2 description: 'Should apply "Red Bold" style to the second part'.
+	self assert: concatenation5 runs values second second style == red10Bold description: 'Should apply "Red Bold" style to the second part'.
 
 	self assert: concatenation5 runs runs third = normalText3 size description: 'Should apply no character style to the third part'.
 	self assert: concatenation5 runs values third size = 1 description: 'Should apply no character style to the third part'.
 
-	concatenation6 _ simpleColoredText, normalText3.
+	concatenation6 := simpleColoredText, normalText3.
 	self assert: concatenation6 runs runs size = 2 description: 'Should have 2 parts with distinct CharacterStyles'.
 
-	self assert: concatenation6 runs runs first = simpleColoredText size description: 'Should apply "Red 10 bold" style to the second part'.
-	self assert: concatenation6 runs values first size = 2 description: 'Should apply "Red 10 bold" style to the second part'.
-	self assert: concatenation6 runs values first second style == red10Bold description: 'Should apply "Red 10 bold" style to the second part'.
+	self assert: concatenation6 runs runs first = simpleColoredText size description: 'Should apply "Red Bold" style to the second part'.
+	self assert: concatenation6 runs values first size = 2 description: 'Should apply "Red Bold" style to the second part'.
+	self assert: concatenation6 runs values first second style == red10Bold description: 'Should apply "Red Bold" style to the second part'.
 
 	self assert: concatenation6 runs runs second = normalText3 size description: 'Should apply no character style to the third part'.
 	self assert: concatenation6 runs values second size = 1 description: 'Should apply no character style to the third part'! !
@@ -3551,19 +3551,19 @@ testStyledTextAndString
 		assert: (multi paragraphStyleOrNilAt: 3) = style
 		description: 'ParagraphStyle not properly set'.! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 3/13/2012 17:01'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 16:25:05'!
 testStyledTextBuilder
 	"
 	Test building with nested CharacterStyles
 	self new testStyledTextBuilder
 	"
 	| model heading3 green14 red10Bold green11Italic t |
-	model _ StyledTextModel new.
-	heading3 _ model styleSet paragraphStyleNamed: 'Heading 3'.
-	green14 _ model styleSet characterStyleNamed: 'Green 14'.
-	red10Bold _ model styleSet characterStyleNamed: 'Red 10 bold'.
-	green11Italic _ model styleSet characterStyleNamed: 'Green 11 Italic'.
-	t _ Text
+	model := StyledTextModel new.
+	heading3 := model styleSet paragraphStyleNamed: 'Heading 3'.
+	green14 := model styleSet characterStyleNamed: 'Green Big'.
+	red10Bold := model styleSet characterStyleNamed: 'Red Bold'.
+	green11Italic := model styleSet characterStyleNamed: 'Green Italic'.
+	t := Text
 			buildWithStyles: ({
 				#H3 -> heading3.
 				#g14 -> green14.
@@ -3582,34 +3582,34 @@ testStyledTextBuilder
 
 	self assert: (t paragraphStyleOrNilAt: 12) name = 'Heading 3' description: 'Wrong paragraph style'.
 	self assert: (t characterStyleOrNilAt: 2) isNil description: 'Should not have a char style yet'.
-	self assert: (t characterStyleOrNilAt: 40) name = 'Green 14' description: 'Wrong charStyle'.
-	self assert: (t characterStyleOrNilAt: 75) name = 'Green 14' description: 'Wrong charStyle'.
-	self assert: (t characterStyleOrNilAt: 76) name = 'Red 10 bold' description: 'Wrong charStyle'.
-	self assert: (t characterStyleOrNilAt: 103) name = 'Red 10 bold' description: 'Wrong charStyle'.
-	self assert: (t characterStyleOrNilAt: 104) name = 'Green 11 Italic' description: 'Wrong charStyle'.
-	self assert: (t characterStyleOrNilAt: 120) name = 'Green 11 Italic' description: 'Wrong charStyle'.
-	self assert: (t characterStyleOrNilAt: 121) name = 'Red 10 bold' description: 'Wrong charStyle'.
-	self assert: (t characterStyleOrNilAt: 139) name = 'Red 10 bold' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 40) name = 'Green Big' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 75) name = 'Green Big' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 76) name = 'Red Bold' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 103) name = 'Red Bold' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 104) name = 'Green Italic' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 120) name = 'Green Italic' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 121) name = 'Red Bold' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 139) name = 'Red Bold' description: 'Wrong charStyle'.
 	self assert: (t characterStyleOrNilAt: 140) isNil description: 'Should not have a char style any longer'.
 	self assert: (t characterStyleOrNilAt: t size) isNil description: 'Should not have a char style any longer'.! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 8/10/2011 10:43'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 16:25:18'!
 testStyledTextBuilder2
 	"
 	Test several paragraphs, with various ParagraphStyles
 	self new testStyledTextBuilder2
 	"
 	|model heading1 heading2 heading3 emphasized normal green14 red10Bold green11Italic t |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading2 _ model styleSet paragraphStyleNamed: 'Heading 2'.
-	heading3 _ model styleSet paragraphStyleNamed: 'Heading 3'.
-	emphasized _ model styleSet paragraphStyleNamed: 'Emphasized'.
-	normal _ model styleSet paragraphStyleNamed: 'Normal'.
-	green14 _ model styleSet characterStyleNamed: 'Green 14'.
-	red10Bold _ model styleSet characterStyleNamed: 'Red 10 bold'.
-	green11Italic _ model styleSet characterStyleNamed: 'Green 11 Italic'.
-	t _ Text
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading2 := model styleSet paragraphStyleNamed: 'Heading 2'.
+	heading3 := model styleSet paragraphStyleNamed: 'Heading 3'.
+	emphasized := model styleSet paragraphStyleNamed: 'Emphasized'.
+	normal := model styleSet paragraphStyleNamed: 'Normal'.
+	green14 := model styleSet characterStyleNamed: 'Green Big'.
+	red10Bold := model styleSet characterStyleNamed: 'Red Bold'.
+	green11Italic := model styleSet characterStyleNamed: 'Green Italic'.
+	t := Text
 			buildWithStyles: ({
 				#H1 -> heading1.
 				#H2 -> heading2.
@@ -3653,13 +3653,13 @@ And now another paragraph. This one may be smaller than previous ones
 	self assert: (t paragraphStyleOrNilAt: 70) name = 'Normal' description: 'Wrong paragraphStyle'.
 	self assert: (t characterStyleOrNilAt: 70) isNil description: 'Should not have a char style yet'.
 	self assert: (t paragraphStyleOrNilAt: 120) name = 'Normal' description: 'Wrong paragraphStyle'.
-	self assert: (t characterStyleOrNilAt: 120) name = 'Green 14' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 120) name = 'Green Big' description: 'Wrong charStyle'.
 	self assert: (t paragraphStyleOrNilAt: 160) name = 'Normal' description: 'Wrong paragraphStyle'.
-	self assert: (t characterStyleOrNilAt: 160) name = 'Red 10 bold' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 160) name = 'Red Bold' description: 'Wrong charStyle'.
 	self assert: (t paragraphStyleOrNilAt: 190) name = 'Normal' description: 'Wrong paragraphStyle'.
-	self assert: (t characterStyleOrNilAt: 190) name = 'Green 11 Italic' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 190) name = 'Green Italic' description: 'Wrong charStyle'.
 	self assert: (t paragraphStyleOrNilAt: 210) name = 'Normal' description: 'Wrong paragraphStyle'.
-	self assert: (t characterStyleOrNilAt: 210) name = 'Red 10 bold' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 210) name = 'Red Bold' description: 'Wrong charStyle'.
 	self assert: (t paragraphStyleOrNilAt: 220) name = 'Normal' description: 'Wrong paragraphStyle'.
 	self assert: (t characterStyleOrNilAt: 220) isNil description: 'Should not have a char style any longer'.
 	self assert: (t paragraphStyleOrNilAt: 400) name = 'Emphasized' description: 'Wrong paragraphStyle'.
@@ -3667,11 +3667,11 @@ And now another paragraph. This one may be smaller than previous ones
 	self assert: (t paragraphStyleOrNilAt: 539) name = 'Heading 2' description: 'Wrong paragraphStyle'.
 	self assert: (t characterStyleOrNilAt: 539) isNil description: 'Should not have a char style yet'.
 	self assert: (t paragraphStyleOrNilAt: 543) name = 'Heading 2' description: 'Wrong paragraphStyle'.
-	self assert: (t characterStyleOrNilAt: 543) name = 'Red 10 bold' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 543) name = 'Red Bold' description: 'Wrong charStyle'.
 	self assert: (t paragraphStyleOrNilAt: 546) name = 'Heading 2' description: 'Wrong paragraphStyle'.
 	self assert: (t characterStyleOrNilAt: 546) isNil description: 'Should not have a char style'.
 	self assert: (t paragraphStyleOrNilAt: 554) name = 'Heading 2' description: 'Wrong paragraphStyle'.
-	self assert: (t characterStyleOrNilAt: 554) name = 'Green 14' description: 'Wrong charStyle'.
+	self assert: (t characterStyleOrNilAt: 554) name = 'Green Big' description: 'Wrong charStyle'.
 	self assert: (t paragraphStyleOrNilAt: t size) name = 'Normal' description: 'Wrong paragraphStyle'.
 	self assert: (t characterStyleOrNilAt: t size) isNil description: 'Should not have a char style any longer'.! !
 
