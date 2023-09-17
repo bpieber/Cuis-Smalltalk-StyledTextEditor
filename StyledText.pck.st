@@ -1,4 +1,4 @@
-'From Cuis 6.0 [latest update: #6025] on 17 September 2023 at 12:52:30 pm'!
+'From Cuis 6.0 [latest update: #6031] on 17 September 2023 at 3:01:53 pm'!
 'Description Please enter a description for this package.'!
 !provides: 'StyledText' 1 62!
 !requires: 'Cuis-Base' 60 5718 nil!
@@ -2820,23 +2820,24 @@ testEmptyTrailingLineNumberedStyle
 	form1 addDeltasFrom: form2.
 	self assert: form1 primCountBits = 0 description: 'Incorrect text cursor for empty text.'! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:12'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:54:05'!
 testKeepParagraphStyleOnDeleteAll
 	"
 	StyledTextEditorTest new testKeepParagraphStyleOnDeleteAll
 	"
 	| editor composition model heading1 heading1Text innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading', String newLineString attribute: (ParagraphStyleReference for: heading1).	"Include a newLine, so our paragraphStyle is applied to resulting paragraph"
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading', String newLineString attribute: (ParagraphStyleReference for: heading1).	"Include a newLine, so our paragraphStyle is applied to resulting paragraph"
 
 	model contents: heading1Text.
-	editor _ StyledTextEditor new model: model.
-	composition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	composition := TextComposition new.
 	composition setModel: model; extentForComposing: 300@300.
 	composition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: composition; resetState.
 
@@ -2853,7 +2854,7 @@ testRecentClipping
 	Clipboard default: Clipboard new.
 	self shouldnt: [ Clipboard chooseRecentClipping ] raise: Error! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:15'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:54:21'!
 testSelectStyle
 	"Create a few instances of styled text (i.e. Text using various styles)
 	and assert their properties
@@ -2861,22 +2862,23 @@ testSelectStyle
 	"
 	
 	| model normal heading1 heading2 unstyled heading1Text editor composition text innerMorph |
-	model _ StyledTextModel new.
-	normal _ model styleSet paragraphStyleNamed: 'Normal'.
-	unstyled _ Text string: 'Part with "Normal" style', String newLineString attribute: (ParagraphStyleReference for: normal).
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading2 _ model styleSet paragraphStyleNamed: 'Heading 2'.
-	heading1Text _ Text string: 'This should have the "Heading 1" style', String newLineString attribute: (ParagraphStyleReference for: heading1).
-	text _ unstyled, heading1Text.
+	model := StyledTextModel new.
+	normal := model styleSet paragraphStyleNamed: 'Normal'.
+	unstyled := Text string: 'Part with "Normal" style', String newLineString attribute: (ParagraphStyleReference for: normal).
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading2 := model styleSet paragraphStyleNamed: 'Heading 2'.
+	heading1Text := Text string: 'This should have the "Heading 1" style', String newLineString attribute: (ParagraphStyleReference for: heading1).
+	text := unstyled, heading1Text.
 
 	model contents: text.
-	text _ model actualContents.	"Might have created a new instance"
-	editor _ StyledTextEditor new model: model.
-	composition _ TextComposition new.
+	text := model actualContents.	"Might have created a new instance"
+	editor := StyledTextEditor new model: model.
+	composition := TextComposition new.
 	composition setModel: model; extentForComposing: 300@300.
 	composition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: composition; resetState.
 	
@@ -2954,61 +2956,63 @@ testShiftClickSelection
 	self assert: (editor stopBlock left > (point2 - p)) description: 'Incorrect selection when shift-click'.
 	morph delete! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:20'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:49:05'!
 testStylesInPaste1
 	"
 	StyledTextEditorTest new testStylesInPaste1
 	"
 	| heading1 heading1Text simpleText editor composition concatenation initialText model innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading', String newLineString attribute: (ParagraphStyleReference for: heading1).	"Include a newLine, so our paragraphStyle is applied to resulting paragraph"
-	simpleText _ 'This is a text without style' asText.
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading', String newLineString attribute: (ParagraphStyleReference for: heading1).	"Include a newLine, so our paragraphStyle is applied to resulting paragraph"
+	simpleText := 'This is a text without style' asText.
 
-	initialText _ simpleText copy.
+	initialText := simpleText copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	composition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	composition := TextComposition new.
 	composition setModel: model; extentForComposing: 300@300.
 	composition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: composition; resetState.
 
 	editor deselectAndPlaceCursorAt: initialText size+1.
 	Clipboard storeObject: heading1Text. editor paste.		"Extends heading 1 to beginning, runs must be compacted"
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 1 description: 'Should apply the "Heading 1" paragraph style to the whole text'.
 	self assert: concatenation runs first size = 1 description: 'Should apply just the "Heading 1" paragraph style to the whole text'.
 	self assert: concatenation runs first first style == heading1 description: 'Should apply the "Heading 1" paragraph style to the whole text'! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:22'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:48:11'!
 testStylesInPaste2
 	"
 	StyledTextEditorTest new testStylesInPaste2
 	"
 	| heading1 heading1Text simpleText editor composition concatenation initialText model innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading', String newLineString attribute: (ParagraphStyleReference for: heading1).	"Include a newLine, so our paragraphStyle is applied to resulting paragraph"
-	simpleText _ 'This is a text without style' asText.
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading', String newLineString attribute: (ParagraphStyleReference for: heading1).	"Include a newLine, so our paragraphStyle is applied to resulting paragraph"
+	simpleText := 'This is a text without style' asText.
 
-	initialText _ simpleText copy.
+	initialText := simpleText copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	composition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	composition := TextComposition new.
 	composition setModel: model; extentForComposing: 300@300.
 	composition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: composition; resetState.
 
 	editor deselectAndPlaceCursorAt: initialText size+1.
 	Clipboard storeObject: String newLineString. editor paste.	
 	Clipboard storeObject: heading1Text. editor paste.		"Extends heading 1 to beginning, runs must be compacted"
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 2 description: 'Should have 2 parts with different attributes'.
 "	self assert: concatenation runs runs first = (simpleText size + 1) description: 'Should apply an empty paragraph style to the first part'."
 	self assert: concatenation runs runs second = heading1Text size description: 'Should apply the "Heading 1" paragraph style to the second part'.
@@ -3017,53 +3021,55 @@ testStylesInPaste2
 	self assert: concatenation runs values second size = 1 description: 'Should apply the "Heading 1" paragraph style to the second part'.
 	self assert: concatenation runs values second first style == heading1 description: 'Should apply the "Heading 1" paragraph style to the second part'! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:25'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:49:16'!
 testStylesInPaste3
 	"
 	StyledTextEditorTest new testStylesInPaste3
 	"
 	| heading1Text simpleText editor composition concatenation initialText model heading1 innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
-	simpleText _ 'This is a text without style' asText.
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
+	simpleText := 'This is a text without style' asText.
 
-	initialText _ heading1Text copy.
+	initialText := heading1Text copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	composition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	composition := TextComposition new.
 	composition setModel: model; extentForComposing: 300@300.
 	composition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: composition; resetState.
 
 	editor deselectAndPlaceCursorAt: initialText size+1.
 	Clipboard storeObject: simpleText. editor paste.		"Extends style to beginning. I.e., lose the style, style comes from paragraph end"
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 1 description: 'Should apply no character style to the whole text'.
 	self assert: concatenation runs first first style == heading1 description: 'Should apply just the "Heading 1" paragraph style to the whole text'! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:27'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:49:23'!
 testStylesInPaste4
 	"
 	StyledTextEditorTest new testStylesInPaste4
 	"
 	| heading1Text heading1 simpleText editor textComposition concatenation initialText model innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
-	simpleText _ 'This is a text without style' asText.
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
+	simpleText := 'This is a text without style' asText.
 
-	initialText _ heading1Text copy.
+	initialText := heading1Text copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	textComposition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	textComposition := TextComposition new.
 	textComposition setModel: model; extentForComposing: 300@300.
 	textComposition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: textComposition; resetState.
 
@@ -3072,32 +3078,33 @@ testStylesInPaste4
 	The paragraph style in use should be that of the first part."
 	Clipboard storeObject: String newLineString. editor paste.
 	Clipboard storeObject: simpleText. editor paste.
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 2 description: 'Should use imported RTF style'.
 	self assert: concatenation runs runs first = (heading1Text size +1) description: 'Should apply the "Heading 1" paragraph style to the first part'.
 	self assert: concatenation runs runs second = simpleText size description: 'Should apply the "Normal" paragraph style to the second part'.
 	self assert: concatenation runs values first first style name = 'Heading 1'.
 	self assert: concatenation runs values second first style name = 'Normal'! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:30'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:49:30'!
 testStylesInPaste5
 	"
 	StyledTextEditorTest new testStylesInPaste5
 	"
 	| heading1Text heading1 simpleText editor textComposition concatenation initialText model innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
-	simpleText _ 'This is a text without style' asText.
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
+	simpleText := 'This is a text without style' asText.
 
-	initialText _ heading1Text copy.
+	initialText := heading1Text copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	textComposition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	textComposition := TextComposition new.
 	textComposition setModel: model; extentForComposing: 300@300.
 	textComposition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: textComposition; resetState.
 
@@ -3106,30 +3113,31 @@ testStylesInPaste5
 	The paragraph style in use should be that of the first part."
 	Clipboard storeObject: String newLineString. editor paste.
 	Clipboard storeObject: simpleText asString. editor paste.
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 1 description: 'Should apply same attributes to the whole text'.
 	self assert: concatenation runs runs first = concatenation size description: 'Should apply the "Heading 1" paragraph style to all the text'.! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:32'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:49:46'!
 testStylesInPaste6
 	"
 	StyledTextEditorTest new testStylesInPaste6
 	"
 	| heading1 heading1Text heading2 heading2Text editor textComposition concatenation initialText model innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading 1' attribute: (ParagraphStyleReference for: heading1).
-	heading2 _ model styleSet paragraphStyleNamed: 'Heading 2'.
-	heading2Text _ Text string: 'This is a text without style', String newLineString attribute: (ParagraphStyleReference for: heading2).
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading 1' attribute: (ParagraphStyleReference for: heading1).
+	heading2 := model styleSet paragraphStyleNamed: 'Heading 2'.
+	heading2Text := Text string: 'This is a text without style', String newLineString attribute: (ParagraphStyleReference for: heading2).
 
-	initialText _ heading1Text copy.
+	initialText := heading1Text copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	textComposition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	textComposition := TextComposition new.
 	textComposition setModel: model; extentForComposing: 300@300.
 	textComposition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: textComposition; resetState.
 
@@ -3137,7 +3145,7 @@ testStylesInPaste6
 	Clipboard storeObject: String newLineString. editor paste.
 	"This is an almost trivial case. just check that both parts are as they were at the beginning"	
 	Clipboard storeObject: heading2Text. editor paste.
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 2 description: 'Should have 2 parts with different attributes'.
 	self assert: concatenation runs runs first = (heading1Text size + 1) description: 'Should apply the "Heading 1" paragraph style to the first part'.
 	self assert: concatenation runs runs second = heading2Text size description: ''.
@@ -3145,61 +3153,63 @@ testStylesInPaste6
 	self assert: concatenation runs values first first style == heading1 description: 'Should apply the "Heading 1" paragraph style to the first part'.
 	self deny: concatenation runs values second first style == heading1 description: 'Should not apply the "Heading 1" paragraph style to the second part'! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:34'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:49:56'!
 testStylesInPaste7
 	"
 	StyledTextEditorTest new testStylesInPaste7
 	"
 	| heading1 heading1Text simpleText editor textComposition concatenation initialText model innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).	"Do not include a cr"
-	simpleText _ 'This is a text without style' asText.
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).	"Do not include a cr"
+	simpleText := 'This is a text without style' asText.
 
-	initialText _ simpleText copy.
+	initialText := simpleText copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	textComposition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	textComposition := TextComposition new.
 	textComposition setModel: model; extentForComposing: 300@300.
 	textComposition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: textComposition; resetState.
 
 	editor selectAll.
 	Clipboard storeObject: heading1Text. editor paste.		"Extends heading 1 to beginning, runs must be compacted"
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 1 description: 'Should apply the "Heading 1" paragraph style to the whole text, as no part of original text is left.'.
 	self assert: concatenation runs first size = 1 description: 'Should apply just the "Heading 1" paragraph style to the whole text, as no part of original text is left.'.
 	self assert: concatenation runs first first style == heading1 description: 'Should apply the "Heading 1" paragraph style to the whole text, as no part of original text is left.'! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:36'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:50:07'!
 testStylesInPaste8
 	"
 	Not exactly a Paste operation, but #replaceSelectionWith: , as done by the autocompletter
 	StyledTextEditorTest new testStylesInPaste8
 	"
 	| simpleText editor textComposition concatenation initialText model innerMorph |
-	model _ StyledTextModel new.
-	simpleText _ (Text
+	model := StyledTextModel new.
+	simpleText := (Text
 		string: 'Aardvark'
 		attribute: (CharacterStyleReference new style: model styleSet autoCompletedStyle)), ' '.
 
-	initialText _ '' asText.
+	initialText := '' asText.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	textComposition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	textComposition := TextComposition new.
 	textComposition setModel: model; extentForComposing: 300@300.
 	textComposition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: textComposition; resetState.
 
 	editor deselectAndPlaceCursorAt: initialText size+1.
 	editor replaceSelectionWith: simpleText.
-	concatenation _ editor text.
+	concatenation := editor text.
 	self
 		assert: (concatenation runs values allSatisfy: [ :attrs | attrs anySatisfy: [ :att | att class == ParagraphStyleReference ]])
 		description: 'Must have ParagraphStyle everywhere!!'! !
@@ -3665,25 +3675,26 @@ And now another paragraph. This one may be smaller than previous ones
 	self assert: (t paragraphStyleOrNilAt: t size) name = 'Normal' description: 'Wrong paragraphStyle'.
 	self assert: (t characterStyleOrNilAt: t size) isNil description: 'Should not have a char style any longer'.! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:38'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:52:05'!
 testStylesInPaste1
 	"
 	self new testStylesInPaste1
 	"
 	| heading1 heading1Text simpleText editor textComposition concatenation initialText model innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading', String newLineString attribute: (ParagraphStyleReference for: heading1).	"Include a cr, so our paragraphStyle is applied to resulting paragraph"
-	simpleText _ 'This is a text without style' asText.
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading', String newLineString attribute: (ParagraphStyleReference for: heading1).	"Include a cr, so our paragraphStyle is applied to resulting paragraph"
+	simpleText := 'This is a text without style' asText.
 
-	initialText _ simpleText copy.
+	initialText := simpleText copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	textComposition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	textComposition := TextComposition new.
 	textComposition setModel: model; extentForComposing: 300@300.
 	textComposition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: textComposition; resetState.
 
@@ -3692,30 +3703,31 @@ testStylesInPaste1
 		clearClipboard;
 		addClipboardData: heading1Text rtfString dataFormat: 'public.rtf'.
 	editor paste.		"Extends heading 1 to beginning, runs must be compacted"
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 1 description: 'Should apply the "Heading 1" paragraph style to the whole text'.
 	self assert: concatenation runs first size = 1 description: 'Should apply just the "Heading 1" paragraph style to the whole text'.
 	self assert: concatenation runs first first style == heading1 description: 'Should apply the "Heading 1" paragraph style to the whole text'! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:41'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:52:13'!
 testStylesInPaste2
 	"
 	self new testStylesInPaste2
 	"
 	| heading1 heading1Text simpleText editor textComposition concatenation initialText model innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading', String newLineString attribute: (ParagraphStyleReference for: heading1).	"Include a cr, so our paragraphStyle is applied to resulting paragraph"
-	simpleText _ 'This is a text without style' asText.
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading', String newLineString attribute: (ParagraphStyleReference for: heading1).	"Include a cr, so our paragraphStyle is applied to resulting paragraph"
+	simpleText := 'This is a text without style' asText.
 
-	initialText _ simpleText copy.
+	initialText := simpleText copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	textComposition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	textComposition := TextComposition new.
 	textComposition setModel: model; extentForComposing: 300@300.
 	textComposition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: textComposition; resetState.
 
@@ -3725,7 +3737,7 @@ testStylesInPaste2
 		clearClipboard;
 		addClipboardData: heading1Text rtfString dataFormat: 'public.rtf'.
 	editor paste.		"Extends heading 1 to beginning, runs must be compacted"
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 2 description: 'Should have 2 parts with different attributes'.
 "	self assert: concatenation runs runs first = (simpleText size + 1) description: 'Should apply an empty paragraph style to the first part'."
 	self assert: concatenation runs runs second = heading1Text size description: 'Should apply the "Heading 1" paragraph style to the second part'.
@@ -3734,25 +3746,26 @@ testStylesInPaste2
 	self assert: concatenation runs values second size = 1 description: 'Should apply the "Heading 1" paragraph style to the second part'.
 	self assert: concatenation runs values second first style == heading1 description: 'Should apply the "Heading 1" paragraph style to the second part'! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:43'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:52:20'!
 testStylesInPaste3
 	"
 	self new testStylesInPaste3
 	"
 	| heading1Text simpleText editor textComposition concatenation initialText model heading1 innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
-	simpleText _ 'This is a text without style' asText.
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
+	simpleText := 'This is a text without style' asText.
 
-	initialText _ heading1Text copy.
+	initialText := heading1Text copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	textComposition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	textComposition := TextComposition new.
 	textComposition setModel: model; extentForComposing: 300@300.
 	textComposition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: textComposition; resetState.
 
@@ -3761,29 +3774,30 @@ testStylesInPaste3
 		clearClipboard;
 		addClipboardData: simpleText rtfString dataFormat: 'public.rtf'.
 	editor paste.		"Extends style to beginning. I.e., lose the style, style comes from paragraph end"
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 1 description: 'Should apply no character style to the whole text'.
 	self assert: concatenation runs first first style == heading1 description: 'Should apply just the "Heading 1" paragraph style to the whole text'! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:45'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:52:27'!
 testStylesInPaste4
 	"
 	self new testStylesInPaste4
 	"
 	| heading1Text heading1 simpleText editor textComposition concatenation initialText model innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
-	simpleText _ 'This is a text without style' asText.
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
+	simpleText := 'This is a text without style' asText.
 
-	initialText _ heading1Text copy.
+	initialText := heading1Text copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	textComposition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	textComposition := TextComposition new.
 	textComposition setModel: model; extentForComposing: 300@300.
 	textComposition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: textComposition; resetState.
 
@@ -3794,32 +3808,33 @@ testStylesInPaste4
 		clearClipboard;
 		addClipboardData: simpleText rtfString dataFormat: 'public.rtf'.
 	editor paste.
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 2 description: 'Should use imported RTF style'.
 	self assert: concatenation runs runs first = (heading1Text size +1) description: 'Should apply the "Heading 1" paragraph style to the first part'.
 	self assert: concatenation runs runs second = simpleText size description: 'Should apply the "Imported " paragraph style to the second part'.
 	self assert: concatenation runs values first first style name = 'Heading 1'.
 	self assert: concatenation runs values second first style name = 'Imported '! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 5/26/2022 12:18:55'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:52:34'!
 testStylesInPaste5
 	"
 	self new testStylesInPaste5
 	"
 	| heading1Text heading1 simpleText editor textComposition concatenation initialText model innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
-	simpleText _ 'This is a text without style' asText.
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
+	simpleText := 'This is a text without style' asText.
 
-	initialText _ heading1Text copy.
+	initialText := heading1Text copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	textComposition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	textComposition := TextComposition new.
 	textComposition setModel: model; extentForComposing: 300@300.
 	textComposition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: textComposition; resetState.
 
@@ -3830,29 +3845,30 @@ testStylesInPaste5
 		clearClipboard;
 		addClipboardData: simpleText asString asUtf8Bytes dataFormat: 'public.utf8-plain-text'.
 	editor paste.
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 1 description: 'Should apply same attributes to the whole text'.
 	self assert: concatenation runs runs first = concatenation size description: 'Should apply the "Heading 1" paragraph style to all the text'.! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 11/9/2021 17:28:49'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 14:52:50'!
 testStylesInPaste6
 	"
 	self new testStylesInPaste6
 	"
 	| heading1 heading1Text simpleText editor textComposition concatenation initialText model innerMorph |
-	model _ StyledTextModel new.
-	heading1 _ model styleSet paragraphStyleNamed: 'Heading 1'.
-	heading1Text _ Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
-	simpleText _ ('This is a text without style', String newLineString) asText.
+	model := StyledTextModel new.
+	heading1 := model styleSet paragraphStyleNamed: 'Heading 1'.
+	heading1Text := Text string: 'This is the heading' attribute: (ParagraphStyleReference for: heading1).
+	simpleText := ('This is a text without style', String newLineString) asText.
 
-	initialText _ heading1Text copy.
+	initialText := heading1Text copy.
 	model contents: initialText.
-	editor _ StyledTextEditor new model: model.
-	textComposition _ TextComposition new.
+	editor := StyledTextEditor new model: model.
+	textComposition := TextComposition new.
 	textComposition setModel: model; extentForComposing: 300@300.
 	textComposition composeAll.
-	innerMorph _ TextModelMorph new innerTextMorph.
+	innerMorph := TextModelMorph new innerTextMorph.
 	innerMorph model: model.
+	innerMorph editor: editor.
 	editor morph: innerMorph.
 	editor textComposition: textComposition; resetState.
 
@@ -3863,7 +3879,7 @@ testStylesInPaste6
 		clearClipboard;
 		addClipboardData: simpleText rtfString dataFormat: 'public.rtf'.
 	editor paste.
-	concatenation _ editor text.
+	concatenation := editor text.
 	self assert: concatenation runs runs size = 2 description: 'Should have 2 parts with different attributes'.
 	self assert: concatenation runs runs first = (heading1Text size + 1) description: 'Should apply the "Heading 1" paragraph style to the first part'.
 	self assert: concatenation runs runs second = simpleText size description: 'Should apply no paragraph style to the second part'.
