@@ -1,4 +1,4 @@
-'From Cuis 6.0 [latest update: #6032] on 17 September 2023 at 6:06:09 pm'!
+'From Cuis 6.0 [latest update: #6032] on 17 September 2023 at 8:00:49 pm'!
 'Description Please enter a description for this package.'!
 !provides: 'StyledText' 1 62!
 !requires: 'Cuis-Base' 60 5718 nil!
@@ -3301,92 +3301,92 @@ testOldInstanceDeserialization
 	self shouldnt: [ newInstance undoRedoCommands ] raise: Exception.
 	! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 3/14/2012 09:49'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 20:00:37'!
 testSample1ToAndFromRTFClipboardStyle
 	"
 	StyledTextTest new testSample1ToAndFromRTFClipboardStyle
 	"
 	| text text2 |
-	text _ RTFConversionTest textSample1.
+	text := RTFConversionTest textSample1.
 
 	"This will use a refStreamed object"
 	Clipboard default storeObject: text.
-	text2 _ Clipboard default retrieveObject.
+	text2 := Clipboard default retrieveObject.
 	self assert: text2 = text.
 	self assert: text2 runs = text runs.
 
 	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
 	ExtendedClipboardInterface current
 		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
-	text2 _ Clipboard default retrieveObject.
+		addClipboardData: text rtfString asUtf8Bytes dataFormat: 'public.rtf'.
+	text2 := Clipboard default retrieveObject.
 	self assert: text2 = text.
 	self assert: text2 asNonStyledText runs = text runs.! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 4/2/2016 14:48'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 20:00:30'!
 testSample2ToAndFromRTFClipboardStyle
 	"
 	StyledTextTest new testSample2ToAndFromRTFClipboardStyle
 	"
 	| text text2 |
 	self assert: Clipboard default extendedClipboardInterface canStore description: 'Extended Clipboard cant store'.
-	text _ RTFConversionTest textSample2.
+	text := RTFConversionTest textSample2.
 
 	"This will use a refStreamed object"
 	Clipboard default storeObject: text.
-	text2 _ Clipboard default retrieveObject.
+	text2 := Clipboard default retrieveObject.
 	self assert: text2 = text.
 	self assert: text2 runs = text runs.
 
 	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
 	ExtendedClipboardInterface current
 		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
-	text2 _ Clipboard default retrieveObject.
+		addClipboardData: text rtfString asUtf8Bytes dataFormat: 'public.rtf'.
+	text2 := Clipboard default retrieveObject.
 	self assert: text2 = text.
 	self assert: text2 asNonStyledText runs = text runs.! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 3/14/2012 09:50'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 20:00:20'!
 testSample3ToAndFromRTFClipboardStyle
 	"
 	StyledTextTest new testSample3ToAndFromRTFClipboardStyle
 	"
 	| text text2 |
-	text _ RTFConversionTest textSample3.
+	text := RTFConversionTest textSample3.
 
 	"This will use a refStreamed object"
 	Clipboard default storeObject: text.
-	text2 _ Clipboard default retrieveObject.
+	text2 := Clipboard default retrieveObject.
 	self assert: text2 = text.
 	self assert: text2 runs = text runs.
 
 	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
 	ExtendedClipboardInterface current
 		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
-	text2 _ Clipboard default retrieveObject.
+		addClipboardData: text rtfString asUtf8Bytes dataFormat: 'public.rtf'.
+	text2 := Clipboard default retrieveObject.
 	self assert: text2 = text.
 	self assert: text2 asNonStyledText runs = text runs.! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 3/14/2012 09:50'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 20:00:13'!
 testSample4ToAndFromRTFClipboardStyle
 	"
 	StyledTextTest new testSample4ToAndFromRTFClipboardStyle
 	"
 	| text text2 |
-	text _ RTFConversionTest textSample4.
+	text := RTFConversionTest textSample4.
 
 	"This will use a refStreamed object"
 	Clipboard default storeObject: text.
-	text2 _ Clipboard default retrieveObject.
+	text2 := Clipboard default retrieveObject.
 	self assert: text2 = text.
 	self assert: text2 runs = text runs.
 
 	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
 	ExtendedClipboardInterface current
 		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
-	text2 _ Clipboard default retrieveObject.
+		addClipboardData: text rtfString asUtf8Bytes dataFormat: 'public.rtf'.
+	text2 := Clipboard default retrieveObject.
 	self assert: text2 = text.
 	"kern and struckThrough not supported in rtf yet..."
 "	self assert: text2 asNonStyledText runs = text runs."
@@ -3394,47 +3394,47 @@ testSample4ToAndFromRTFClipboardStyle
 	"kern and struckThrough not supported in rtf yet..."
 "	self assert: text2 runs = text asStyledText runs"! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 3/14/2012 09:50'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 20:00:06'!
 testSample5ToAndFromRTFClipboardStyle
 	"
 	StyledTextTest new testSample5ToAndFromRTFClipboardStyle
 	"
 	| text text2 |
-	text _ RTFConversionTest textSample5.
+	text := RTFConversionTest textSample5.
 
 	"This will use a refStreamed object"
 	Clipboard default storeObject: text.
-	text2 _ Clipboard default retrieveObject.
+	text2 := Clipboard default retrieveObject.
 	self assert: text2 = text.
 	self assert: text2 runs = text runs.
 
 	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
 	ExtendedClipboardInterface current
 		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
-	text2 _ Clipboard default retrieveObject.
+		addClipboardData: text rtfString asUtf8Bytes dataFormat: 'public.rtf'.
+	text2 := Clipboard default retrieveObject.
 	self assert: text2 = text.
 	self assert: text2 asNonStyledText runs = text runs.! !
 
-!StyledTextTest methodsFor: 'tests' stamp: 'jmv 3/14/2012 09:50'!
+!StyledTextTest methodsFor: 'tests' stamp: 'bp 9/17/2023 19:29:35'!
 testSample6ToAndFromRTFClipboardStyle
 	"
 	StyledTextTest new testSample6ToAndFromRTFClipboardStyle
 	"
 	| text text2 |
-	text _ RTFConversionTest textSample6.
+	text := RTFConversionTest textSample6.
 
 	"This will use a refStreamed object"
 	Clipboard default storeObject: text.
-	text2 _ Clipboard default retrieveObject.
+	text2 := Clipboard default retrieveObject.
 	self assert: text2 = text.
 	self assert: text2 runs = text runs.
 
 	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
 	ExtendedClipboardInterface current
 		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
-	text2 _ Clipboard default retrieveObject.
+		addClipboardData: text rtfString asUtf8Bytes dataFormat: 'public.rtf'.
+	text2 := Clipboard default retrieveObject.
 	self assert: text2 = text.
 	self assert: text2 asNonStyledText runs = text runs.! !
 

@@ -1,22 +1,22 @@
-'From Cuis 6.0 [latest update: #6025] on 14 September 2023 at 9:00:56 am'!
+'From Cuis 6.0 [latest update: #6032] on 17 September 2023 at 7:56:05 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'RTFExporting' 1 4!
+!provides: 'RTFExporting' 1 5!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 
 
 
-!String methodsFor: '*rtfExporting' stamp: 'jmv 9/5/2016 20:27:00'!
-iso8859s15ToRTFEncoding
-	"Convert the given string to RTF escaped Unicode from the internal encoding: ISO Latin 9 (ISO 8859-15)"
+!CharacterSequence methodsFor: '*rtfExporting' stamp: 'bp 9/17/2023 19:54:03'!
+asUnicodeRTF
+	"Convert the given character sequence to Unicode RTF"
 	"
-	self assert: ('A¢€' iso8859s15ToRTFEncoding) hex = ' 'A\u162?\u8364?''
+	self assert: 'A¢€' rtfString = 'A\u162?\u8364?'
 	"
 	| c cp |
 	^String streamContents: [ :strm | | characters |
-		characters _ self readStream.
+		characters := self readStream.
 		[ characters atEnd ] whileFalse: [
-			c _  characters next.
-			cp _ c codePoint.
+			c :=  characters next.
+			cp := c codePoint.
 			cp < 128
 				ifTrue: [ strm nextPut: c ]
 				ifFalse: [
@@ -26,7 +26,7 @@ iso8859s15ToRTFEncoding
 					cp printOn: strm.
 					strm nextPut: $? ]]]! !
 
-!Text methodsFor: '*rtfExporting' stamp: 'bp 9/13/2023 19:29:46'!
+!Text methodsFor: '*rtfExporting' stamp: 'bp 9/17/2023 19:54:47'!
 rtfString
 	"
 	| text |
@@ -68,7 +68,7 @@ rtfString
 				"Add string now"
 				s := string copyFrom: actualStart to: stop.
 				s := s withLineEndings: '\par '.
-				s := s iso8859s15ToRTFEncoding.
+				s := s asUnicodeRTF.
 				strm nextPutAll: s.
 				prevAttributes := currentAttributes ].
 			strm nextPut: $} ]
