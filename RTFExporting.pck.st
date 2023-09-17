@@ -1,20 +1,22 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2933] on 6 September 2016 at 10:05:12 am'!
+'From Cuis 6.0 [latest update: #6032] on 17 September 2023 at 7:56:05 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'RTFExporting' 1 3!
+!provides: 'RTFExporting' 1 5!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 
-!String methodsFor: '*rtfExporting' stamp: 'jmv 9/5/2016 20:27:00'!
-iso8859s15ToRTFEncoding
-	"Convert the given string to RTF escaped Unicode from the internal encoding: ISO Latin 9 (ISO 8859-15)"
+
+
+!CharacterSequence methodsFor: '*rtfExporting' stamp: 'bp 9/17/2023 19:54:03'!
+asUnicodeRTF
+	"Convert the given character sequence to Unicode RTF"
 	"
-	self assert: ('A¢¤' iso8859s15ToRTFEncoding) hex = ' 'A\u162?\u8364?''
+	self assert: 'AÂ¢â‚¬' rtfString = 'A\u162?\u8364?'
 	"
 	| c cp |
 	^String streamContents: [ :strm | | characters |
-		characters _ self readStream.
+		characters := self readStream.
 		[ characters atEnd ] whileFalse: [
-			c _  characters next.
-			cp _ c codePoint.
+			c :=  characters next.
+			cp := c codePoint.
 			cp < 128
 				ifTrue: [ strm nextPut: c ]
 				ifFalse: [
@@ -24,7 +26,7 @@ iso8859s15ToRTFEncoding
 					cp printOn: strm.
 					strm nextPut: $? ]]]! !
 
-!Text methodsFor: '*rtfExporting' stamp: 'jmv 11/22/2011 15:30'!
+!Text methodsFor: '*rtfExporting' stamp: 'bp 9/17/2023 19:54:47'!
 rtfString
 	"
 	| text |
@@ -34,41 +36,41 @@ rtfString
 	"
 	| prevAttributes colors fonts s |
 	"Build colors and fonts tables"
-	colors _ Set new.
-	fonts _ Set new.
+	colors := Set new.
+	fonts := Set new.
 	runs withStartStopAndValueDo: [ :start :stop :attributes |
 		attributes do: [ :attribute |
 			attribute forParagraphStyleReferenceDo: [ :ts | ts color ifNotNil: [ :color | colors add: color ]].
 			attribute forCharacterStyleReferenceDo: [ :cs | cs color ifNotNil: [ : color | colors add: color ]].
 			attribute forTextColorDo: [ :color | colors add: color ].
-			attribute forBaseFontDo: [ :font | fonts add: font familyName ]]].
-	colors _ colors asArray.
-	fonts _ fonts asArray.
+			attribute forFontFamilyDo: [ :font | fonts add: font ]]].
+	colors := colors asArray.
+	fonts := fonts asArray.
 	^String
 		streamContents: [ :strm |
 			self writeRTFHeaderOn: strm colorTable: colors fontTable: fonts.
-			prevAttributes _ #().
+			prevAttributes := #().
 			runs withStartStopAndValueDo: [ :start :stop :attributes | | currentAttributes actualStart |
-				currentAttributes _ attributes asSet.
+				currentAttributes := attributes asSet.
 				"Close attributes no longer present"
 				prevAttributes do: [ :each |
 					(currentAttributes includes: each) ifFalse: [
 						each writeRTFStopOn: strm colorTable: colors fontTable: fonts ]].
 				"Open attributes not previously present"
-				actualStart _ start.
+				actualStart := start.
 				currentAttributes do: [ :each |
 					"Repeat existing, because the closing of other attributes, in some cases, sets defaults, and not the now active values...
 					For example, finishing a CharStyle sets text to black. But what if the ParaStyle indicated some other color?"
 					"(prevAttributes includes: each) ifFalse: ["
-						actualStart _ actualStart + (each writeRTFStartOn: strm colorTable: colors fontTable: fonts) 
+						actualStart := actualStart + (each writeRTFStartOn: strm colorTable: colors fontTable: fonts) 
 						"]"
 					].
 				"Add string now"
-				s _ string copyFrom: actualStart to: stop.
-				s _ s withLineEndings: '\par '.
-				s _ s iso8859s15ToRTFEncoding.
+				s := string copyFrom: actualStart to: stop.
+				s := s withLineEndings: '\par '.
+				s := s asUnicodeRTF.
 				strm nextPutAll: s.
-				prevAttributes _ currentAttributes ].
+				prevAttributes := currentAttributes ].
 			strm nextPut: $} ]
 		estimatedSize: string size! !
 
@@ -161,7 +163,7 @@ writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	(emphasisCode allMask: AbstractFont boldCode) ifTrue: [
 		aStream nextPutAll: '\b0 ' ]! !
 
-!TextFontFamilyAndSize methodsFor: '*rtfExporting' stamp: 'jmv 4/12/2011 09:06'!
+!TextFontSize methodsFor: '*rtfExporting' stamp: 'bp 9/13/2023 19:45:38'!
 writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute start. Return number of characters to skip (usually 0)"
 	"We should also reference familyName, in the table with \f# where # is the number in the table..."
@@ -169,7 +171,7 @@ writeRTFStartOn: aStream colorTable: colorArray fontTable: fontArray
 	aStream nextPutAll: '\fs'; nextPutAll: ((pointSize * Text pointSizeConversionFactor ) rounded * 2) asString; space.
 	^0! !
 
-!TextFontFamilyAndSize methodsFor: '*rtfExporting' stamp: 'jmv 4/7/2011 15:20'!
+!TextFontSize methodsFor: '*rtfExporting' stamp: 'bp 9/13/2023 19:45:51'!
 writeRTFStopOn: aStream colorTable: colorArray fontTable: fontArray
 	"Write the RTF code for attribute stop."
 	aStream nextPutAll: '\fs0 '! !
