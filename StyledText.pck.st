@@ -2090,19 +2090,19 @@ openBasicStyledTextEditor
 
 	SystemWindow editStyledText: StyledTextModel new label: 'Styled Text Editor'! !
 
-!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'jmv 12/21/2021 15:39:43'!
+!PluggableStyledTextMorph class methodsFor: 'class initialization' stamp: 'bp 9/17/2023 15:01:32'!
 withModel: aStyledTextModel in: aLayoutMorph
 	| topRow paragraphStyleList characterStyleList textMorph m topRowHeight labelFont topRowElementsWidth |
-	textMorph _ self withModel: aStyledTextModel.
+	textMorph := self withModel: aStyledTextModel.
 	textMorph
 		borderWidth: 0;
 		drawKeyboardFocusIndicator: false;
 		wrapFlag: true.
 	aLayoutMorph separation: 0.
-	topRow _ ToolbarMorph newRow separation: 10@4.
+	topRow := ToolbarMorph newRow separation: 10@4.
 
-	labelFont _ Preferences standardButtonFont.
-	topRowHeight _ labelFont lineSpacing * 2.
+	labelFont := Preferences at: #standardButtonFont.
+	topRowHeight := labelFont lineSpacing * 2.
 	topRow
 		color: (Color r: 189 g: 214 b: 199 range: 255).
 	"
@@ -2114,13 +2114,13 @@ withModel: aStyledTextModel in: aLayoutMorph
 "		borderWidth: topRowBorderWidth;"
 "		borderColor: (Color r: 80 g: 80 b: 80 range: 255)."
 
-	m _ LabelMorph contents: 'Paragraph Style'.
+	m := LabelMorph contents: 'Paragraph Style'.
 	m font: labelFont emphasis: 1; color: Color white.
-	topRowElementsWidth _ m morphWidth.
+	topRowElementsWidth := m morphWidth.
 	topRow
 		addMorph: m
 		layoutSpec: (((LayoutSpec fixedWidth: topRowElementsWidth fixedHeight: m morphHeight) offAxisEdgeWeight: #center) offAxisEdgeWeight: #center).
-	paragraphStyleList _ PluggableFilteringDropDownListMorph
+	paragraphStyleList := PluggableFilteringDropDownListMorph
 			model: textMorph
 			listGetter: #paragraphStyleNamesAndShortcuts
 			indexGetter: #currentParagraphStyleIndex
@@ -2131,16 +2131,16 @@ withModel: aStyledTextModel in: aLayoutMorph
 		layoutSpec: (((LayoutSpec fixedWidth: topRowElementsWidth+120 fixedHeight: topRowHeight-4) offAxisEdgeWeight: #center) offAxisEdgeWeight: #center).
 	textMorph when: #possiblyChanged send: #modelChanged to: paragraphStyleList.
 
-	m _ BoxedMorph new.
+	m := BoxedMorph new.
 	m color: Color transparent; borderColor: Color transparent.
 	topRow addMorph: m layoutSpec: (LayoutSpec fixedWidth: 8).
 
-	m _ LabelMorph contents: 'Character Style'.
+	m := LabelMorph contents: 'Character Style'.
 	m font: labelFont emphasis: 1; color: Color white.
 	topRow
 		addMorph: m
 		layoutSpec: (((LayoutSpec fixedWidth: topRowElementsWidth fixedHeight: m morphHeight) offAxisEdgeWeight: #center) offAxisEdgeWeight: #center).
-	characterStyleList _ PluggableFilteringDropDownListMorph 
+	characterStyleList := PluggableFilteringDropDownListMorph 
 			model:textMorph
 			listGetter: #characterStyleNamesAndShortcuts
 			indexGetter: #currentCharacterStyleIndex
@@ -2211,11 +2211,11 @@ drawBasicLookOn: aCanvas
 		baseColorForBorder: borderColor.
 	self drawLabelOn: aCanvas ! !
 
-!STEPluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 4/25/2019 10:10:34'!
+!STEPluggableDropDownListMorph methodsFor: 'drawing' stamp: 'bp 9/17/2023 15:01:41'!
 drawLabelOn: aCanvas 
 
 	| f |
-	f _ Preferences standardButtonFont.
+	f := Preferences at: #standardButtonFont.
 	aCanvas drawString: label at: 0@(extent y // 2) + (8@ f lineSpacing negated // 2) font: f color: Color black! !
 
 !STEPluggableDropDownListMorph methodsFor: 'drawing' stamp: 'jmv 4/12/2012 22:19'!
