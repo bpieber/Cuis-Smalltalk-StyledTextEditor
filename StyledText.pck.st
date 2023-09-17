@@ -1,11 +1,11 @@
-'From Cuis 6.0 [latest update: #6025] on 12 September 2023 at 5:08:16 pm'!
+'From Cuis 6.0 [latest update: #6025] on 17 September 2023 at 12:52:30 pm'!
 'Description Please enter a description for this package.'!
-!provides: 'StyledText' 1 61!
+!provides: 'StyledText' 1 62!
 !requires: 'Cuis-Base' 60 5718 nil!
 !requires: 'ExtendedClipboard' 1 15 nil!
 !requires: 'RTFExporting' 1 nil nil!
-!requires: 'UI-Entry' 1 35 nil!
 !requires: 'RTFImporting' 1 nil nil!
+!requires: 'UI-Entry' 1 35 nil!
 !requires: 'RTFTests' 1 nil nil!
 SystemOrganization addCategory: #StyledText!
 SystemOrganization addCategory: #'StyledText-Morphic-Windows'!
@@ -2740,63 +2740,63 @@ testEmptyTextClick
 	self assert: block width = 0.
 	self assert: block left = style firstIndent.! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 5/2/2022 12:01:12'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'bp 9/17/2023 12:40:49'!
 testEmptyTrailingLine
 	"Test that the special case of an artificial empty last line behaves as normal lines.
 	StyledTextEditorTest new testEmptyTrailingLine
 	"
 	
 	| emptyText notEmptyText model style textComposition canvas form1 form2 |
-	emptyText _ Text string: ''.
-	model _ StyledTextModel new.
-	style _ model styleSet paragraphStyleNamed: 'Normal'.
-	notEmptyText _ Text string: ' ', String newLineString attribute: (ParagraphStyleReference for: style).
-	form1 _ Form extent: 100@50 depth: 32.
+	emptyText := Text string: ''.
+	model := StyledTextModel new.
+	style := model styleSet paragraphStyleNamed: 'Normal'.
+	notEmptyText := Text string: ' ', String newLineString attribute: (ParagraphStyleReference for: style).
+	form1 := Form extent: 100@50 depth: 32.
 	form1 fillWhite.
-	form2 _ Form extent: 100@50 depth: 32.
+	form2 := Form extent: 100@50 depth: 32.
 	form2 fillWhite.
 
-	textComposition _ TextComposition new.
+	textComposition := TextComposition new.
 
-	canvas _ form1 getCanvas.
+	canvas := form1 getCanvas.
 	textComposition setModel: (model contents: emptyText); extentForComposing: 300@300.
 	textComposition composeAll.
 	textComposition selectionStartBlock: textComposition defaultCharacterBlock selectionStopBlock: textComposition defaultCharacterBlock.
-	canvas textComposition: textComposition bounds:  (10@10 extent: 300@300) color: Color black selectionColor: Color blue.
+	canvas drawTextComposition: textComposition at: 10@10 extent: 300@300 color: Color black selectionColor: Color blue.
 
-	canvas _ form2 getCanvas.
+	canvas := form2 getCanvas.
 	textComposition  setModel: (model contents: notEmptyText); extentForComposing: 300@300.
 	textComposition composeAll.
 	textComposition selectionStartBlock: textComposition defaultCharacterBlock selectionStopBlock: textComposition defaultCharacterBlock.
-	canvas textComposition: textComposition bounds:  (10@10 extent: 300@300) color: Color black selectionColor: Color blue.
+	canvas drawTextComposition: textComposition at: 10@10 extent: 300@300 color: Color black selectionColor: Color blue.
 
 	form1 addDeltasFrom: form2.
 	self assert: form1 primCountBits = 0 description: 'Incorrect text cursor for empty text.'! !
 
-!StyledTextEditorTest methodsFor: 'tests' stamp: 'jmv 5/2/2022 12:01:43'!
+!StyledTextEditorTest methodsFor: 'tests' stamp: 'bp 9/17/2023 12:51:34'!
 testEmptyTrailingLineNumberedStyle
 	"Test that the special case of an artificial empty last line behaves as normal lines.
 	StyledTextEditorTest new testEmptyTrailingLineNumberedStyle
 	"
 	
 	| emptyText emptyTextModel notEmptyText model style textComposition canvas form1 form2 editor inner |
-	emptyText _ Text string: ''.
-	model _ StyledTextModel new.
-	style _ model styleSet paragraphStyleNamed: 'Numbered List'.
-	notEmptyText _ Text string: ' ', String newLineString attribute: (ParagraphStyleReference for: style).
-	form1 _ Form extent: 100@50 depth: 32.
+	emptyText := Text string: ''.
+	model := StyledTextModel new.
+	style := model styleSet paragraphStyleNamed: 'Numbered List'.
+	notEmptyText := Text string: ' ', String newLineString attribute: (ParagraphStyleReference for: style).
+	form1 := Form extent: 100@50 depth: 32.
 	form1 fillWhite.
-	form2 _ Form extent: 100@50 depth: 32.
+	form2 := Form extent: 100@50 depth: 32.
 	form2 fillWhite.
 
-	textComposition _ TextComposition new.
+	textComposition := TextComposition new.
 
-	canvas _ form1 getCanvas.
-	editor _ TextEditor new.
-	emptyTextModel _ model contents: emptyText.
+	canvas := form1 getCanvas.
+	editor := TextEditor new.
+	emptyTextModel := model contents: emptyText.
 	textComposition setModel: emptyTextModel; extentForComposing: 300@300.
 	textComposition composeAll.
-	inner _ InnerTextMorph new.
+	inner := InnerTextMorph new.
 	inner model: emptyTextModel.
 	editor morph: inner.
 	inner privateOwner: TextModelMorph new.
@@ -2809,13 +2809,13 @@ testEmptyTrailingLineNumberedStyle
 	textComposition setModel: (model contents: emptyText); extentForComposing: 300@300.
 	textComposition composeAll.
 	textComposition selectionStartBlock: textComposition defaultCharacterBlock selectionStopBlock: textComposition defaultCharacterBlock.
-	canvas textComposition: textComposition bounds:  (10@10 extent: 300@300) color: Color black selectionColor: Color blue.
+	canvas drawTextComposition: textComposition at: 10@10 extent: 300@300 color: Color black selectionColor: Color blue.
 
-	canvas _ form2 getCanvas.
+	canvas := form2 getCanvas.
 	textComposition setModel: (model contents: notEmptyText); extentForComposing: 300@300.
 	textComposition composeAll.
 	textComposition selectionStartBlock: textComposition defaultCharacterBlock selectionStopBlock: textComposition defaultCharacterBlock.
-	canvas textComposition: textComposition bounds:  (10@10 extent: 300@300) color: Color black selectionColor: Color blue.
+	canvas drawTextComposition: textComposition at: 10@10 extent: 300@300 color: Color black selectionColor: Color blue.
 
 	form1 addDeltasFrom: form2.
 	self assert: form1 primCountBits = 0 description: 'Incorrect text cursor for empty text.'! !
