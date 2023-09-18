@@ -1,10 +1,13 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1865] on 12 November 2013 at 8:54:42.971613 am'!
+'From Cuis 6.0 [latest update: #6032] on 17 September 2023 at 9:45:37 pm'!
 'Description Please enter a description for this package'!
-!provides: 'RTFClipboardTests' 1 0!
-!requires: 'ExtendedClipboard' 1 nil nil!
-!requires: 'RTFTests' 1 nil nil!
+!provides: 'RTFClipboardTests' 1 1!
 !requires: 'RTFImporting' 1 nil nil!
+!requires: 'ExtendedClipboard' 1 nil nil!
 !requires: 'RTFExporting' 1 nil nil!
+!requires: 'RTFTests' 1 nil nil!
+SystemOrganization addCategory: #RTFClipboardTests!
+
+
 !classDefinition: #RTFClipboardTest category: #RTFClipboardTests!
 TestCase subclass: #RTFClipboardTest
 	instanceVariableNames: ''
@@ -106,13 +109,13 @@ testSample5ToAndFromRTFClipboard
 		addClipboardData: text rtfString dataFormat: 'public.rtf'.
 	self assert:Clipboard default retrieveObject = text! !
 
-!RTFClipboardTest methodsFor: 'testing' stamp: 'jmv 11/12/2013 08:46'!
+!RTFClipboardTest methodsFor: 'testing' stamp: 'jmv 9/17/2023 21:44:56'!
 testSample6ToAndFromRTFClipboard
 	"
 	ExtendedClipboardTest new testSample6ToAndFromRTFClipboard
 	"
 	| text |
-	text _ RTFConversionTest textSample6.
+	text := RTFConversionTest textSample6.
 
 	"This will use a refStreamed object"
 	Clipboard default storeObject: text.
@@ -121,11 +124,11 @@ testSample6ToAndFromRTFClipboard
 	"This will also test storing and retrieving RTF data from platform Clipboard, and RTF conversion"
 	self deny: text rtfString = '{\rtf
 {\colortbl;}
-Tom· ag¸ita, Òand˙. —and˙. \par Ω¥Æ•®¯ÂﬂÉ©›≤ﬁ¨≠Á¶µ.\par º¥Æ¡®ÿ≈ÕŒœ©”‘ﬁ“≠«¶–¬}'.
+Tom√° ag√ºita, √±and√∫. √ëand√∫. \par ≈ì≈Ω¬Æ¬•≈°√∏√•ﬂÉ¬©›≤ﬁ¨¬≠Á¶µ.\par ≈í≈Ω¬Æh√ò√Ö√ç√éœ©√ì√î√û“≠«¶√ê√Ç}'.
 	self assert: text rtfString =  '{\rtf
 {\colortbl;}
-Tom\u225? ag\u252?ita, \u241?and\u250?. \u209?and\u250?. \par \u339?\u381?\u174?\u165?\u353?\u248?\u229?\u223?\u131?\u169?\u221?\u178?\u222?\u172?\u173?\u231?\u352?\u181?.\par \u338?\u381?\u174?\u193?\u353?\u216?\u197?\u205?\u206?\u207?\u169?\u211?\u212?\u222?\u210?\u173?\u199?\u352?\u208?\u194?}'.
+Tom\u225? ag\u252?ita, \u241?and\u250?. \u209?and\u250?. \par  \u339?\u381?\u174?\u165?\u353?\u248?\u229?\u223?\u8484?\u169?\u221?\u178?\u222?\u172?\u173?\u231?\u352?\u181?.\par  \u338?\u381?\u174?\u193?\u353?\u216?\u197?\u205?\u206?\u207?\u169?\u211?\u212?\u222?\u210?\u173?\u199?\u352?\u208?\u194?}'.
 	ExtendedClipboardInterface current
 		clearClipboard;
-		addClipboardData: text rtfString dataFormat: 'public.rtf'.
+		addClipboardData: text rtfString asUtf8Bytes dataFormat: 'public.rtf'.
 	self assert: Clipboard default retrieveObject = text! !
